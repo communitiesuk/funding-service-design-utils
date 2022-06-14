@@ -16,6 +16,10 @@ from .loaders import yaml_loader
 
 def pretty_print_config_metadata(paths, meta_data_dict: dict, log_length=100):
 
+    import colorama
+
+    colorama.init()
+
     # Data used for pretty printing the configuration.
     background_colors = list(HIGHLIGHTS.keys())[1:-1]
     colour_dict = {
