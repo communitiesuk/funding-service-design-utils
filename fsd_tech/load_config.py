@@ -18,7 +18,7 @@ def pretty_print_config_metadata(paths, meta_data_dict: dict, log_length=100):
 
     import colorama
 
-    colorama.init()
+    colorama.init(autoreset=True)
 
     import os
 
