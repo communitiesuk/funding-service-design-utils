@@ -1,4 +1,3 @@
-import itertools
 import os
 from collections.abc import Callable
 from os import environ
@@ -6,45 +5,35 @@ from pathlib import Path
 from typing import List
 
 from dotenv import dotenv_values
-from termcolor import colored
-from termcolor import HIGHLIGHTS
+from rich.console import Console
+from rich.table import Table
+from rich.text import Text
 
 from .config_borg import Config
 from .loaders import object_loader
 from .loaders import yaml_loader
 
 
-def pretty_print_config_metadata(paths, meta_data_dict: dict, log_length=100):
+def pretty_print_config_metadata(meta_data_dict: dict):
 
-    import colorama
+    table = Table(title="Config. Infomation.", show_lines=True)
 
-    colorama.init(autoreset=True)
-
-    import os
-
-    os.system("color")
-
-    # Data used for pretty printing the configuration.
-    background_colors = list(HIGHLIGHTS.keys())[1:-1]
-    colour_dict = {
-        k: v for k, v in zip(paths, itertools.cycle(background_colors))
-    }
-    colour_dict["Shell Env"] = "on_magenta"
-    colour_dict["POST HOOK"] = "on_grey"
+    table.add_column("Key", justify="right", style="cyan", no_wrap=True)
+    table.add_column("Value", style="magenta")
+    table.add_column("Post Hook Modified", style="magenta")
+    table.add_column("From", justify="right", style="green")
 
     for k, v in meta_data_dict.items():
-        fmt_string_kv = f"{k} = {v['value']}"
-        fmt_string_kv = fmt_string_kv.ljust(log_length, "-")
-        coloured_altered = ""
+        config_key = k
+        config_value = v["value"]
+        post_hook_modified = Text(str(v["post_hook_modified"]))
         if v["post_hook_modified"]:
-            coloured_altered = colored(
-                "!!!ALTERED BY POST HOOK!!!", "red", "on_grey"
-            )
-        fmt_string_from = coloured_altered + colored(
-            f"FROM {v['path']}", "white", colour_dict[v["path"]]
-        )
-        fmt_string = fmt_string_kv + fmt_string_from
-        print(fmt_string)
+            post_hook_modified.stylize("bold red on black")
+        from_value = v["path"]
+        table.add_row(config_key, config_value, post_hook_modified, from_value)
+
+    console = Console()
+    console.print(table)
 
 
 def load_config(
@@ -140,9 +129,7 @@ def load_config(
 
     if pretty_print:
 
-        pretty_print_config_metadata(
-            paths, settled_metadata_dict, log_length=log_length
-        )
+        pretty_print_config_metadata(settled_metadata_dict)
 
     # Sets the singleton (actually borg) objects attributes to our dictionary
     Config().__dict__.update(return_dict)
