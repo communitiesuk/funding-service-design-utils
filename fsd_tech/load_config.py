@@ -19,17 +19,19 @@ def pretty_print_config_metadata(meta_data_dict: dict):
     table = Table(title="Config. Infomation.", show_lines=True)
 
     table.add_column("Key", justify="right", style="cyan", no_wrap=True)
-    table.add_column("Value", style="magenta")
+    table.add_column("Value", style="magenta", overflow="ellipsis")
     table.add_column("Post Hook Modified", style="magenta")
     table.add_column("From", justify="right", style="green")
 
     for k, v in meta_data_dict.items():
-        config_key = k
-        config_value = v["value"]
+        config_key = str(k)
+        config_value = str(v["value"])
+        from_value = str(v["path"])
         post_hook_modified = Text(str(v["post_hook_modified"]))
+
         if v["post_hook_modified"]:
             post_hook_modified.stylize("bold red on black")
-        from_value = v["path"]
+
         table.add_row(config_key, config_value, post_hook_modified, from_value)
 
     console = Console()
@@ -40,7 +42,6 @@ def load_config(
     *paths: List[Path],
     post_hook: Callable[[dict], dict] | None = None,
     pretty_print=True,
-    log_length=100,
 ):
 
     # A list of the loaded env files + some metadata about them.
@@ -100,9 +101,7 @@ def load_config(
         new_keys = set(post_hook_config.keys() - pre_hook_config.keys())
 
         altered_keys = [
-            k
-            for k in shared_keys
-            if not pre_hook_config[k] == post_hook_config[k]
+            k for k in shared_keys if pre_hook_config[k] != post_hook_config[k]
         ]
 
         created_by_post_hook = {

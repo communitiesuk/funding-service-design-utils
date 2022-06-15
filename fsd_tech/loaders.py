@@ -17,7 +17,7 @@ def object_loader(object_path):
     processed_dict = {
         k: v
         for k, v in raw_dict.items()
-        if not k.startswith("__") and not k.endswith("__")
+        if not k.startswith("_") and not k.endswith("_")
     }
 
     return processed_dict

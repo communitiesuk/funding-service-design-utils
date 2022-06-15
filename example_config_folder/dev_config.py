@@ -1,3 +1,6 @@
+import math
+
+
 class dev_config:
 
-    test = "Hello There!"
+    class_test = math.exp(5)
