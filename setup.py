@@ -5,7 +5,11 @@ packages = ["fsd_tech"]
 
 package_data = {"": ["*"]}
 
-install_requires = ["PyYAML>=6.0,<7.0", "python-dotenv>=0.20.0,<0.21.0"]
+install_requires = [
+    "PyYAML>=6.0,<7.0",
+    "python-dotenv>=0.20.0,<0.21.0",
+    "rich>=12.4.4,<13.0.0",
+]
 
 setup_kwargs = {
     "name": "fsd-tech",
