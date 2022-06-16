@@ -1,4 +1,4 @@
-def configbean(cls):
+def configclass(cls):
 
     # Checks base classes for _config_info_, a dict containing
     # all infomation about config. attrs, and
