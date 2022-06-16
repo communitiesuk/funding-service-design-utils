@@ -13,7 +13,7 @@ install_requires = [
 
 setup_kwargs = {
     "name": "fsd-tech",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Utils for the fsd-tech team",
     "long_description": None,
     "author": "Version 1",
