@@ -3,8 +3,7 @@ name: Create Tag
 
 # This workflow reads the current version from setup.py and then creates a new tag and release named
 # for that version.
-# If a tag already exists with that name, the action will fail. Check log output of 'Create Release'
-# step in this instance - message will state 'already_exists'.
+# If a tag already exists with that name, the Create Release step is skipped.
 
 # Currently version must be manually updated in setup.py to enable this workflow to run
 on: 
