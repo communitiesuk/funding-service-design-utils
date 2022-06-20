@@ -34,9 +34,18 @@ jobs:
       id: print_version
       run: echo ${{ steps.package_version.outputs.app_version}}
 
+    - name: Check if tag exists
+      uses: mukunku/tag-exists-action@v1.0.0
+      id: check_tag
+      with: 
+        tag: ${{ steps.package_version.outputs.app_version}}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - uses: ncipollo/release-action@v1
       name: Create Release
       id: create_release
+      if: ${{ steps.check_tag.outputs.exists == 'false' }}
       with:
         commit: main
         tag: ${{ steps.package_version.outputs.app_version }}
