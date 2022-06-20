@@ -7,7 +7,7 @@ package_data = {"": ["*"]}
 
 setup_kwargs = {
     "name": "funding-service-design-utils",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Utils for the fsd-tech team",
     "long_description": None,
     "author": "DLUHC",
