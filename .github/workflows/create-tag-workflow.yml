@@ -1,0 +1,44 @@
+name: Create Tag
+
+
+# This workflow reads the current version from setup.py and then creates a new tag and release named
+# for that version.
+# If a tag already exists with that name, the action will fail. Check log output of 'Create Release'
+# step in this instance - message will state 'already_exists'.
+
+# Currently version must be manually updated in setup.py to enable this workflow to run
+on: 
+  workflow_dispatch:
+  push:
+    # Should only trigger on main branch
+    branches: [ "fs-1095-tag-shared-lib" ] #TODO update to main
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup python
+      id: setup_python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Get package version
+      id: package_version
+      run: echo "::set-output name=app_version::"$(python setup.py --version)
+    - name: Print package version
+      id: print_version
+      run: echo ${{ steps.package_version.outputs.app_version}}
+
+    - uses: ncipollo/release-action@v1
+      name: Create Release
+      id: create_release
+      with:
+        commit: main
+        tag: ${{ steps.package_version.outputs.app_version }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+ 
