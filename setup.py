@@ -7,7 +7,7 @@ package_data = {"": ["*"]}
 
 setup_kwargs = {
     "name": "fsd-tech",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Utils for the fsd-tech team",
     "long_description": None,
     "author": "DLUHC",
