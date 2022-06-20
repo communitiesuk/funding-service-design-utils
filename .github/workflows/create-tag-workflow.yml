@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
   push:
     # Should only trigger on main branch
-    branches: [ "fs-1095-tag-shared-lib" ] #TODO update to main
+    branches: [ "fs-1095-tagsharedlib" ] #TODO update to main
 
 jobs:
   create-release:
