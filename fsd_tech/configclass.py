@@ -1,6 +1,3 @@
-import os
-
-
 def configclass(cls):
 
     # Checks base classes for _config_info_, a dict containing
@@ -22,49 +19,31 @@ def configclass(cls):
     #  the above dict with its values.
     for k, v in cls.__dict__.items():
         if not (k.startswith("__") or k.endswith("__")):
-            settled_bases_config_info[k] = {
-                "value": v,
-                "from": cls.__qualname__,
-            }
+            settled_bases_config_info[k] = v
 
     # This is the dicitonary that will be used
     #  by classes which inherit this class
     cls._config_info_ = settled_bases_config_info
 
     @classmethod
-    def as_config_dict(cls):
-        return {k: v["value"] for k, v in cls._config_info_.items()}
+    def pretty_print(self):
 
-    @classmethod
-    def pretty_print(self, print_values=False):
+        from rich.table import Table
+        from rich.console import Console
 
-        if os.environ.get("FLASK_ENV") in ["development", "test", "dev"]:
+        table = Table(title="Config Info", show_lines=True)
 
-            from rich.table import Table
-            from rich.console import Console
+        table.add_column("Key", justify="right", style="cyan", no_wrap=True)
 
-            table = Table(title="Config Info", show_lines=True)
+        table.add_column("From", justify="right", style="yellow", no_wrap=True)
 
-            table.add_column(
-                "Key", justify="right", style="cyan", no_wrap=True
-            )
-            if print_values:
-                table.add_column("Value", style="magenta", overflow="ellipsis")
-            table.add_column("From", justify="right", style="green")
+        for k, v in self._config_info_.items():
+            config_key = str(k)
+            from_value = str(v)
+            table.add_row(config_key, from_value)
 
-            for k, v in self._config_info_.items():
-                config_key = str(k)
-                config_value = str(v["value"])
-                from_value = str(v["from"])
-                if print_values:
-                    table.add_row(config_key, config_value, from_value)
-                else:
-                    table.add_row(config_key, from_value)
-
-            console = Console()
-            console.print(table)
-
-    cls.as_config_dict = as_config_dict
+        console = Console()
+        console.print(table)
 
     cls.pretty_print = pretty_print
 
