@@ -48,19 +48,3 @@ def configclass(cls):
     cls.pretty_print = pretty_print
 
     return cls
-
-
-if __name__ == "__main__":
-
-    @configclass
-    class Default:
-
-        my_val = 1
-        my_val_2 = 5
-
-    @configclass
-    class Dev(Default):
-
-        my_val_2 = 10
-
-    Dev.pretty_print()
