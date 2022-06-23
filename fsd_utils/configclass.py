@@ -17,9 +17,9 @@ def configclass(cls):
 
     # We extract the values from the class and overlay
     #  the above dict with its values.
-    for k, v in cls.__dict__.items():
+    for k in cls.__dict__:
         if not (k.startswith("__") or k.endswith("__")):
-            settled_bases_config_info[k] = v
+            settled_bases_config_info[k] = cls.__qualname__
 
     # This is the dicitonary that will be used
     #  by classes which inherit this class

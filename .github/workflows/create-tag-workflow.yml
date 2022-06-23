@@ -6,11 +6,11 @@ name: Create Tag
 # If a tag already exists with that name, the Create Release step is skipped.
 
 # Currently version must be manually updated in setup.py to enable this workflow to run
-on: 
+on:
   workflow_dispatch:
   push:
     # Should only trigger on main branch
-    branches: [ "main" ] 
+    branches: [ "main" ]
 
 jobs:
   create-release:
@@ -36,7 +36,7 @@ jobs:
     - name: Check if tag exists
       uses: mukunku/tag-exists-action@v1.0.0
       id: check_tag
-      with: 
+      with:
         tag: ${{ steps.package_version.outputs.app_version}}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -49,4 +49,3 @@ jobs:
         commit: main
         tag: ${{ steps.package_version.outputs.app_version }}
         token: ${{ secrets.GITHUB_TOKEN }}
- 
