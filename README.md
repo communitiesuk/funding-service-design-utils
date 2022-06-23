@@ -21,3 +21,6 @@ To reference a particular tag from pip, add the following to your `requirements.
 To reference the latest commit from a particular branch from pip, add the following to your `requirements.txt` file or use `pip install`:
     
     git+https://github.com/communitiesuk/funding-service-design-utils.git@<branchName>
+    
+## The configclass
+Currently the configclass allows for pretty print debugging of config keys and the class from which they are created. This allows devs to quickly diagnoise problems arrising from incorrectly set config. To activate this functionality, one must decorate each config class with the `@configclass` decorator.
