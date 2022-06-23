@@ -1,5 +1,5 @@
 # funding-service-design-utils
-Shared library for funding service design apps. 
+Shared library for funding service design apps.
 
 This library can be installed into other python repos and the packages used by those repos.
 
@@ -14,13 +14,13 @@ To create a new release of funding-service-design-utils:
 Either of the following options will install the funding-service-design-utils into your python project. The package `fsd_utils` can then be imported.
 ## Tagged version
 To reference a particular tag from pip, add the following to your `requirements.txt` file or use `pip install`:
-    
+
     hhttps://github.com/communitiesuk/funding-service-design-utils/archive/refs/tags/<tagName>.tar.gz
 
 ## Latest / in-dev version
 To reference the latest commit from a particular branch from pip, add the following to your `requirements.txt` file or use `pip install`:
-    
+
     git+https://github.com/communitiesuk/funding-service-design-utils.git@<branchName>
-    
+
 ## The configclass
 Currently the configclass allows for pretty print debugging of config keys and the class from which they are created. This allows devs to quickly diagnoise problems arrising from incorrectly set config. To activate this functionality, one must decorate each config class with the `@configclass` decorator.
