@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
+from setuptools import find_packages
 from setuptools import setup
-
-packages = ["fsd_utils", "fsd_utils.config"]
 
 package_data = {"": ["*"]}
 
@@ -20,8 +19,8 @@ setup_kwargs = {
     "author_email": None,
     "maintainer": None,
     "maintainer_email": None,
+    "packages": find_packages(),
     "url": "https://github.com/communitiesuk/funding-service-design-utils",
-    "packages": packages,
     "package_data": package_data,
     "install_requires": install_requires,
     "python_requires": ">=3.10,<4.0",
