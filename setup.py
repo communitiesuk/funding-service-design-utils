@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup
 
-packages = ["fsd_utils"]
+packages = ["fsd_utils", "fsd_utils.config"]
 
 package_data = {"": ["*"]}
 
