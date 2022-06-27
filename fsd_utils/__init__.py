@@ -1,1 +1,1 @@
-from .configclass import configclass  # noqa
+from .configclass.configclass import configclass  # noqa
