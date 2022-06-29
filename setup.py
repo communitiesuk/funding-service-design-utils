@@ -8,6 +8,8 @@ install_requires = [
     "PyYAML>=6.0,<7.0",
     "python-dotenv>=0.20.0,<0.21.0",
     "rich>=12.4.4,<13.0.0",
+    "Flask==2.0.2",
+    "python-json-logger==2.0.2",
 ]
 
 setup_kwargs = {
