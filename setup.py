@@ -8,11 +8,15 @@ install_requires = [
     "PyYAML>=6.0,<7.0",
     "python-dotenv>=0.20.0,<0.21.0",
     "rich>=12.4.4,<13.0.0",
+    "Flask>=2.1.1,<3.0.0",
+    "python-json-logger>=2.0.2,<3.0.0",
+    "gunicorn>=20.1.0,<21.0.0",
+    "pytz>=2022.1",
 ]
 
 setup_kwargs = {
     "name": "funding-service-design-utils",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "Utils for the fsd-tech team",
     "long_description": None,
     "author": "DHULC",
