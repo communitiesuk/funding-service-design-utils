@@ -46,7 +46,7 @@ def _check_access_token():
     try:
         return validate_token_rs256(login_cookie)
     except (PyJWTError, ExpiredSignatureError):
-        return _failed_redirect()
+        _failed_redirect()
 
 
 def login_required(f):
