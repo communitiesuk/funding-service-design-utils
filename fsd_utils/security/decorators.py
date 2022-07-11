@@ -7,6 +7,7 @@ from flask import redirect
 from flask import request
 from fsd_utils.security.utils import validate_token_rs256
 from jwt import ExpiredSignatureError
+from jwt import PyJWTError
 
 
 def _failed_redirect(message: str = "Link expired or invalid"):
@@ -44,7 +45,7 @@ def _check_access_token():
         _failed_redirect()
     try:
         return validate_token_rs256(login_cookie)
-    except ExpiredSignatureError:
+    except (PyJWTError, ExpiredSignatureError):
         return _failed_redirect()
 
 
