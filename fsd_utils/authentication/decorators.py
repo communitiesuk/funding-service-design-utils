@@ -5,18 +5,20 @@ from flask import abort
 from flask import current_app
 from flask import redirect
 from flask import request
-from fsd_utils.security.utils import validate_token_rs256
+from fsd_utils.authentication.utils import validate_token_rs256
 from jwt import ExpiredSignatureError
 from jwt import PyJWTError
 
+from .config import config_var_auth_host
+from .config import config_var_user_token_cookie_name
+
 
 def _failed_redirect(message: str = "Link expired or invalid"):
-    auth_host_key = "AUTHENTICATOR_HOST"
-    authenticator_host = current_app.config.get(auth_host_key)
+    authenticator_host = current_app.config.get(config_var_auth_host)
 
     if not authenticator_host:
         current_app.logger.critical(
-            f"Failed Redirect: {auth_host_key} " "not set in environ"
+            f"Failed Redirect: {config_var_auth_host} " "not set in environ"
         )
         abort(500)
 
@@ -30,11 +32,12 @@ def _failed_redirect(message: str = "Link expired or invalid"):
 
 
 def _check_access_token():
-    user_token_cookie_key = "FSD_USER_TOKEN_COOKIE_NAME"
-    user_token_cookie_name = current_app.config.get(user_token_cookie_key)
+    user_token_cookie_name = current_app.config.get(
+        config_var_user_token_cookie_name
+    )
     if not user_token_cookie_name:
         current_app.logger.critical(
-            f"Failed Check Token: {user_token_cookie_key} "
+            f"Failed Check Token: {config_var_user_token_cookie_name} "
             "not set in environ"
         )
         abort(500)
