@@ -14,13 +14,7 @@ from .config import config_var_user_token_cookie_name
 
 
 def _failed_redirect(message: str = "Link expired or invalid"):
-    authenticator_host = current_app.config.get(config_var_auth_host)
-
-    if not authenticator_host:
-        current_app.logger.critical(
-            f"Failed Redirect: {config_var_auth_host} " "not set in environ"
-        )
-        abort(500)
+    authenticator_host = current_app.config[config_var_auth_host]
 
     return abort(
         redirect(
@@ -32,15 +26,9 @@ def _failed_redirect(message: str = "Link expired or invalid"):
 
 
 def _check_access_token():
-    user_token_cookie_name = current_app.config.get(
+    user_token_cookie_name = current_app.config[
         config_var_user_token_cookie_name
-    )
-    if not user_token_cookie_name:
-        current_app.logger.critical(
-            f"Failed Check Token: {config_var_user_token_cookie_name} "
-            "not set in environ"
-        )
-        abort(500)
+    ]
 
     login_cookie = request.cookies.get(user_token_cookie_name)
     if not login_cookie:
