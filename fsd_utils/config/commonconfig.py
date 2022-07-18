@@ -45,7 +45,7 @@ class CommonConfig:
     # ---------------
 
     FUND_STORE_API_HOST = os.getenv("FUND_STORE_API_HOST", TEST_FUND_STORE_API_HOST)
-    FUNDS_ENDPOINT = "/funds/"
+    FUNDS_ENDPOINT = "/funds"
     FUND_ENDPOINT = "/funds/{fund_id}" #account id in assessment store
     
     # ---------------
