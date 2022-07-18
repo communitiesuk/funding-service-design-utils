@@ -53,7 +53,7 @@ class CommonConfig:
     # ---------------
 
     ROUND_STORE_API_HOST = os.getenv("ROUND_STORE_API_HOST", TEST_ROUND_STORE_API_HOST)
-    ROUNDS_ENDPOINT = "/funds/{fund_id}/rounds/"
+    ROUNDS_ENDPOINT = "/funds/{fund_id}/rounds"
     ROUND_ENDPOINT = "/funds/{fund_id}/rounds/{round_id}"
 
     # ---------------
