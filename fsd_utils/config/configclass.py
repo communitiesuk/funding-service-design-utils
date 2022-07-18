@@ -17,13 +17,9 @@ def configclass(cls):
 
     # We extract the values from the class and overlay
     #  the above dict with its values.
-    for k, v in cls.__dict__.items():
+    for k in cls.__dict__:
         if not (k.startswith("__") or k.endswith("__")):
-            settled_bases_config_info[k] = {
-                "value": v,
-                "from": cls.__qualname__,
-            }
-
+            settled_bases_config_info[k] = cls.__qualname__
 
     # This is the dicitonary that will be used
     #  by classes which inherit this class
@@ -38,14 +34,13 @@ def configclass(cls):
         table = Table(title="Config Info", show_lines=True)
 
         table.add_column("Key", justify="right", style="cyan", no_wrap=True)
-        table.add_column("Value", style="magenta", overflow="ellipsis")
+
         table.add_column("From", justify="right", style="yellow", no_wrap=True)
 
         for k, v in self._config_info_.items():
             config_key = str(k)
-            config_value = str(v["value"])
-            from_value = str(v["from"])
-            table.add_row(config_key, config_value, from_value)
+            from_value = str(v)
+            table.add_row(config_key, from_value)
 
         console = Console()
         console.print(table)
