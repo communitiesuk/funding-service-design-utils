@@ -32,6 +32,7 @@ class CommonConfig:
     # ---------------
 
     TEST_APPLICATION_STORE_API_HOST = "application_store"
+    TEST_ASSESSMENT_STORE_API_HOST = "assessment_store"
     TEST_FUND_STORE_API_HOST = "fund_store"
 
     # ---------------
@@ -51,6 +52,12 @@ class CommonConfig:
     APPLICATION_ENDPOINT = "/applications/{application_id}"
     APPLICATION_STATUS_ENDPOINT = "/applications/{application_id}/status"
     APPLICATION_SEARCH_ENDPOINT = "/applications?{params}"
+
+    # ---------------
+    # Assessment hosts, endpoints
+    # ---------------
+
+    ASSESSMENT_STORE_API_HOST = os.getenv("ASSESSMENT_STORE_API_HOST", TEST_ASSESSMENT_STORE_API_HOST)
 
     # ---------------
     #  Fund hosts, endpoints
