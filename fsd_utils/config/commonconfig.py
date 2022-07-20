@@ -24,10 +24,8 @@ class CommonConfig:
         raise KeyError("FLASK_ENV is not present in environment")
     try:
         FSD_LOG_LEVEL = FSD_LOG_LEVELS['FLASK_ENV']
-        print("FSD_LOG_LEVEL is", FSD_LOG_LEVEL)
     except KeyError:
         FSD_LOG_LEVEL = FSD_LOG_LEVELS["production"]
-        print("No log level set, defaulting to prod")
 
     # ---------------
     # Dummy Hosts
@@ -35,8 +33,6 @@ class CommonConfig:
 
     TEST_APPLICATION_STORE_API_HOST = "application_store"
     TEST_FUND_STORE_API_HOST = "fund_store"
-    TEST_ROUND_STORE_API_HOST = "round_store"
-
 
     # ---------------
     #  Account hosts, endpoints
@@ -63,12 +59,7 @@ class CommonConfig:
     FUND_STORE_API_HOST = os.getenv("FUND_STORE_API_HOST", TEST_FUND_STORE_API_HOST)
     FUNDS_ENDPOINT = "/funds"
     FUND_ENDPOINT = "/funds/{fund_id}" #account id in assessment store
-    
-    # ---------------
-    #  Round hosts, endpoints
-    # ---------------
 
-    ROUND_STORE_API_HOST = os.getenv("ROUND_STORE_API_HOST", TEST_ROUND_STORE_API_HOST)
     ROUNDS_ENDPOINT = "/funds/{fund_id}/rounds"
     ROUND_ENDPOINT = "/funds/{fund_id}/rounds/{round_id}"
 
