@@ -1,17 +1,33 @@
+from distutils.log import WARN
 import logging
 import os
 from pathlib import Path
 
 class CommonConfig:
 
+    FSD_LOG_LEVELS = {
+        "development": logging.DEBUG,
+        "unit_test": logging.DEBUG,
+        "dev": logging.INFO,
+        "test": logging.WARN,
+        "production": logging.ERROR
+    }
+
     # ---------------
     #  General App Config
     # ---------------
     SECRET_KEY = os.getenv("SECRET_KEY", "secret_key")
     SESSION_COOKIE_NAME = os.getenv("SESSION_COOKIE_NAME", "session_cookie")
-    FLASK_ENV = os.getenv("FLASK_ENV", "development")
     FORCE_HTTPS = True
-    FSD_LOG_LEVEL = logging.WARN
+    FLASK_ENV = os.getenv("FLASK_ENV")
+    if not FLASK_ENV:
+        raise KeyError("FLASK_ENV is not present in environment")
+    try:
+        FSD_LOG_LEVEL = FSD_LOG_LEVELS['FLASK_ENV']
+        print("FSD_LOG_LEVEL is", FSD_LOG_LEVEL)
+    except KeyError:
+        FSD_LOG_LEVEL = FSD_LOG_LEVELS["production"]
+        print("No log level set, defaulting to prod")
 
     # ---------------
     # Dummy Hosts
