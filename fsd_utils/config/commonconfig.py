@@ -31,9 +31,11 @@ class CommonConfig:
     # Dummy Hosts
     # ---------------
 
+    TEST_ACCOUNT_STORE_API_HOST = "account_store"
     TEST_APPLICATION_STORE_API_HOST = "application_store"
     TEST_ASSESSMENT_STORE_API_HOST = "assessment_store"
     TEST_FUND_STORE_API_HOST = "fund_store"
+    TEST_NOTIFICATION_SERVICE_HOST = "notification_service"
 
     # ---------------
     #  Account hosts, endpoints
