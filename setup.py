@@ -17,10 +17,10 @@ install_requires = [
 
 setup_kwargs = {
     "name": "funding-service-design-utils",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "Utils for the fsd-tech team",
     "long_description": None,
-    "author": "DHULC",
+    "author": "DLUHC",
     "author_email": None,
     "maintainer": None,
     "maintainer_email": None,
