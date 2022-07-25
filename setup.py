@@ -12,7 +12,7 @@ install_requires = [
     "python-json-logger>=2.0.2,<3.0.0",
     "gunicorn>=20.1.0,<21.0.0",
     "pytz>=2022.1",
-    "PyJWT>=2.4.0",
+    "PyJWT[crypto]>=2.4.0",
 ]
 
 setup_kwargs = {
