@@ -60,7 +60,6 @@ class CommonConfig:
     # ---------------
 
     ASSESSMENT_STORE_API_HOST = os.getenv("ASSESSMENT_STORE_API_HOST", TEST_ASSESSMENT_STORE_API_HOST)
-    ASSESSMENT_STORE_API_HOST_DEV = "https://funding-service-design-assessment-store-dev.london.cloudapps.digital"
 
     # ---------------
     #  Fund hosts, endpoints
