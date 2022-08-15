@@ -15,6 +15,10 @@ install_requires = [
     "PyJWT[crypto]>=2.4.0",
 ]
 
+tests_require = [
+    "pytest-env>=0.6.2"
+]
+
 setup_kwargs = {
     "name": "funding-service-design-utils",
     "version": "0.0.11",
