@@ -1,4 +1,5 @@
 from flask import current_app
+from sqlalchemy.exc import SQLAlchemyError
 
 class CheckerInterface:
     def check(self):
@@ -21,5 +22,9 @@ class DbChecker(CheckerInterface):
         self.name = "check_db"
 
     def check(self):
-        self.db.session.execute("SELECT 1")
-        return True, "OK"
+        try:
+            self.db.session.execute("SELECT 1")
+            return True, "OK"
+        except SQLAlchemyError as e:
+            current_app.logger.exception("DB Check failed")
+            return False, "Fail"
