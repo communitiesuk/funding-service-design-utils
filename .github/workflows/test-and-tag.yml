@@ -1,20 +1,43 @@
-name: Create Tag
+name: Test and Tag
 
 
-# This workflow reads the current version from setup.py and then creates a new tag and release named
+# Runs on every push to run the unit tests.
+
+# Additionally, if on main, reads the current version from setup.py and then creates a new tag and release named
 # for that version.
 # If a tag already exists with that name, the Create Release step is skipped.
 
-# Currently version must be manually updated in setup.py to enable this workflow to run
+# Currently version must be manually updated in setup.py to enable this tagging job to run
+
 on:
   workflow_dispatch:
   push:
-    # Should only trigger on main branch
-    branches: [ "main" ]
-
+    paths-ignore:
+      - "**/README.md"
+      
 jobs:
+  run-unit-tests:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup python
+      id: setup_python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Run tests
+      run: |
+        python -m venv .venv
+        source .venv/bin/activate && python -m pip install --upgrade pip && pip install -r requirements-dev.txt
+        pytest 
   create-release:
     runs-on: ubuntu-latest
+    needs: run-unit-tests
+    if: github.ref == 'refs/heads/main'
     permissions:
         contents: write
     steps:

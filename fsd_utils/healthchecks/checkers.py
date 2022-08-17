@@ -1,8 +1,9 @@
+from typing import Tuple
 from flask import current_app
 from sqlalchemy.exc import SQLAlchemyError
 
 class CheckerInterface:
-    def check(self):
+    def check(self) -> Tuple[bool, str]:
         pass
 
 class FlaskRunningChecker(CheckerInterface):
