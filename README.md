@@ -5,11 +5,12 @@ This library can be installed into other python repos and the packages used by t
 
 # Dev setup
 In order to run the unit tests, setup a virtual env and install requirements
-* Checkout the code
-* Setup a venv and activate: `python3 -m venv .venv && source .venv/bin/activate`
-* Install dev requirements: `pip install -r requirements-dev.txt`
-* Run tests with `pytest`
-* If you add any packages needed by services that consume `fsd_utils`, add them into `setup.py`. 
+1. Checkout the code
+1. Setup a venv and activate: `python3 -m venv .venv && source .venv/bin/activate`
+1. Install dev requirements: `pip install -r requirements-dev.txt`
+1. Install pre-commit hook: `pre-commit install`
+1. Run tests with `pytest`
+1. If you add any packages needed by services that consume `fsd_utils`, add them into `setup.py`.
 
 # Releasing
 To create a new release of funding-service-design-utils:
@@ -38,7 +39,7 @@ Currently the configclass allows for pretty print debugging of config keys and t
 ## Common Config
 This defines config values that are common across different services, eg. url patterns. Usage example:
 
-``` 
+```
 from fsd_utils import CommonConfig
 
 @configclass
@@ -148,6 +149,6 @@ The following 2 checks are provided in `fsd_utils` in `checkers.py`:
 ### Implementing custom checks
 Custom checks can be created as subclasses of `CheckerInterface` and should contain a method with the following signature:
 `def check(self) -> Tuple[bool, str]:`
-Where 
+Where
 - `bool` is a True or False whether the check was successful
 - `str` is a message to display in the result JSON, typically `OK` or `Fail`

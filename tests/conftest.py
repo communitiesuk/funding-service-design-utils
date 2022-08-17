@@ -1,14 +1,14 @@
 """
 Contains test configuration.
 """
-import os
-
 import pytest
 from flask import Flask
+
 
 def create_app():
     app = Flask("test")
     return app
+
 
 @pytest.fixture(scope="function")
 def flask_test_client():
