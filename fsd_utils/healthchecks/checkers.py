@@ -1,6 +1,5 @@
 from typing import Tuple
 from flask import current_app
-from sqlalchemy.exc import SQLAlchemyError
 
 class CheckerInterface:
     def check(self) -> Tuple[bool, str]:
@@ -23,6 +22,7 @@ class DbChecker(CheckerInterface):
         self.name = "check_db"
 
     def check(self):
+        from sqlalchemy.exc import SQLAlchemyError
         try:
             self.db.session.execute("SELECT 1")
             return True, "OK"
