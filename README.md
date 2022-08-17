@@ -3,6 +3,14 @@ Shared library for funding service design apps.
 
 This library can be installed into other python repos and the packages used by those repos.
 
+# Dev setup
+In order to run the unit tests, setup a virtual env and install requirements
+* Checkout the code
+* Setup a venv and activate: `python3 -m venv .venv && source .venv/bin/activate`
+* Install dev requirements: `pip install -r requirements-dev.txt`
+* Run tests with `pytest`
+* If you add any packages needed by services that consume `fsd_utils`, add them into `setup.py`. 
+
 # Releasing
 To create a new release of funding-service-design-utils:
 1. Make and test your changes as normal in this repo
