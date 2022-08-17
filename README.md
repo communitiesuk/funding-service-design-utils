@@ -3,12 +3,21 @@ Shared library for funding service design apps.
 
 This library can be installed into other python repos and the packages used by those repos.
 
+# Dev setup
+In order to run the unit tests, setup a virtual env and install requirements
+1. Checkout the code
+1. Setup a venv and activate: `python3 -m venv .venv && source .venv/bin/activate`
+1. Install dev requirements: `pip install -r requirements-dev.txt`
+1. Install pre-commit hook: `pre-commit install`
+1. Run tests with `pytest`
+1. If you add any packages needed by services that consume `fsd_utils`, add them into `setup.py`.
+
 # Releasing
 To create a new release of funding-service-design-utils:
 1. Make and test your changes as normal in this repo
 2. Update the `version` tag in `setup.py`
 3. Push your changes to `main`.
-4. The Action at `.github/workflows/create-tag-workflow.yml` will create a new tag and release, named for the version in `setup.py`. This is triggered automatically on a push to main.
+4. The Action at `.github/workflows/test-and-tag.yml` will create a new tag and release, named for the version in `setup.py`. This is triggered automatically on a push to main.
 
 # Usage
 Either of the following options will install the funding-service-design-utils into your python project. The package `fsd_utils` can then be imported.
@@ -26,6 +35,18 @@ To reference the latest commit from a particular branch from pip, add the follow
 
 ## The configclass
 Currently the configclass allows for pretty print debugging of config keys and the class from which they are created. This allows devs to quickly diagnoise problems arrising from incorrectly set config. To activate this functionality, one must decorate each config class with the `@configclass` decorator.
+
+## Common Config
+This defines config values that are common across different services, eg. url patterns. Usage example:
+
+```
+from fsd_utils import CommonConfig
+
+@configclass
+class DefaultConfig:
+    SECRET_KEY = CommonConfig.SECRET_KEY
+
+```
 
 ## Gunicorn
 The gunicorn utility allows consistent configuration of gunicorn across microservices.
@@ -101,3 +122,33 @@ Then - to use the `@login_required` decorator just add it to routes you need to 
     def example_route(account_id):
         #...account_id will be available here if the user is authenticated
         #...if not logged in the user will be redirected to re-authenticate
+
+## Healthchecks
+Adds the route `/healthcheck` to an application. On hitting this endpoint, a customisable set of checks are run to confirm the application is functioning as expected and a JSON response is returned.
+
+Response codes:
+- 200: All checks were successful, application is healthy
+- 500: One or more checks failed, application is unhealthy
+
+Example usage:
+```
+from fsd_utils.healthchecks.healthcheck import Healthcheck
+from fsd_utils.healthchecks.checkers import DbChecker, FlaskRunningChecker
+
+health = Healthcheck(flask_app)
+health.add_check(FlaskRunningChecker())
+health.add_check(DbChecker(db))
+```
+The above will initialise the `/healthcheck` url and adds 2 checks.
+
+### Checks
+The following 2 checks are provided in `fsd_utils` in `checkers.py`:
+- `FlaskRunningChecker`: Checks whether a `current_app` is available from flask, returns `True` if it is, `False` if not.
+- `DbChecker`: Runs a simple query against the DB to confirm database availability.
+
+### Implementing custom checks
+Custom checks can be created as subclasses of `CheckerInterface` and should contain a method with the following signature:
+`def check(self) -> Tuple[bool, str]:`
+Where
+- `bool` is a True or False whether the check was successful
+- `str` is a message to display in the result JSON, typically `OK` or `Fail`

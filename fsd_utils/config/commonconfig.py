@@ -1,7 +1,6 @@
-from distutils.log import WARN
 import logging
 import os
-from pathlib import Path
+
 
 class CommonConfig:
 
@@ -10,7 +9,7 @@ class CommonConfig:
         "unit_test": logging.DEBUG,
         "dev": logging.INFO,
         "test": logging.WARN,
-        "production": logging.ERROR
+        "production": logging.ERROR,
     }
 
     # ---------------
@@ -23,7 +22,7 @@ class CommonConfig:
     if not FLASK_ENV:
         raise KeyError("FLASK_ENV is not present in environment")
     try:
-        FSD_LOG_LEVEL = FSD_LOG_LEVELS['FLASK_ENV']
+        FSD_LOG_LEVEL = FSD_LOG_LEVELS["FLASK_ENV"]
     except KeyError:
         FSD_LOG_LEVEL = FSD_LOG_LEVELS["production"]
 
@@ -49,7 +48,9 @@ class CommonConfig:
     #  Application hosts, endpoints
     # ---------------
 
-    APPLICATION_STORE_API_HOST = os.getenv("APPLICATION_STORE_API_HOST", TEST_APPLICATION_STORE_API_HOST)
+    APPLICATION_STORE_API_HOST = os.getenv(
+        "APPLICATION_STORE_API_HOST", TEST_APPLICATION_STORE_API_HOST
+    )
     APPLICATIONS_ENDPOINT = "/applications"
     APPLICATION_ENDPOINT = "/applications/{application_id}"
     APPLICATION_STATUS_ENDPOINT = "/applications/{application_id}/status"
@@ -59,15 +60,19 @@ class CommonConfig:
     # Assessment hosts, endpoints
     # ---------------
 
-    ASSESSMENT_STORE_API_HOST = os.getenv("ASSESSMENT_STORE_API_HOST", TEST_ASSESSMENT_STORE_API_HOST)
+    ASSESSMENT_STORE_API_HOST = os.getenv(
+        "ASSESSMENT_STORE_API_HOST", TEST_ASSESSMENT_STORE_API_HOST
+    )
 
     # ---------------
     #  Fund hosts, endpoints
     # ---------------
 
-    FUND_STORE_API_HOST = os.getenv("FUND_STORE_API_HOST", TEST_FUND_STORE_API_HOST)
+    FUND_STORE_API_HOST = os.getenv(
+        "FUND_STORE_API_HOST", TEST_FUND_STORE_API_HOST
+    )
     FUNDS_ENDPOINT = "/funds"
-    FUND_ENDPOINT = "/funds/{fund_id}" #account id in assessment store
+    FUND_ENDPOINT = "/funds/{fund_id}"  # account id in assessment store
 
     ROUNDS_ENDPOINT = "/funds/{fund_id}/rounds"
     ROUND_ENDPOINT = "/funds/{fund_id}/rounds/{round_id}"
