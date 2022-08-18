@@ -36,9 +36,7 @@ class DbChecker(CheckerInterface):
 
 
 class RedisChecker(CheckerInterface):
-    from flask_redis import FlaskRedis
-
-    def __init__(self, redis_client: FlaskRedis):
+    def __init__(self, redis_client):  # TypeHint: FlaskRedis
         self.name = "check_redis"
         self.redis_client = redis_client
 
