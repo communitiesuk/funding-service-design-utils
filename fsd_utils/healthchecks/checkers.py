@@ -33,3 +33,20 @@ class DbChecker(CheckerInterface):
         except SQLAlchemyError:
             current_app.logger.exception("DB Check failed")
             return False, "Fail"
+
+
+class RedisChecker(CheckerInterface):
+    from flask_redis import FlaskRedis
+
+    def __init__(self, redis_client: FlaskRedis):
+        self.name = "check_redis"
+        self.redis_client = redis_client
+
+    def check(self):
+
+        try:
+            self.redis_client.client_list()
+            return True, "OK"
+        except Exception:
+            current_app.logger.exception("Redis Check failed")
+            return False, "Fail"
