@@ -10,7 +10,7 @@ class CheckerInterface:
 
 class FlaskRunningChecker(CheckerInterface):
     def __init__(self):
-        self.name = "check_running"
+        self.name = "check_flask_running"
 
     def check(self):
         if current_app:
