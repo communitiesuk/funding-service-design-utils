@@ -1,10 +1,7 @@
 from unittest.mock import ANY
 from unittest.mock import Mock
 
-from fsd_utils.healthchecks.checkers import DbChecker
-from fsd_utils.healthchecks.checkers import FlaskRunningChecker
 from fsd_utils.healthchecks.healthcheck import Healthcheck
-from sqlalchemy.exc import ArgumentError
 
 
 class TestHealthcheck:
@@ -88,37 +85,3 @@ class TestHealthcheck:
         result = health.healthcheck_view()
         assert result[0] == expected_dict, "Unexpected response body"
         assert result[1] == 500, "Unexpected status code"
-
-    def testRunningCheck_pass(self, flask_test_client):
-        result = FlaskRunningChecker().check()
-        assert result[0] is True, "Unexpected check result"
-        assert result[1] == "OK", "Unexpected check message"
-
-    # Don't pass in flask_test_client, therefore no flask.current_app,
-    # therefore this check returns false
-    def testRunningCheck_fail(self):
-        result = FlaskRunningChecker().check()
-        assert result[0] is False, "Unexpected check result"
-        assert result[1] == "Fail", "Unexpected check message"
-
-    def testDbCheck_pass(self):
-        mock_db = Mock()
-        mock_db.session = Mock()
-        mock_db.session.execute.return_value = True
-        db_checker = DbChecker(mock_db)
-
-        result = db_checker.check()
-        assert result[0] is True, "Unexpected check result"
-        assert result[1] == "OK", "Unexpected check message"
-        mock_db.session.execute.assert_called_with("SELECT 1")
-
-    def testDbCheck_fail(self, flask_test_client):
-        mock_db = Mock()
-        mock_db.session = Mock()
-        mock_db.session.execute.side_effect = ArgumentError
-        db_checker = DbChecker(mock_db)
-
-        result = db_checker.check()
-        assert result[0] is False, "Unexpected check result"
-        assert result[1] == "Fail", "Unexpected check message"
-        mock_db.session.execute.assert_called_with("SELECT 1")
