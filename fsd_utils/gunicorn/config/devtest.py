@@ -1,4 +1,6 @@
 import datetime
+import logging
+import re
 
 import pytz
 from gunicorn.glogging import Logger
@@ -238,3 +240,22 @@ def worker_int(worker):
 
 def worker_abort(worker):
     worker.log.info("worker received SIGABRT signal")
+
+
+class RequestPathFilter(logging.Filter):
+    def __init__(self, *args, path_re, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.path_filter = re.compile(path_re)
+
+    def filter(self, record):
+        req_path = record.args["U"]
+        if not self.path_filter.match(req_path):
+            return True  # log this entry
+        # ... additional conditions can be added here ...
+        return False  # do not log this entry
+
+
+def on_starting(server):
+    server.log.access_log.addFilter(
+        RequestPathFilter(path_re=r"^/healthcheck$")
+    )
