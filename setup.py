@@ -5,7 +5,7 @@ from setuptools import setup
 package_data = {"": ["*"]}
 
 install_requires = [
-    "PyYAML>=6.0,<7.0",
+    "Flask-Babel>=2.0.0,<3.0.0" "PyYAML>=6.0,<7.0",
     "python-dotenv>=0.20.0,<0.21.0",
     "rich>=12.4.4,<13.0.0",
     "Flask>=2.1.1,<3.0.0",

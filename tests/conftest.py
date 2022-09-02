@@ -19,5 +19,10 @@ def flask_test_client():
     """
 
     with create_app().app_context() as app_context:
+        app_context.app.config.update(
+            {
+                "FSD_LANG_COOKIE_NAME": "language",
+            }
+        )
         with app_context.app.test_client() as test_client:
             yield test_client
