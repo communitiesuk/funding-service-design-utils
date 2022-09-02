@@ -17,7 +17,6 @@ class CommonConfig:
     # ---------------
     SECRET_KEY = os.getenv("SECRET_KEY", "secret_key")
     SESSION_COOKIE_NAME = os.getenv("SESSION_COOKIE_NAME", "session_cookie")
-    FORCE_HTTPS = True
     FLASK_ENV = os.getenv("FLASK_ENV")
     if not FLASK_ENV:
         raise KeyError("FLASK_ENV is not present in environment")
