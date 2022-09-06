@@ -2,6 +2,7 @@ from flask import current_app
 from flask import make_response
 from flask import redirect
 from flask import request
+from fsd_utils import CommonConfig
 
 
 class LanguageSelector:
@@ -25,7 +26,7 @@ class LanguageSelector:
             )
         )
         response.set_cookie(
-            current_app.config["FSD_LANG_COOKIE_NAME"],
+            CommonConfig.FSD_LANG_COOKIE_NAME,
             locale,
             domain=get_cookie_domain(
                 current_app.config["SESSION_COOKIE_DOMAIN"]

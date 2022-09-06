@@ -148,3 +148,5 @@ class CommonConfig:
         "x_content_type_options": True,
         "x_xss_protection": True,
     }
+
+    FSD_LANG_COOKIE_NAME = "language"
