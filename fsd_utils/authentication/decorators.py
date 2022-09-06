@@ -1,5 +1,4 @@
 from functools import wraps
-from urllib.parse import quote_plus
 
 from flask import abort
 from flask import current_app
@@ -13,16 +12,10 @@ from .config import config_var_auth_host
 from .config import config_var_user_token_cookie_name
 
 
-def _failed_redirect(message: str = "Link expired or invalid"):
+def _failed_redirect():
     authenticator_host = current_app.config[config_var_auth_host]
 
-    return abort(
-        redirect(
-            f"{authenticator_host}"
-            "/magic-links/new?error="
-            f"{quote_plus(message)}"
-        )
-    )
+    return abort(redirect(f"{authenticator_host}" "/sessions/sign-out"))
 
 
 def _check_access_token():
