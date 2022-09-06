@@ -5,6 +5,7 @@ from setuptools import setup
 package_data = {"": ["*"]}
 
 install_requires = [
+    "Flask-Babel>=2.0.0,<3.0.0",
     "PyYAML>=6.0,<7.0",
     "python-dotenv>=0.20.0,<0.21.0",
     "rich>=12.4.4,<13.0.0",
@@ -17,7 +18,7 @@ install_requires = [
 
 setup_kwargs = {
     "name": "funding-service-design-utils",
-    "version": "0.0.16",
+    "version": "0.0.17",
     "description": "Utils for the fsd-tech team",
     "long_description": None,
     "author": "DLUHC",
