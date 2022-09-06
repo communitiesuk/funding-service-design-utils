@@ -169,6 +169,8 @@ The `get_lang()` function reads the user-selected language from a cookie (if set
 
 `LanguageSelector` creates an additional route `/language/<language>` that sets the user's selected language in a cookie. Used the cookie rather than the session so it can be shared across the microservices.
 
+Set `SESSION_COOKIE_DOMAIN` on the app to the domain you want to set the cookie on.
+
 ### Creating Translations
 1. Add `trans` tags around items in your jinja html file that you want to translate. What's contained in the `trans` tag should be the english version of this text. eg:
 
