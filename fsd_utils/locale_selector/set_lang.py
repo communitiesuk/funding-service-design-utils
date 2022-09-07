@@ -28,9 +28,7 @@ class LanguageSelector:
         response.set_cookie(
             CommonConfig.FSD_LANG_COOKIE_NAME,
             locale,
-            domain=get_cookie_domain(
-                current_app.config["SESSION_COOKIE_DOMAIN"]
-            ),
+            domain=get_cookie_domain(current_app.config["COOKIE_DOMAIN"]),
             max_age=86400 * 30,  # 30 days
         )
 
