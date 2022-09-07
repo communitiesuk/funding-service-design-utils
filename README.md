@@ -109,9 +109,8 @@ First - ensure that the following environment variables are set to the appropria
     FSD_USER_TOKEN_COOKIE_NAME = "fsd_user_token"
     AUTHENTICATOR_HOST = "https://funding-service-design-authenticator-dev.london.cloudapps.digital"
     RSA256_PUBLIC_KEY = "{RSA PUBLIC KEY}"
-    SESSION_COOKIE_DOMAIN = "cloudapps.digital" # <--- This should be something specific and common to all microservices and the AUTHENTICATOR_HOST
 
-NOTE: These values (and keys) need to be shared/common across all microservices that use each common authenticator host, and each microservice needs to be a subdomain of the SESSION_COOKIE_DOMAIN. If any of the environment *keys* for each of these attributes needs to be modified these can be reconfigured in fsd_utils/authentication/congfig.py.
+NOTE: These values (and keys) need to be shared/common across all microservices that use each common authenticator host. If any of the environment *keys* for each of these attributes needs to be modified these can be reconfigured in fsd_utils/authentication/config.py.
 
 Then - to use the `@login_required` decorator just add it to routes you need to protect eg:
 
@@ -169,7 +168,7 @@ The `get_lang()` function reads the user-selected language from a cookie (if set
 
 `LanguageSelector` creates an additional route `/language/<language>` that sets the user's selected language in a cookie. Used the cookie rather than the session so it can be shared across the microservices.
 
-Set `SESSION_COOKIE_DOMAIN` on the app to the domain you want to set the cookie on.
+Set `COOKIE_DOMAIN` on the app to the domain you want to set the cookie on.
 
 ### Creating Translations
 1. Add `trans` tags around items in your jinja html file that you want to translate. What's contained in the `trans` tag should be the english version of this text. eg:
