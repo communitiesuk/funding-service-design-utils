@@ -84,10 +84,10 @@ class CommonConfig:
     NOTIFICATION_SEND_ENDPOINT = "/send"
     NOTIFY_TEMPLATE_MAGIC_LINK = "MAGIC_LINK"
 
-    NOTFN_ML_CONTACT_HELP_EMAIL = "contact_help_email"
-    NOTFN_ML_MAGIC_LINK_URL = "magic_link_url"
-    NOTFN_ML_REQUEST_NEW_EMAIL_URL = "request_new_link_url"
-    NOTFN_ML_FUND_NAME = "fund_name"
+    NOTIFICATION_MAGIC_LINK_CONTACT_HELP_EMAIL = "contact_help_email"
+    NOTIFICATION_MAGIC_LINK_MAGIC_LINK_URL = "magic_link_url"
+    NOTIFICATION_MAGIC_LINK_REQUEST_NEW_EMAIL_URL = "request_new_link_url"
+    NOTIFICATION_MAGIC_LINK_FUND_NAME = "fund_name"
 
     # ---------------
     #  Talisman Settings
