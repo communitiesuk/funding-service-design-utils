@@ -77,12 +77,17 @@ class CommonConfig:
     ROUND_ENDPOINT = "/funds/{fund_id}/rounds/{round_id}"
 
     # ---------------
-    #  Notification hosts, endpoints
+    #  Notification hosts, endpoints, fields
     # ---------------
 
     NOTIFICATION_SERVICE_HOST = os.getenv("NOTIFICATION_SERVICE_HOST")
     NOTIFICATION_SEND_ENDPOINT = "/send"
     NOTIFY_TEMPLATE_MAGIC_LINK = "MAGIC_LINK"
+
+    NOTFN_ML_CONTACT_HELP_EMAIL = "contact_help_email"
+    NOTFN_ML_MAGIC_LINK_URL = "magic_link_url"
+    NOTFN_ML_REQUEST_NEW_EMAIL_URL = "request_new_link"
+    NOTFN_ML_FUND_NAME = "fund_name"
 
     # ---------------
     #  Talisman Settings
