@@ -82,16 +82,6 @@ class CommonConfig:
 
     NOTIFICATION_SERVICE_HOST = os.getenv("NOTIFICATION_SERVICE_HOST")
     NOTIFICATION_SEND_ENDPOINT = "/send"
-    NOTIFY_TEMPLATE_MAGIC_LINK = "MAGIC_LINK"
-
-    NOTIFY_FIELD_TO = "to"
-    NOTIFY_FIELD_CONTENT = "content"
-    NOTIFY_FIELD_TYPE = "type"
-
-    NOTIFY_FIELD_CONTACT_HELP_EMAIL = "contact_help_email"
-    NOTIFY_FIELD_MAGIC_LINK_URL = "magic_link_url"
-    NOTIFY_FIELD_REQUEST_NEW_LINK_URL = "request_new_link_url"
-    NOTIFY_FIELD_FUND_NAME = "fund_name"
 
     # ---------------
     #  Talisman Settings
