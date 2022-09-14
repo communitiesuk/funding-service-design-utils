@@ -17,7 +17,21 @@ To create a new release of funding-service-design-utils:
 1. Make and test your changes as normal in this repo
 2. Update the `version` tag in `setup.py`
 3. Push your changes to `main`.
-4. The Action at `.github/workflows/test-and-tag.yml` will create a new tag and release, named for the version in `setup.py`. This is triggered automatically on a push to main.
+4. The Action at `.github/workflows/test-and-tag.yml` will create a new tag and release, named for the version in `pyproject.toml`. This is triggered automatically on a push to main.
+5. That action will also push this tag up to PyPI at: https://pypi.org/project/funding-service-design-utils/
+
+## Updating the release workflow
+- If making changes to the release flow etc, you can publish to test.pypi.org when testing. To do this, update the `Publish to PyPI` step with the following:
+```
+    - name: Publish to PyPI
+      id: publish-to-pypi
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.PYPI_API_TOKEN_TEST }}
+        repository_url: https://test.pypi.org/legacy/
+```
+- That will publish packages to https://test.pypi.org/project/funding-service-design-utils/ instead, without updating the index of the main PyPI repo.
+- Don't forget to change it back when you're done!
 
 # Usage
 Either of the following options will install the funding-service-design-utils into your python project. The package `fsd_utils` can then be imported.
