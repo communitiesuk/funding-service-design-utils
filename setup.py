@@ -17,19 +17,9 @@ install_requires = [
 ]
 
 setup_kwargs = {
-    "name": "funding-service-design-utils",
-    "version": "0.0.21",
-    "description": "Utils for the fsd-tech team",
-    "long_description": None,
-    "author": "DLUHC",
-    "author_email": None,
-    "maintainer": None,
-    "maintainer_email": None,
     "packages": find_packages(),
-    "url": "https://github.com/communitiesuk/funding-service-design-utils",
     "package_data": package_data,
     "install_requires": install_requires,
-    "python_requires": ">=3.10,<4.0",
 }
 
 setup(**setup_kwargs)
