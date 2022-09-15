@@ -35,15 +35,21 @@ To create a new release of funding-service-design-utils:
 
 # Usage
 Either of the following options will install the funding-service-design-utils into your python project. The package `fsd_utils` can then be imported.
-## Tagged version
-To reference a particular tag from pip, add the following to your `requirements.txt` file or use `pip install`:
+## Released version
+To reference a particular tag from pip, add the following to your `requirements.txt` file or use `pip install` (update version as appropriate):
 
-    hhttps://github.com/communitiesuk/funding-service-design-utils/archive/refs/tags/<tagName>.tar.gz
+    funding-service-design-utils==0.0.1
 
 ## Latest / in-dev version
 To reference the latest commit from a particular branch from pip, add the following to your `requirements.txt` file or use `pip install`:
 
     git+https://github.com/communitiesuk/funding-service-design-utils.git@<branchName>
+
+## Local changes
+When working and testing locally, you can also install the `fsd_utils` package from your local filesystem:
+
+    pip uninstall -y funding-service-design-utils
+    pip install /path/to/your/working/directory/funding-service-design/utils
 
 # Utilities
 
