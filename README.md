@@ -7,7 +7,7 @@ This library can be installed into other python repos and the packages used by t
 In order to run the unit tests, setup a virtual env and install requirements
 1. Checkout the code
 1. Setup a venv and activate: `python3 -m venv .venv && source .venv/bin/activate`
-1. Install dev requirements: `pip install -r requirements-dev.txt`
+1. Install dev requirements: `python3 -m pip install --upgrade pip && pip install -r requirements-dev.txt`
 1. Install pre-commit hook: `pre-commit install`
 1. Run tests with `pytest`
 1. If you add any packages needed by services that consume `fsd_utils`, add them into `setup.py`.
