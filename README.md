@@ -222,3 +222,14 @@ Set `COOKIE_DOMAIN` on the app to the domain you want to set the cookie on.
 1. Once the translations are ready, use `compile` to generate the binary for use at runtime:
 
         pybabel compile -d app/translations
+
+## Sentry
+Enables Sentry integration.
+
+* Before the flask app is created initialise Sentry using
+```
+from fsd_utils import init_sentry
+
+init_sentry()
+```
+* Set the `SENTRY_DSN` environment variable on the app
