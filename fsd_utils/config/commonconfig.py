@@ -105,6 +105,9 @@ class CommonConfig:
         "img-src": ["data:", "'self'"],
     }
 
+    # BLAH
+    
+
     # Security headers and other policies
     FSD_REFERRER_POLICY = "strict-origin-when-cross-origin"
     FSD_SESSION_COOKIE_SAMESITE = "Lax"
