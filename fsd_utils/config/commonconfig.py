@@ -84,6 +84,13 @@ class CommonConfig:
     NOTIFICATION_SEND_ENDPOINT = "/send"
 
     # ---------------
+    #  SESSION TIMELIMITS
+    # ---------------
+
+    FSD_SESSION_TIMEOUT_SECONDS = 86400 #(24hrs)
+    WTF_CSRF_TIME_LIMIT = FSD_SESSION_TIMEOUT_SECONDS + 10 #(buffer secconds)
+
+    # ---------------
     #  Talisman Settings
     # ---------------
 
@@ -104,7 +111,7 @@ class CommonConfig:
         "connect-src": "",  # APPLICATION_STORE_API_HOST_PUBLIC,
         "img-src": ["data:", "'self'"],
     }
-
+    
     # Security headers and other policies
     FSD_REFERRER_POLICY = "strict-origin-when-cross-origin"
     FSD_SESSION_COOKIE_SAMESITE = "Lax"
@@ -149,3 +156,4 @@ class CommonConfig:
     }
 
     FSD_LANG_COOKIE_NAME = "language"
+
