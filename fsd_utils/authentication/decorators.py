@@ -92,10 +92,10 @@ def login_requested(f):
             authenticator_host = current_app.config[config_var_auth_host]
             g.account_id = token_payload.get("accountId")
             g.is_authenticated = True
-            g.logout_url = authenticator_host + signout_route
         else:
             g.account_id = None
             g.is_authenticated = False
+        g.logout_url = authenticator_host + signout_route
         return f(*args, **kwargs)
 
     return decorated
