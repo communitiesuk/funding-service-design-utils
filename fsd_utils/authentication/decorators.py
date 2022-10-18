@@ -88,14 +88,14 @@ def login_requested(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token_payload = _check_access_token(auto_redirect=False)
+        authenticator_host = current_app.config[config_var_auth_host]
+        g.logout_url = authenticator_host + signout_route
         if token_payload and isinstance(token_payload, dict):
-            authenticator_host = current_app.config[config_var_auth_host]
             g.account_id = token_payload.get("accountId")
             g.is_authenticated = True
         else:
             g.account_id = None
             g.is_authenticated = False
-        g.logout_url = authenticator_host + signout_route
         return f(*args, **kwargs)
 
     return decorated
