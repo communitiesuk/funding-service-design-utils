@@ -1,3 +1,5 @@
+from os import getenv
+
 from flask import current_app
 
 
@@ -12,6 +14,8 @@ class Healthcheck(object):
     def healthcheck_view(self):
         responseCode = 200
         response = {"checks": []}
+        if getenv("GITHUB_SHA"):
+            response["version"] = getenv("GITHUB_SHA")
         for checker in self.checkers:
             try:
                 result = checker.check()
