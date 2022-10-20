@@ -13,5 +13,5 @@ def init_sentry():
                 FlaskIntegration(),
             ],
             traces_sample_rate=0.1,
-            version=getenv("GITHUB_SHA"),
+            release=getenv("GITHUB_SHA"),
         )
