@@ -222,6 +222,10 @@ Set `COOKIE_DOMAIN` on the app to the domain you want to set the cookie on.
 1. Once the translations are ready, use `compile` to generate the binary for use at runtime:
 
         pybabel compile -d app/translations
+   
+   Fuzzy issue: If some entries on the .po file are marked as 'fuzzy' you'll need to force fuzzy compilation with:
+   
+        pybabel compile -f -d app/translations
 
 ## Sentry
 Enables Sentry integration.
