@@ -223,6 +223,12 @@ Set `COOKIE_DOMAIN` on the app to the domain you want to set the cookie on.
 
         pybabel compile -d app/translations
 
+
+
+
+
+
+
 ## Sentry
 Enables Sentry integration.
 
