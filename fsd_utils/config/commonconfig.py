@@ -162,6 +162,19 @@ class CommonConfig:
     # ---------------
 
     COF_R2_SECTION_DISPLAY_CONFIG = {
+        # "section_one":{
+        #     "section-title-eng": "Eng title",
+        #     "section-title-cy": "Welsh title",
+        #     "forms-within-section-eng": {
+        #         "organisation-information": None,
+        #         "applicant-information": None,
+        #     },
+        #     "forms_within_section-cy": {
+        #         "welsh-organisation-information": None,
+        #         "welsh-applicant-information": None,
+        #     },
+        #     "section-weighting": None,
+        # },
         "About your organisation": {
             "forms_within_section": {
                 "organisation-information": None,
