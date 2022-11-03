@@ -158,6 +158,13 @@ class CommonConfig:
     FSD_LANG_COOKIE_NAME = "language"
 
     # ---------------
+    #  Fund Config
+    # ---------------
+
+    COF_FUND_ID = "47aef2f5-3fcb-4d45-acb5-f0152b5f03c4"
+    COF_ROUND_2_ID = "c603d114-5364-4474-a0c4-c41cbf4d3bbd"
+
+    # ---------------
     #  Form Config
     # ---------------
 
@@ -315,3 +322,6 @@ class CommonConfig:
             "section_weighting": None
         }
     )
+    FUND_ROUND_FORMS = {
+        f"{COF_FUND_ID}:{COF_ROUND_2_ID}": COF_R2_ORDERED_FORMS_CONFIG,
+    }
