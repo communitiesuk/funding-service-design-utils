@@ -167,7 +167,7 @@ class CommonConfig:
                 "en": "About your organisation",
                 "cy": "Ynglŷn â'ch sefydliad"
             },
-            "ordered_forms_within_section":[
+            "ordered_form_names_within_section":[
                 {
                     "en":"organisation-information",
                     "cy":"gwybodaeth-am-y-sefydliad"
@@ -184,7 +184,7 @@ class CommonConfig:
                 "en":"About your project",
                 "cy":"Ynglŷn â'ch prosiect"
             },
-            "ordered_forms_within_section":[
+            "ordered_form_names_within_section":[
                 {
                     "en":"project-information",
                     "cy":"gwybodaeth-am-y-prosiect"
@@ -201,7 +201,7 @@ class CommonConfig:
                 "en":"Strategic case",
                 "cy":"Achos strategol"
             },
-            "ordered_forms_within_section":[
+            "ordered_form_names_within_section":[
                 {
                     "en":"community-use",
                     "cy":"defnydd-cymunedol"
@@ -226,7 +226,7 @@ class CommonConfig:
                 "en":"Management case",
                 "cy":"Achos rheoli"
             },
-            "ordered_forms_within_section":[
+            "ordered_form_names_within_section":[
                 {
                     "en":"funding-required",
                     "cy":"cyllid-angenrheidiol"
@@ -267,7 +267,7 @@ class CommonConfig:
                 "en": "Potential to deliver community benefits",
                 "cy": "Potensial i gyflawni buddion cymunedol"
             },
-            "ordered_forms_within_section":[
+            "ordered_form_names_within_section":[
                 {
                     "en":"community-benefits",
                     "cy":"buddion-cymunedol"
@@ -280,7 +280,7 @@ class CommonConfig:
                 "en": "Added value to community",
                 "cy": "Gwerth ychwanegol i'r gymuned"
             },
-            "ordered_forms_within_section":[
+            "ordered_form_names_within_section":[
                 {
                     "en":"value-to-the-community",
                     "cy":"gwerth-i'r-gymuned"
@@ -293,7 +293,7 @@ class CommonConfig:
                 "en": "Subsidy control / state aid",
                 "cy": "Rheoli cymorthdaliadau a chymorth gwladwriaethol"
             },
-            "ordered_forms_within_section":[
+            "ordered_form_names_within_section":[
                 {
                     "en":"project-qualification",
                     "cy":"cymhwysedd-y-prosiect"
@@ -306,7 +306,7 @@ class CommonConfig:
                 "en": "Check declarations",
                 "cy": "Gwirio datganiadau"
             },
-            "ordered_forms_within_section":[
+            "ordered_form_names_within_section":[
                 {
                     "en":"declarations",
                     "cy":"datganiadau"
