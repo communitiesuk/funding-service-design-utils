@@ -322,6 +322,6 @@ class CommonConfig:
             "section_weighting": None
         }
     )
-    FORMS_CONFIG_FOR_FUND_ROUND_ = {
+    FORMS_CONFIG_FOR_FUND_ROUND = {
         f"{COF_FUND_ID}:{COF_ROUND_2_ID}": COF_R2_ORDERED_FORMS_CONFIG,
     }
