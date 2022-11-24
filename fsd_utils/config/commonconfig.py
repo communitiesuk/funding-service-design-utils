@@ -215,7 +215,7 @@ class CommonConfig:
                 },
                 {
                     "en":"community-engagement",
-                    "cy":"ymgysylltu-â'r-gymuned"
+                    "cy":"ymgysylltiad-cymunedol"
                 },
                 {
                     "en":"local-support",
@@ -236,7 +236,7 @@ class CommonConfig:
             "ordered_form_names_within_section":[
                 {
                     "en":"funding-required",
-                    "cy":"cyllid-sydd-ei-angen"
+                    "cy":"cyllid-angenrheidiol"
                 },
                 {
                     "en":"feasibility",
@@ -264,7 +264,7 @@ class CommonConfig:
                 },
                 {
                     "en":"upload-business-plan",
-                    "cy":"lanlwythwch-y-cynllun-busnes"
+                    "cy":"lanlwytho-cynllun-busnes"
                 },
             ],
             "section_weighting": 30,
@@ -303,7 +303,7 @@ class CommonConfig:
             "ordered_form_names_within_section":[
                 {
                     "en":"project-qualification",
-                    "cy":"cymhwystra'r-prosiect"
+                    "cy":"cymhwysedd-y-prosiect"
                 },
             ],
             "section_weighting": None
