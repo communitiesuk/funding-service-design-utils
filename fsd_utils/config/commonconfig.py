@@ -215,7 +215,7 @@ class CommonConfig:
                 },
                 {
                     "en":"community-engagement",
-                    "cy":"ymgysylltu-â'r-gymuned"
+                    "cy":"ymgysylltu-a'r-gymuned"
                 },
                 {
                     "en":"local-support",
