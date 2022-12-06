@@ -12,6 +12,7 @@ from jwt import PyJWTError
 from .config import config_var_auth_host
 from .config import config_var_user_token_cookie_name
 from .config import signout_route
+from .models import User
 from .utils import get_highest_role
 
 
@@ -67,10 +68,12 @@ def login_required(f):
         token_payload = _check_access_token()
         authenticator_host = current_app.config[config_var_auth_host]
         g.account_id = token_payload.get("accountId")
-        g.user.full_name = token_payload.get("fullName")
-        g.user.email = token_payload.get("email")
-        g.user.roles = token_payload.get("roles")
-        g.user.highest_role = get_highest_role(g.user.roles)
+        g.user = User(
+            full_name=token_payload.get("fullName"),
+            email=token_payload.get("email"),
+            roles=token_payload.get("roles"),
+            highest_role=get_highest_role(g.user.roles),
+        )
         g.is_authenticated = True
         g.logout_url = authenticator_host + signout_route
         return f(*args, **kwargs)
@@ -97,10 +100,12 @@ def login_requested(f):
         g.logout_url = authenticator_host + signout_route
         if token_payload and isinstance(token_payload, dict):
             g.account_id = token_payload.get("accountId")
-            g.user.full_name = token_payload.get("fullName")
-            g.user.email = token_payload.get("email")
-            g.user.roles = token_payload.get("roles")
-            g.user.highest_role = get_highest_role(g.user.roles)
+            g.user = User(
+                full_name=token_payload.get("fullName"),
+                email=token_payload.get("email"),
+                roles=token_payload.get("roles"),
+                highest_role=get_highest_role(g.user.roles),
+            )
             g.is_authenticated = True
         else:
             g.account_id = None
