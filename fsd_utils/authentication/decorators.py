@@ -51,6 +51,18 @@ def _check_access_token(auto_redirect=True):
         return False
 
 
+def _set_user(token_payload):
+    full_name = token_payload.get("fullName")
+    email = token_payload.get("email")
+    roles = token_payload.get("roles")
+    return User(
+        full_name=full_name,
+        email=email,
+        roles=roles,
+        highest_role=get_highest_role(roles),
+    )
+
+
 def login_required(f):
     """
     Execute function if request contains valid JWT
@@ -68,12 +80,7 @@ def login_required(f):
         token_payload = _check_access_token()
         authenticator_host = current_app.config[config_var_auth_host]
         g.account_id = token_payload.get("accountId")
-        g.user = User(
-            full_name=token_payload.get("fullName"),
-            email=token_payload.get("email"),
-            roles=token_payload.get("roles"),
-            highest_role=get_highest_role(g.user.roles),
-        )
+        g.user = _set_user(token_payload)
         g.is_authenticated = True
         g.logout_url = authenticator_host + signout_route
         return f(*args, **kwargs)
@@ -100,12 +107,7 @@ def login_requested(f):
         g.logout_url = authenticator_host + signout_route
         if token_payload and isinstance(token_payload, dict):
             g.account_id = token_payload.get("accountId")
-            g.user = User(
-                full_name=token_payload.get("fullName"),
-                email=token_payload.get("email"),
-                roles=token_payload.get("roles"),
-                highest_role=get_highest_role(g.user.roles),
-            )
+            g.user = _set_user(token_payload)
             g.is_authenticated = True
         else:
             g.account_id = None
