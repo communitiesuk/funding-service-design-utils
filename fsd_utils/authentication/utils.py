@@ -3,7 +3,7 @@ from typing import List
 import jwt as jwt
 from flask import current_app
 
-from .config import azure_ad_role_mapping
+from .config import azure_ad_role_map
 from .config import config_var_rs256_public_key
 
 
@@ -17,6 +17,6 @@ def validate_token_rs256(token):
 
 
 def get_highest_role(roles: List[str]):
-    for _, role in azure_ad_role_mapping:
+    for _, role in azure_ad_role_map:
         if role in roles:
             return role
