@@ -15,10 +15,11 @@ class TestGetLang:
         ):
             assert get_lang() == "en"
 
-    # TODO: restore this when Welsh language translation completed
-    # def test_get_lang_accept_language_preference_cy(self, flask_test_client):
-    #     with flask_test_client.application.test_request_context(
-    #         "/",
-    #         headers={"Accept-Language": "cy,en;q=0.9,en-GB;q=0.8,en-US;q=0.7"}, # noqa: E501
-    #     ):
-    #         assert get_lang() == "cy"
+    def test_get_lang_accept_language_preference_cy(self, flask_test_client):
+        with flask_test_client.application.test_request_context(
+            "/",
+            headers={
+                "Accept-Language": "cy,en;q=0.9,en-GB;q=0.8,en-US;q=0.7"
+            },  # noqa: E501
+        ):
+            assert get_lang() == "cy"
