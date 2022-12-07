@@ -17,6 +17,7 @@ def validate_token_rs256(token):
 
 
 def get_highest_role(roles: List[str]):
-    for _, role in azure_ad_role_map.items():
-        if role in roles:
-            return role
+    if roles and len(roles) > 0:
+        for _, role in azure_ad_role_map.items():
+            if role in roles:
+                return role
