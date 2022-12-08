@@ -13,7 +13,6 @@ from .config import config_var_auth_host
 from .config import config_var_user_token_cookie_name
 from .config import signout_route
 from .models import User
-from .utils import get_highest_role
 
 
 def _failed_redirect():
@@ -51,18 +50,6 @@ def _check_access_token(auto_redirect=True):
         return False
 
 
-def _set_user(token_payload):
-    full_name = token_payload.get("fullName")
-    email = token_payload.get("email")
-    roles = token_payload.get("roles")
-    return User(
-        full_name=full_name,
-        email=email,
-        roles=roles,
-        highest_role=get_highest_role(roles),
-    )
-
-
 def login_required(f):
     """
     Execute function if request contains valid JWT
@@ -70,6 +57,7 @@ def login_required(f):
     on the flask request global 'g' object:
         - g.account_id: (str) users account id
         - g.is_authenticated: (bool) authentication status
+        - g.user - this holds a User object and associated attributes
         - g.logout_url: (str) the service sign-out url
     If no valid auth JWT found then redirect to
     service config invalid login route
@@ -80,7 +68,7 @@ def login_required(f):
         token_payload = _check_access_token()
         authenticator_host = current_app.config[config_var_auth_host]
         g.account_id = token_payload.get("accountId")
-        g.user = _set_user(token_payload)
+        g.user = User.set_with_token(token_payload)
         g.is_authenticated = True
         g.logout_url = authenticator_host + signout_route
         return f(*args, **kwargs)
@@ -95,6 +83,7 @@ def login_requested(f):
     on the flask request global 'g' object:
         - g.account_id: (str) users account id
         - g.is_authenticated: (bool) authentication status
+        - g.user - this holds a User object and associated attributes
         - g.logout_url: (str) the service sign-out url
     If no valid auth JWT found then update the g.is_authenticated
     variable to False and the g.account_id to None
@@ -107,7 +96,7 @@ def login_requested(f):
         g.logout_url = authenticator_host + signout_route
         if token_payload and isinstance(token_payload, dict):
             g.account_id = token_payload.get("accountId")
-            g.user = _set_user(token_payload)
+            g.user = User.set_with_token(token_payload)
             g.is_authenticated = True
         else:
             g.account_id = None
