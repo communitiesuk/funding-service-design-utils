@@ -112,6 +112,53 @@ class TestAuthentication:
         assert mock_request.status_code == 200
         assert mock_request.json == self.expected_valid_g_attributes
 
+    def test_login_required_roles_redirects_to_error_if_missing_roles(
+        self, flask_test_client
+    ):
+        """
+        GIVEN a flask_test_client and route decorated with
+            @login_required(roles_required=["ADMIN"]) decorator
+        WHEN a request is made with a correctly formatted
+            and signed "fsd-user-token" cookie
+            but without "ADMIN" in the roles param
+        THEN the route redirects to the authenticator /sessions/sign-out url
+        :param flask_test_client:
+        """
+        valid_token = self._create_valid_token()
+        flask_test_client.set_cookie(
+            "localhost", "fsd-user-token", valid_token
+        )
+        mock_request = flask_test_client.get(
+            "/mock_login_required_admin_roles_route"
+        )
+        assert mock_request.status_code == 302
+        assert (
+            mock_request.location
+            == "https://authenticator/service/user?roles_required=ADMIN|TEST"
+        )
+
+    def test_login_required_roles_sets_user_attributes_if_user_has_roles(
+        self, flask_test_client
+    ):
+        """
+        GIVEN a flask_test_client and route decorated with
+            @login_required(roles_required=["ADMIN"]) decorator
+        WHEN a request is made with a correctly formatted
+            and signed "fsd-user-token" cookie
+            but without "ADMIN" in the roles param
+        THEN the route redirects to the authenticator /sessions/sign-out url
+        :param flask_test_client:
+        """
+        valid_token = self._create_valid_token()
+        flask_test_client.set_cookie(
+            "localhost", "fsd-user-token", valid_token
+        )
+        mock_request = flask_test_client.get(
+            "/mock_login_required_roles_route"
+        )
+        assert mock_request.status_code == 200
+        assert mock_request.json == self.expected_valid_g_attributes
+
     def test_login_requested_sets_is_authenticated_to_false_with_no_token(
         self, flask_test_client
     ):

@@ -49,6 +49,16 @@ def flask_test_client():
             "mock_login_requested_route",
             mock_login_requested_route,
         )
+        app_context.app.add_url_rule(
+            "/mock_login_required_roles_route",
+            "mock_login_required_roles_route",
+            mock_login_required_roles_route,
+        )
+        app_context.app.add_url_rule(
+            "/mock_login_required_admin_roles_route",
+            "mock_login_required_admin_roles_route",
+            mock_login_required_admin_roles_route,
+        )
         with app_context.app.test_client() as test_client:
             yield test_client
 
@@ -71,5 +81,27 @@ def mock_login_requested_route():
         "logout_url": g.logout_url,
         "account_id": g.account_id,
         "user": vars(g.user) if "user" in g else None,
+    }
+    return expected_g_attributes
+
+
+@login_required(roles_required=["COMMENTER"])
+def mock_login_required_roles_route():
+    expected_g_attributes = {
+        "is_authenticated": g.is_authenticated,
+        "logout_url": g.logout_url,
+        "account_id": g.account_id,
+        "user": vars(g.user),
+    }
+    return expected_g_attributes
+
+
+@login_required(roles_required=["ADMIN", "TEST"])
+def mock_login_required_admin_roles_route():
+    expected_g_attributes = {
+        "is_authenticated": g.is_authenticated,
+        "logout_url": g.logout_url,
+        "account_id": g.account_id,
+        "user": vars(g.user),
     }
     return expected_g_attributes
