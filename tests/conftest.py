@@ -65,43 +65,101 @@ def flask_test_client():
 
 @login_required
 def mock_login_required_route():
-    expected_g_attributes = {
-        "is_authenticated": g.is_authenticated,
-        "logout_url": g.logout_url,
-        "account_id": g.account_id,
-        "user": vars(g.user),
-    }
-    return expected_g_attributes
+    """
+    A mock route function decorated with @login_required
+    Here we expect a non logged in user to be redirected
+    to authenticator, and a logged in user to have the required
+    Flask request g variables set as below:
+    g: {
+        "is_authenticated": True,
+        "logout_url": "https://authenticator/sessions/sign-out",
+        "account_id": "test-user",
+        "user": User(
+            email="test@example.com",
+            full_name="Test User",
+            highest_role="LEAD_ASSESSOR",
+            roles=["LEAD_ASSESSOR", "ASSESSOR", "COMMENTER"]
+        )
+    :return: the Flask g variable serialised as a dict/json
+    """
+    return vars(g)
 
 
 @login_requested
 def mock_login_requested_route():
-    expected_g_attributes = {
-        "is_authenticated": g.is_authenticated,
-        "logout_url": g.logout_url,
-        "account_id": g.account_id,
-        "user": vars(g.user) if "user" in g else None,
+    """
+    A mock route function decorated with @login_requested
+    Here we expect a logged in user to have the required
+    Flask request g variables set as below:
+    g: {
+        "is_authenticated": True,
+        "logout_url": "https://authenticator/sessions/sign-out",
+        "account_id": "test-user",
+        "user": User(
+            email="test@example.com",
+            full_name="Test User",
+            highest_role="LEAD_ASSESSOR",
+            roles=["LEAD_ASSESSOR", "ASSESSOR", "COMMENTER"]
+        )
+    and a non logged in user to have the Flask request g variables
+    set as below:
+    g: {
+        "is_authenticated": False,
+        "logout_url": "https://authenticator/sessions/sign-out",
+        "account_id": None,
     }
-    return expected_g_attributes
+    :return: the Flask g variable serialised as a dict/json
+    """
+    return vars(g)
 
 
 @login_required(roles_required=["COMMENTER"])
 def mock_login_required_roles_route():
-    expected_g_attributes = {
-        "is_authenticated": g.is_authenticated,
-        "logout_url": g.logout_url,
-        "account_id": g.account_id,
-        "user": vars(g.user),
-    }
-    return expected_g_attributes
+    """
+    A mock route function decorated with
+    @login_required(roles_required=["COMMENTER"])
+    Here we expect a logged in user without the "COMMENTER"
+    role to be redirected to a missing roles required
+    error page on authenticator,
+    and a logged in user WITH the "COMMENTER" role
+    to have the required
+    Flask request g variables set as below:
+    g: {
+        "is_authenticated": True,
+        "logout_url": "https://authenticator/sessions/sign-out",
+        "account_id": "test-user",
+        "user": User(
+            email="test@example.com",
+            full_name="Test User",
+            highest_role="LEAD_ASSESSOR",
+            roles=["LEAD_ASSESSOR", "ASSESSOR", "COMMENTER"]
+        )
+    :return: the Flask g variable serialised as a dict/json
+    """
+    return vars(g)
 
 
 @login_required(roles_required=["ADMIN", "TEST"])
 def mock_login_required_admin_roles_route():
-    expected_g_attributes = {
-        "is_authenticated": g.is_authenticated,
-        "logout_url": g.logout_url,
-        "account_id": g.account_id,
-        "user": vars(g.user),
-    }
-    return expected_g_attributes
+    """
+    A mock route function decorated with
+    @login_required(roles_required=["ADMIN","TEST"])
+    Here we expect a logged in user without the "ADMIN","TEST"
+    role to be redirected to a missing roles required
+    error page on authenticator,
+    and a logged in user WITH BOTH the "ADMIN" and "TEST" roles
+    to have the required
+    Flask request g variables set as below:
+    g: {
+        "is_authenticated": True,
+        "logout_url": "https://authenticator/sessions/sign-out",
+        "account_id": "test-user",
+        "user": User(
+            email="test@example.com",
+            full_name="Test User",
+            highest_role="LEAD_ASSESSOR",
+            roles=["LEAD_ASSESSOR", "ASSESSOR", "COMMENTER"]
+        )
+    :return: the Flask g variable serialised as a dict/json
+    """
+    return vars(g)

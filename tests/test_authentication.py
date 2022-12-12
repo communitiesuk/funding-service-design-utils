@@ -27,7 +27,6 @@ class TestAuthentication:
         "is_authenticated": False,
         "logout_url": "https://authenticator/sessions/sign-out",
         "account_id": None,
-        "user": None,
     }
 
     def _create_valid_token(self):
