@@ -12,8 +12,8 @@ from jwt import PyJWTError
 
 from .config import config_var_auth_host
 from .config import config_var_user_token_cookie_name
-from .config import roles_error_route
 from .config import signout_route
+from .config import user_route
 from .models import User
 
 
@@ -28,7 +28,10 @@ def _failed_roles_redirect(roles_required: List[str]):
 
     return abort(
         redirect(
-            authenticator_host + roles_error_route + "|".join(roles_required)
+            authenticator_host
+            + user_route
+            + "?roles_required="
+            + "|".join(roles_required)
         )
     )
 
