@@ -39,7 +39,7 @@ class CommonConfig:
     #  Account hosts, endpoints
     # ---------------
 
-    ACCOUNT_STORE_API_HOST = os.getenv("ACCOUNT_STORE_API_HOST")
+    ACCOUNT_STORE_API_HOST = os.getenv("ACCOUNT_STORE_API_HOST", TEST_ACCOUNT_STORE_API_HOST)
     ACCOUNTS_ENDPOINT = "/accounts"
     ACCOUNT_ENDPOINT = "/accounts/{account_id}"
 
