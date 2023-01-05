@@ -107,6 +107,8 @@ class CommonConfig:
             "'self'",
             "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
             "'sha256-l1eTVSK8DTnK8+yloud7wZUqFrI0atVo6VlC6PJvYaQ='",
+            "'sha256-864+qKuyx4sP6oZXnPPGzxGuBEHMZ132TQ4RPp+zn44='",
+            "'sha256-Z4Ew9hvNfnmh80vfWPHh13YzZdj0gTwoY6COVqIdaV0='",
         ],
         "connect-src": "",  # APPLICATION_STORE_API_HOST_PUBLIC,
         "img-src": ["data:", "'self'"],
