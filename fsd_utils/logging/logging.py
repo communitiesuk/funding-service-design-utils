@@ -74,26 +74,31 @@ def init_app(app):
 
     @app.after_request
     def after_request(response):
-        current_app.logger.log(
-            logging.ERROR
-            if response.status_code // 100 == 5
-            else logging.INFO,
-            "{method} {url} {status}",
-            extra={
-                "status": response.status_code,
-                "duration_real": (
-                    (time.perf_counter() - request.before_request_real_time)
-                    if hasattr(request, "before_request_real_time")
-                    else None
-                ),
-                "duration_process": (
-                    (time.process_time() - request.before_request_process_time)
-                    if hasattr(request, "before_request_process_time")
-                    else None
-                ),
-                **_common_request_extra_log_context(),
-            },
-        )
+        if request.path != "/healthcheck":
+            current_app.logger.log(
+                logging.INFO,
+                "{method} {url} {status}",
+                extra={
+                    "status": response.status_code,
+                    "duration_real": (
+                        (
+                            time.perf_counter()
+                            - request.before_request_real_time
+                        )
+                        if hasattr(request, "before_request_real_time")
+                        else None
+                    ),
+                    "duration_process": (
+                        (
+                            time.process_time()
+                            - request.before_request_process_time
+                        )
+                        if hasattr(request, "before_request_process_time")
+                        else None
+                    ),
+                    **_common_request_extra_log_context(),
+                },
+            )
         return response
 
     logging.getLogger().addHandler(logging.NullHandler())
