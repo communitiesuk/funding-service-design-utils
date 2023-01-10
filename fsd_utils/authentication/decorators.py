@@ -86,18 +86,27 @@ def login_required(f=None, roles_required: List[str] = None):
 
     @wraps(f)
     def _wrapper(*args, **kwargs):
-        token_payload = _check_access_token()
+        if (
+            current_app.config.get("FLASK_ENV") == "development"
+            and current_app.config.get("DEBUG_USER_ROLE")
+            and current_app.config.get("DEBUG_USER")
+        ):
+            g.account_id = "dev-account-id"
+            g.user = User(**current_app.config.get("DEBUG_USER"))
+        else:
+            token_payload = _check_access_token()
+            g.account_id = token_payload.get("accountId")
+            g.user = User.set_with_token(token_payload)
+
+        authenticator_host = current_app.config[config_var_auth_host]
+        g.logout_url = authenticator_host + signout_route
+        g.is_authenticated = True
         if roles_required:
             if not all(
-                role_required in token_payload.get("roles")
+                role_required in g.user.roles
                 for role_required in roles_required
             ):
                 _failed_roles_redirect(roles_required)
-        authenticator_host = current_app.config[config_var_auth_host]
-        g.account_id = token_payload.get("accountId")
-        g.user = User.set_with_token(token_payload)
-        g.is_authenticated = True
-        g.logout_url = authenticator_host + signout_route
         return f(*args, **kwargs)
 
     return _wrapper

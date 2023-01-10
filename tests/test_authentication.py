@@ -141,11 +141,10 @@ class TestAuthentication:
     ):
         """
         GIVEN a flask_test_client and route decorated with
-            @login_required(roles_required=["ADMIN"]) decorator
+            @login_required(roles_required=["COMMENTER"]) decorator
         WHEN a request is made with a correctly formatted
             and signed "fsd-user-token" cookie
-            but without "ADMIN" in the roles param
-        THEN the route redirects to the authenticator /sessions/sign-out url
+        THEN the route returns with the correct flask g variables set
         :param flask_test_client:
         """
         valid_token = self._create_valid_token()
@@ -190,3 +189,49 @@ class TestAuthentication:
         mock_request = flask_test_client.get("/mock_login_requested_route")
         assert mock_request.status_code == 200
         assert mock_request.json == self.expected_valid_g_attributes
+
+    def test_login_required_roles_debuggable_in_development(
+        self, flask_test_development_client
+    ):
+        """
+        GIVEN a flask_test_client and route decorated with
+            @login_required(roles_required=["ADMIN"]) decorator
+            and env vars of:
+                FLASK_ENV = 'development'
+                DEBUG_USER_ROLE = "ADMIN"
+        WHEN a request is made without a valid fsd_user_token cookie
+        THEN the route is still accessible
+        :param flask_test_client:
+        """
+        flask_test_development_client.set_cookie(
+            "localhost", "fsd-user-token", ""
+        )
+        mock_request = flask_test_development_client.get(
+            "/mock_login_required_admin_roles_route"
+        )
+        assert mock_request.status_code == 200
+
+    def test_login_required_roles_debuggable_but_still_requires_roles(
+        self, flask_test_development_client
+    ):
+        """
+        GIVEN a flask_test_client and route decorated with
+            @login_required(roles_required=["COMMENTER"]) decorator
+            and env vars of:
+                FLASK_ENV = 'development'
+                DEBUG_USER_ROLE = "ADMIN"
+        WHEN a request is made without a valid fsd_user_token cookie
+        THEN the route redirects to the authenticator /sessions/sign-out url
+        :param flask_test_client:
+        """
+        flask_test_development_client.set_cookie(
+            "localhost", "fsd-user-token", ""
+        )
+        mock_request = flask_test_development_client.get(
+            "/mock_login_required_roles_route"
+        )
+        assert mock_request.status_code == 302
+        assert (
+            mock_request.location
+            == "https://authenticator/service/user?roles_required=COMMENTER"
+        )

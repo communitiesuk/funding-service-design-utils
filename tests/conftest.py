@@ -63,6 +63,52 @@ def flask_test_client():
             yield test_client
 
 
+@pytest.fixture(scope="function")
+def flask_test_development_client():
+    """
+    Creates the test client we will be using to test the responses
+    from our app, this is a test fixture.
+    :return: A flask test client.
+    """
+
+    with create_app().app_context() as app_context:
+        _test_public_key_path = (
+            str(Path(__file__).parent) + "/keys/rsa256/public.pem"
+        )
+        with open(_test_public_key_path, mode="rb") as public_key_file:
+            rsa256_public_key = public_key_file.read()
+
+        app_context.app.config.update(
+            {
+                "FSD_LANG_COOKIE_NAME": "language",
+                "COOKIE_DOMAIN": None,
+                "FLASK_ENV": "development",
+                "DEBUG_USER_ROLE": "ADMIN",
+                "DEBUG_USER": {
+                    "full_name": "Development User",
+                    "email": "dev@example.com",
+                    "roles": ["ADMIN", "TEST"],
+                    "highest_role": "ADMIN",
+                },
+                "FSD_USER_TOKEN_COOKIE_NAME": "fsd-user-token",
+                "AUTHENTICATOR_HOST": "https://authenticator",
+                "RSA256_PUBLIC_KEY": rsa256_public_key,
+            }
+        )
+        app_context.app.add_url_rule(
+            "/mock_login_required_roles_route",
+            "mock_login_required_roles_route",
+            mock_login_required_roles_route,
+        )
+        app_context.app.add_url_rule(
+            "/mock_login_required_admin_roles_route",
+            "mock_login_required_admin_roles_route",
+            mock_login_required_admin_roles_route,
+        )
+        with app_context.app.test_client() as test_client:
+            yield test_client
+
+
 @login_required
 def mock_login_required_route():
     """
