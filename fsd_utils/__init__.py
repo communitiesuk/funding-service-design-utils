@@ -6,7 +6,9 @@ from fsd_utils.config.commonconfig import CommonConfig  # noqa
 from fsd_utils.config.configclass import configclass  # noqa
 from fsd_utils.config.notify_constants import NotifyConstants  # noqa
 from fsd_utils.locale_selector.set_lang import LanguageSelector
+from fsd_utils.sentry.init_sentry import clear_sentry
 from fsd_utils.sentry.init_sentry import init_sentry
+
 
 __all__ = [
     configclass,
@@ -18,4 +20,5 @@ __all__ = [
     healthchecks,
     LanguageSelector,
     init_sentry,
+    clear_sentry,
 ]

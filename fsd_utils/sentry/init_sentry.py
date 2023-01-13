@@ -25,3 +25,8 @@ def init_sentry():
             traces_sampler=_traces_sampler,
             release=getenv("GITHUB_SHA"),
         )
+
+
+def clear_sentry():
+    if getenv("SENTRY_DSN"):
+        sentry_sdk.set_user(None)
