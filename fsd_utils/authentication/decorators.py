@@ -90,6 +90,7 @@ def login_required(f=None, roles_required: List[str] = None):
             current_app.config.get("FLASK_ENV") == "development"
             and current_app.config.get("DEBUG_USER_ROLE")
             and current_app.config.get("DEBUG_USER")
+            and not g.is_authenticated
         ):
             g.account_id = "dev-account-id"
             g.user = User(**current_app.config.get("DEBUG_USER"))
