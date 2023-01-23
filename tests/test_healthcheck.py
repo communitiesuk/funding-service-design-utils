@@ -1,3 +1,5 @@
+import os
+from unittest import mock
 from unittest.mock import ANY
 from unittest.mock import Mock
 
@@ -5,12 +7,14 @@ from fsd_utils.healthchecks.healthcheck import Healthcheck
 
 
 class TestHealthcheck:
+    @mock.patch.dict(os.environ, clear=True)
     def testHealthChecksSetup(self):
         test_app = Mock()
         health = Healthcheck(test_app)
         test_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY)
         assert health.checkers == [], "Checks not initialised"
 
+    @mock.patch.dict(os.environ, clear=True)
     def testWithNoChecks(self):
         mock_app = Mock()
         health = Healthcheck(mock_app)
@@ -22,6 +26,7 @@ class TestHealthcheck:
         assert result[0] == expected_dict, "Unexpected response body"
         assert result[1] == 200, "Unexpected status code"
 
+    @mock.patch.dict(os.environ, clear=True)
     def testWithChecksPassing_mocks(self, flask_test_client):
         test_app = Mock()
         health = Healthcheck(test_app)
@@ -42,6 +47,7 @@ class TestHealthcheck:
         assert result[0] == expected_dict, "Unexpected response body"
         assert result[1] == 200, "Unexpected status code"
 
+    @mock.patch.dict(os.environ, clear=True)
     def testWithChecksFailing_mocks(self, flask_test_client):
 
         test_app = Mock()
@@ -63,6 +69,7 @@ class TestHealthcheck:
         assert result[0] == expected_dict, "Unexpected response body"
         assert result[1] == 500, "Unexpected status code"
 
+    @mock.patch.dict(os.environ, clear=True)
     def testWithChecksException_mocks(self, flask_test_client):
 
         test_app = Mock()
@@ -85,3 +92,10 @@ class TestHealthcheck:
         result = health.healthcheck_view()
         assert result[0] == expected_dict, "Unexpected response body"
         assert result[1] == 500, "Unexpected status code"
+
+    @mock.patch.dict(os.environ, {"GITHUB_SHA": "test-version"})
+    def testShowsVersion(self):
+        test_app = Mock()
+        health = Healthcheck(test_app)
+        result = health.healthcheck_view()
+        assert result[0]["version"] == "test-version"
