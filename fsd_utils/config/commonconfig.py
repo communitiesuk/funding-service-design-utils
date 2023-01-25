@@ -1,7 +1,6 @@
 import logging
 import os
 
-from flask import current_app
 from fsd_utils.simple_utils.data_utils import get_remote_data_as_json
 from fsd_utils.simple_utils.date_utils import (
     current_datetime_after_given_iso_string,
@@ -303,7 +302,7 @@ class CommonConfig:
             r2_w3["opens"]
         )
 
-        current_app.logger.info(f"COF_R2_W3 is open: {str(cof_r2_w3_is_open)}")
+        print(f"COF_R2_W3 is open: {str(cof_r2_w3_is_open)}")
 
         if cof_r2_w3_is_open:
             return cls.COF_ROUND_2_W3_ID
