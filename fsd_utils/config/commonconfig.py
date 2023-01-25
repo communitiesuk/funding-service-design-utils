@@ -301,8 +301,6 @@ class CommonConfig:
             r2_w3["opens"]
         )
 
-        print(f"COF_R2_W3 is open: {str(cof_r2_w3_is_open)}")
-
         if cof_r2_w3_is_open:
             return cls.COF_ROUND_2_W3_ID
         else:
