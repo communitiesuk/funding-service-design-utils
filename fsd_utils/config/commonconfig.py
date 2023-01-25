@@ -291,23 +291,23 @@ class CommonConfig:
 
     @classmethod
     def get_default_round_id(cls):
-        COF_R2_W3_LAUNCH_TIME = os.getenv(
+        launch_time = os.getenv(
             "COF_R2_W3_LAUNCH_TIME", cls.COF_R2_W3_DEFAULT_LAUNCH_TIME
         )
-        print(f"COF R2W3 launch time from env: {str(COF_R2_W3_LAUNCH_TIME)}")
+        print(f"COF R2W3 launch time from env: {str(launch_time)}")
         try:
-            COF_R2_W3_IS_OPEN: bool = current_datetime_after_given_iso_string(
-                COF_R2_W3_LAUNCH_TIME
+            cof_r2_w3_is_open = current_datetime_after_given_iso_string(
+                launch_time
             )
         except:  # noqa:E722
             print("exception parsing launch date")
-            COF_R2_W3_IS_OPEN: bool = current_datetime_after_given_iso_string(
+            cof_r2_w3_is_open = current_datetime_after_given_iso_string(
                 cls.COF_R2_W3_DEFAULT_LAUNCH_TIME
             )
 
-        print(f"COF_R2_W3 is open: {str(COF_R2_W3_IS_OPEN)}")
+        print(f"COF_R2_W3 is open: {str(cof_r2_w3_is_open)}")
 
-        if COF_R2_W3_IS_OPEN:
+        if cof_r2_w3_is_open:
             return cls.COF_ROUND_2_W3_ID
         else:
             return cls.COF_ROUND_2_ID
