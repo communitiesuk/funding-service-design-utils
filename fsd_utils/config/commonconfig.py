@@ -294,7 +294,8 @@ class CommonConfig:
     @classmethod
     def get_default_round_id(cls):
         r2_w3 = get_remote_data_as_json(
-            cls.ROUND_ENDPOINT.format(
+            cls.FUND_STORE_API_HOST
+            + cls.ROUND_ENDPOINT.format(
                 fund_id=cls.COF_FUND_ID, round_id=cls.COF_ROUND_2_W3_ID
             )
         )
