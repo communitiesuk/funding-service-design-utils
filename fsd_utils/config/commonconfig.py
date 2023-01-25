@@ -176,27 +176,28 @@ class CommonConfig:
     DEFAULT_FUND_ID = COF_FUND_ID
     COF_R2_W3_DEFAULT_LAUNCH_TIME = "2023-02-08 12:00:00"
 
-    def get_default_round_id():
-        CommonConfig.COF_R2_W3_LAUNCH_TIME = os.getenv(
-            "COF_R2_W3_LAUNCH_TIME", CommonConfig.COF_R2_W3_DEFAULT_LAUNCH_TIME
+    @classmethod
+    def get_default_round_id(cls):
+        cls.COF_R2_W3_LAUNCH_TIME = os.getenv(
+            "COF_R2_W3_LAUNCH_TIME", cls.COF_R2_W3_DEFAULT_LAUNCH_TIME
         )
         try:
-            CommonConfig.COF_R2_W3_IS_OPEN: bool = (
+            cls.COF_R2_W3_IS_OPEN: bool = (
                 current_datetime_after_given_iso_string(
-                    CommonConfig.COF_R2_W3_LAUNCH_TIME
+                    cls.COF_R2_W3_LAUNCH_TIME
                 )
             )
         except:  # noqa:E722
-            CommonConfig.COF_R2_W3_IS_OPEN: bool = (
+            cls.COF_R2_W3_IS_OPEN: bool = (
                 current_datetime_after_given_iso_string(
-                    CommonConfig.COF_R2_W3_DEFAULT_LAUNCH_TIME
+                    cls.COF_R2_W3_DEFAULT_LAUNCH_TIME
                 )
             )
 
-        if CommonConfig.COF_R2_W3_IS_OPEN:
-            return CommonConfig.COF_ROUND_2_W3_ID
+        if cls.COF_R2_W3_IS_OPEN:
+            return cls.COF_ROUND_2_W3_ID
         else:
-            return CommonConfig.COF_ROUND_2_ID
+            return cls.COF_ROUND_2_ID
 
     # ---------------
     #  Form Config
