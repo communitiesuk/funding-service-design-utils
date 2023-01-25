@@ -181,7 +181,9 @@ class CommonConfig:
         cls.COF_R2_W3_LAUNCH_TIME = os.getenv(
             "COF_R2_W3_LAUNCH_TIME", cls.COF_R2_W3_DEFAULT_LAUNCH_TIME
         )
-        print("COF R2W3 launch time from env: " + cls.COF_R2_W3_LAUNCH_TIME)
+        print(
+            f"COF R2W3 launch time from env: {str(cls.COF_R2_W3_LAUNCH_TIME)}"
+        )
         try:
             cls.COF_R2_W3_IS_OPEN: bool = (
                 current_datetime_after_given_iso_string(
@@ -196,7 +198,7 @@ class CommonConfig:
                 )
             )
 
-        print("COF_R2_W3 is open: " + cls.COF_R2_W3_IS_OPEN)
+        print(f"COF_R2_W3 is open: {str(cls.COF_R2_W3_IS_OPEN)}")
 
         if cls.COF_R2_W3_IS_OPEN:
             return cls.COF_ROUND_2_W3_ID
