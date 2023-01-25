@@ -1,6 +1,8 @@
 import logging
 import os
 
+from flask import current_app
+from fsd_utils.simple_utils.data_utils import get_remote_data_as_json
 from fsd_utils.simple_utils.date_utils import (
     current_datetime_after_given_iso_string,
 )
@@ -286,31 +288,47 @@ class CommonConfig:
     COF_FUND_ID = "47aef2f5-3fcb-4d45-acb5-f0152b5f03c4"
     COF_ROUND_2_ID = "c603d114-5364-4474-a0c4-c41cbf4d3bbd"
     COF_ROUND_2_W3_ID = "5cf439bf-ef6f-431e-92c5-a1d90a4dd32f"
-    COF_R2_W3_DEFAULT_LAUNCH_TIME = "2023-02-08 12:00:00"
+    # COF_R2_W3_DEFAULT_LAUNCH_TIME = "2023-02-08 12:00:00"
     DEFAULT_FUND_ID = COF_FUND_ID
 
     @classmethod
     def get_default_round_id(cls):
-        launch_time = os.getenv(
-            "COF_R2_W3_LAUNCH_TIME", cls.COF_R2_W3_DEFAULT_LAUNCH_TIME
+        r2_w3 = get_remote_data_as_json(
+            cls.ROUND_ENDPOINT.format(
+                fund_id=cls.COF_FUND_ID, round_id=cls.COF_ROUND_2_W3_ID
+            )
         )
-        print(f"COF R2W3 launch time from env: {str(launch_time)}")
-        try:
-            cof_r2_w3_is_open = current_datetime_after_given_iso_string(
-                launch_time
-            )
-        except:  # noqa:E722
-            print("exception parsing launch date")
-            cof_r2_w3_is_open = current_datetime_after_given_iso_string(
-                cls.COF_R2_W3_DEFAULT_LAUNCH_TIME
-            )
+        cof_r2_w3_is_open = current_datetime_after_given_iso_string(
+            r2_w3["opens"]
+        )
 
-        print(f"COF_R2_W3 is open: {str(cof_r2_w3_is_open)}")
+        current_app.logger.info(f"COF_R2_W3 is open: {str(cof_r2_w3_is_open)}")
 
         if cof_r2_w3_is_open:
             return cls.COF_ROUND_2_W3_ID
         else:
             return cls.COF_ROUND_2_ID
+
+        # launch_time = os.getenv(
+        #     "COF_R2_W3_LAUNCH_TIME", cls.COF_R2_W3_DEFAULT_LAUNCH_TIME
+        # )
+        # print(f"COF R2W3 launch time from env: {str(launch_time)}")
+        # try:
+        #     cof_r2_w3_is_open = current_datetime_after_given_iso_string(
+        #         launch_time
+        #     )
+        # except:  # noqa:E722
+        #     print("exception parsing launch date")
+        #     cof_r2_w3_is_open = current_datetime_after_given_iso_string(
+        #         cls.COF_R2_W3_DEFAULT_LAUNCH_TIME
+        #     )
+
+        # print(f"COF_R2_W3 is open: {str(cof_r2_w3_is_open)}")
+
+        # if cof_r2_w3_is_open:
+        #     return cls.COF_ROUND_2_W3_ID
+        # else:
+        #     return cls.COF_ROUND_2_ID
 
     FORMS_CONFIG_FOR_FUND_ROUND = {
         f"{COF_FUND_ID}:{COF_ROUND_2_ID}": COF_R2_ORDERED_FORMS_CONFIG,
