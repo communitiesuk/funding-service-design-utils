@@ -1,6 +1,10 @@
 import logging
 import os
 
+from fsd_utils.simple_utils.date_utils import (
+    current_datetime_after_given_iso_string,
+)
+
 
 class CommonConfig:
 
@@ -168,6 +172,31 @@ class CommonConfig:
     COF_FUND_ID = "47aef2f5-3fcb-4d45-acb5-f0152b5f03c4"
     COF_ROUND_2_ID = "c603d114-5364-4474-a0c4-c41cbf4d3bbd"
     COF_ROUND_2_W3_ID = "5cf439bf-ef6f-431e-92c5-a1d90a4dd32f"
+
+    DEFAULT_FUND_ID = COF_FUND_ID
+    COF_R2_W3_DEFAULT_LAUNCH_TIME = "2023-02-08 12:00:00"
+
+    def get_default_round_id():
+        CommonConfig.COF_R2_W3_LAUNCH_TIME = os.getenv(
+            "COF_R2_W3_LAUNCH_TIME", CommonConfig.COF_R2_W3_DEFAULT_LAUNCH_TIME
+        )
+        try:
+            CommonConfig.COF_R2_W3_IS_OPEN: bool = (
+                current_datetime_after_given_iso_string(
+                    CommonConfig.COF_R2_W3_LAUNCH_TIME
+                )
+            )
+        except:  # noqa:E722
+            CommonConfig.COF_R2_W3_IS_OPEN: bool = (
+                current_datetime_after_given_iso_string(
+                    CommonConfig.COF_R2_W3_DEFAULT_LAUNCH_TIME
+                )
+            )
+
+        if CommonConfig.COF_R2_W3_IS_OPEN:
+            return CommonConfig.COF_ROUND_2_W3_ID
+        else:
+            return CommonConfig.COF_ROUND_2_ID
 
     # ---------------
     #  Form Config
