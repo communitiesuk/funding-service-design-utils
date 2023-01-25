@@ -166,46 +166,6 @@ class CommonConfig:
     FSD_LANG_COOKIE_NAME = "language"
 
     # ---------------
-    #  Fund Config
-    # ---------------
-
-    COF_FUND_ID = "47aef2f5-3fcb-4d45-acb5-f0152b5f03c4"
-    COF_ROUND_2_ID = "c603d114-5364-4474-a0c4-c41cbf4d3bbd"
-    COF_ROUND_2_W3_ID = "5cf439bf-ef6f-431e-92c5-a1d90a4dd32f"
-
-    DEFAULT_FUND_ID = COF_FUND_ID
-    COF_R2_W3_DEFAULT_LAUNCH_TIME = "2023-02-08 12:00:00"
-
-    @classmethod
-    def get_default_round_id(cls):
-        cls.COF_R2_W3_LAUNCH_TIME = os.getenv(
-            "COF_R2_W3_LAUNCH_TIME", cls.COF_R2_W3_DEFAULT_LAUNCH_TIME
-        )
-        print(
-            f"COF R2W3 launch time from env: {str(cls.COF_R2_W3_LAUNCH_TIME)}"
-        )
-        try:
-            cls.COF_R2_W3_IS_OPEN: bool = (
-                current_datetime_after_given_iso_string(
-                    cls.COF_R2_W3_LAUNCH_TIME
-                )
-            )
-        except:  # noqa:E722
-            print("exception parsing launch date")
-            cls.COF_R2_W3_IS_OPEN: bool = (
-                current_datetime_after_given_iso_string(
-                    cls.COF_R2_W3_DEFAULT_LAUNCH_TIME
-                )
-            )
-
-        print(f"COF_R2_W3 is open: {str(cls.COF_R2_W3_IS_OPEN)}")
-
-        if cls.COF_R2_W3_IS_OPEN:
-            return cls.COF_ROUND_2_W3_ID
-        else:
-            return cls.COF_ROUND_2_ID
-
-    # ---------------
     #  Form Config
     # ---------------
 
@@ -318,6 +278,40 @@ class CommonConfig:
             "section_weighting": None,
         },
     )
+
+    # ---------------
+    #  Fund Config
+    # ---------------
+
+    COF_FUND_ID = "47aef2f5-3fcb-4d45-acb5-f0152b5f03c4"
+    COF_ROUND_2_ID = "c603d114-5364-4474-a0c4-c41cbf4d3bbd"
+    COF_ROUND_2_W3_ID = "5cf439bf-ef6f-431e-92c5-a1d90a4dd32f"
+    COF_R2_W3_DEFAULT_LAUNCH_TIME = "2023-02-08 12:00:00"
+    DEFAULT_FUND_ID = COF_FUND_ID
+
+    @classmethod
+    def get_default_round_id(cls):
+        COF_R2_W3_LAUNCH_TIME = os.getenv(
+            "COF_R2_W3_LAUNCH_TIME", cls.COF_R2_W3_DEFAULT_LAUNCH_TIME
+        )
+        print(f"COF R2W3 launch time from env: {str(COF_R2_W3_LAUNCH_TIME)}")
+        try:
+            COF_R2_W3_IS_OPEN: bool = current_datetime_after_given_iso_string(
+                COF_R2_W3_LAUNCH_TIME
+            )
+        except:  # noqa:E722
+            print("exception parsing launch date")
+            COF_R2_W3_IS_OPEN: bool = current_datetime_after_given_iso_string(
+                cls.COF_R2_W3_DEFAULT_LAUNCH_TIME
+            )
+
+        print(f"COF_R2_W3 is open: {str(COF_R2_W3_IS_OPEN)}")
+
+        if COF_R2_W3_IS_OPEN:
+            return cls.COF_ROUND_2_W3_ID
+        else:
+            return cls.COF_ROUND_2_ID
+
     FORMS_CONFIG_FOR_FUND_ROUND = {
         f"{COF_FUND_ID}:{COF_ROUND_2_ID}": COF_R2_ORDERED_FORMS_CONFIG,
         f"{COF_FUND_ID}:{COF_ROUND_2_W3_ID}": COF_R2_ORDERED_FORMS_CONFIG,
