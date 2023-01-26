@@ -1,6 +1,11 @@
 import logging
 import os
 
+from fsd_utils.simple_utils.data_utils import get_remote_data_as_json
+from fsd_utils.simple_utils.date_utils import (
+    current_datetime_after_given_iso_string,
+)
+
 
 class CommonConfig:
 
@@ -162,14 +167,6 @@ class CommonConfig:
     FSD_LANG_COOKIE_NAME = "language"
 
     # ---------------
-    #  Fund Config
-    # ---------------
-
-    COF_FUND_ID = "47aef2f5-3fcb-4d45-acb5-f0152b5f03c4"
-    COF_ROUND_2_ID = "c603d114-5364-4474-a0c4-c41cbf4d3bbd"
-    COF_ROUND_2_W3_ID = "5cf439bf-ef6f-431e-92c5-a1d90a4dd32f"
-
-    # ---------------
     #  Form Config
     # ---------------
 
@@ -282,6 +279,36 @@ class CommonConfig:
             "section_weighting": None,
         },
     )
+
+    # ---------------
+    #  Fund Config
+    # ---------------
+
+    COF_FUND_ID = "47aef2f5-3fcb-4d45-acb5-f0152b5f03c4"
+    COF_ROUND_2_ID = "c603d114-5364-4474-a0c4-c41cbf4d3bbd"
+    COF_ROUND_2_W3_ID = "5cf439bf-ef6f-431e-92c5-a1d90a4dd32f"
+    DEFAULT_FUND_ID = COF_FUND_ID
+
+    @classmethod
+    def get_default_round_id(cls):
+        try:
+            r2_w3 = get_remote_data_as_json(
+                cls.FUND_STORE_API_HOST
+                + cls.ROUND_ENDPOINT.format(
+                    fund_id=cls.COF_FUND_ID, round_id=cls.COF_ROUND_2_W3_ID
+                )
+            )
+            cof_r2_w3_is_open = current_datetime_after_given_iso_string(
+                r2_w3["opens"]
+            )
+
+            if cof_r2_w3_is_open:
+                return cls.COF_ROUND_2_W3_ID
+            else:
+                return cls.COF_ROUND_2_ID
+        except Exception as e:  # noqa:F841
+            return cls.COF_ROUND_2_ID
+
     FORMS_CONFIG_FOR_FUND_ROUND = {
         f"{COF_FUND_ID}:{COF_ROUND_2_ID}": COF_R2_ORDERED_FORMS_CONFIG,
         f"{COF_FUND_ID}:{COF_ROUND_2_W3_ID}": COF_R2_ORDERED_FORMS_CONFIG,

@@ -8,6 +8,7 @@ from fsd_utils.config.notify_constants import NotifyConstants  # noqa
 from fsd_utils.locale_selector.set_lang import LanguageSelector
 from fsd_utils.sentry.init_sentry import clear_sentry
 from fsd_utils.sentry.init_sentry import init_sentry
+from fsd_utils.simple_utils import date_utils  # noqa
 
 
 __all__ = [
@@ -21,4 +22,5 @@ __all__ = [
     LanguageSelector,
     init_sentry,
     clear_sentry,
+    date_utils,
 ]

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "funding-service-design-utils"
-version = "1.0.21"
+version = "1.0.22"
 authors = [
   { name="DLUHC", email="FundingServiceDesignTeam@levellingup.gov.uk" },
 ]
@@ -28,7 +28,8 @@ dependencies = [
     "gunicorn>=20.1.0,<21.0.0",
     "pytz>=2022.1",
     "PyJWT[crypto]>=2.4.0",
-    "sentry-sdk[flask]>=1.9.9,<2.0.0"
+    "sentry-sdk[flask]>=1.9.9,<2.0.0",
+    "requests"
 ]
 
 [project.urls]

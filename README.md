@@ -68,6 +68,8 @@ class DefaultConfig:
 
 ```
 
+This also defines a function `get_default_round_id` to determine the current default round ID based on the current date and the opening date of COF_R2_W3. The opening dates are determined by the fund store.
+
 ## Gunicorn
 The gunicorn utility allows consistent configuration of gunicorn across microservices.
 
@@ -233,3 +235,9 @@ from fsd_utils import init_sentry
 init_sentry()
 ```
 * Set the `SENTRY_DSN` environment variable on the app
+
+## Simple Utils
+Folder to hold miscellaneous simple utilities.
+
+### date_utils
+Date comparison functions that accept an ISO Format string, for use in the frontend determining display logic based on dates.
