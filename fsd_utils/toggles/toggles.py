@@ -14,9 +14,12 @@ feature_configuration = {
 }
 
 for feature, toggle in feature_configuration.items():
-    client.create(feature)
-    if toggle:
-        client.enable(feature)
+    try:
+        client.create(feature)
+        if toggle:
+            client.enable(feature)
+    except AttributeError:
+        continue
 
 def say_hi():
     return "I have been imported/ installed correctly G!!!!!!!!!!!!!!!!!!!!!!"
