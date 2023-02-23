@@ -7,7 +7,10 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 
 def _traces_sampler(sampling_context):
     wsgi_environ = sampling_context.get("wsgi_environ")
-    if wsgi_environ and wsgi_environ.get("PATH_INFO") == "/healthcheck":
+    if wsgi_environ and (
+        wsgi_environ.get("PATH_INFO") == "/healthcheck"
+        or wsgi_environ.get("HTTP_USER_AGENT" == "locust performance tests")
+    ):
         # Drop this transaction, by setting its sample rate to 0%
         return 0
     else:
