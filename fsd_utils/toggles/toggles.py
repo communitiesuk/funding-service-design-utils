@@ -1,11 +1,8 @@
 from flipper import FeatureFlagClient, RedisFeatureFlagStore
 from flask_redis import FlaskRedis
+from flask import Flask
 
 redis_store = FlaskRedis()
-
-# Add feature flagging using Redis store
-store = RedisFeatureFlagStore(redis_store, base_key='feature')
-client = FeatureFlagClient(store)
 
 feature_configuration = {
     "FLAGGING": False,
@@ -13,13 +10,20 @@ feature_configuration = {
     "REMINDERS": False
 }
 
-for feature, toggle in feature_configuration.items():
-    try:
+
+def initialise_toggles_redis_store(flask_app: Flask):
+    redis_store.init_app(flask_app)
+
+    
+def create_toggles_client():
+    store = RedisFeatureFlagStore(redis_store, base_key='feature')
+    client = FeatureFlagClient(store)
+
+    return client
+
+
+def load_toggles(feature_configuration: dict, client: FeatureFlagClient):
+    for feature, toggle in feature_configuration.items():
         client.create(feature)
         if toggle:
             client.enable(feature)
-    except AttributeError:
-        continue
-
-def say_hi():
-    return "I have been imported/ installed correctly G!!!!!!!!!!!!!!!!!!!!!!"
