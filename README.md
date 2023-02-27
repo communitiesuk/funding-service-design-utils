@@ -51,7 +51,7 @@ When working and testing locally, you can also install the `fsd_utils` package f
     pip uninstall -y funding-service-design-utils
     pip install /path/to/your/working/directory/funding-service-design/utils
 
-Note: When testing locally using the docker runner, docker might use the cached version of fsd_utils. to avoid this and pick up your intended changes, run `docker compose build` first before running `docker compose up` or just running `docker compose up --build` on its own.
+Note: When testing locally using the docker runner, docker might use the cached version of fsd_utils. to avoid this and pick up your intended changes, run `docker compose build <service_name> --no-cache` first before running `docker compose up` or just running `docker compose up --build` on its own.
 
 # Utilities
 
