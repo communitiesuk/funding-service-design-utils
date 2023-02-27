@@ -14,7 +14,7 @@ feature_configuration = {
 def initialise_toggles_redis_store(flask_app: Flask):
     redis_store.init_app(flask_app)
 
-    
+
 def create_toggles_client():
     store = RedisFeatureFlagStore(redis_store, base_key='feature')
     client = FeatureFlagClient(store)
