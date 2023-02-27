@@ -18,11 +18,10 @@ def initialise_toggles_redis_store(flask_app: Flask):
 def create_toggles_client():
     store = RedisFeatureFlagStore(redis_store, base_key='feature')
     client = FeatureFlagClient(store)
-
     return client
 
 
-def load_toggles(feature_configuration: dict, client: FeatureFlagClient):
+def load_toggles(client: FeatureFlagClient):
     for feature, toggle in feature_configuration.items():
         client.create(feature)
         if toggle:
