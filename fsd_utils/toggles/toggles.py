@@ -4,13 +4,6 @@ from flask import Flask
 
 redis_store = FlaskRedis()
 
-feature_configuration = {
-    "FLAGGING": False,
-    "COMMENTING": True,
-    "REMINDERS": False
-}
-
-
 def initialise_toggles_redis_store(flask_app: Flask):
     redis_store.init_app(flask_app)
 
@@ -21,7 +14,7 @@ def create_toggles_client():
     return client
 
 
-def load_toggles(client: FeatureFlagClient):
+def load_toggles(feature_configuration: dict, client: FeatureFlagClient):
     for feature, toggle in feature_configuration.items():
         client.create(feature)
         if toggle:

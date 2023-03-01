@@ -289,6 +289,22 @@ class CommonConfig:
     COF_ROUND_2_W3_ID = "5cf439bf-ef6f-431e-92c5-a1d90a4dd32f"
     DEFAULT_FUND_ID = COF_FUND_ID
 
+    # ---------------
+    #  Feature Toggles
+    # ---------------
+
+    dev_feature_configuration = {
+        "FLAGGING": True,
+        "COMMENTING": True,
+        "REMINDERS": False
+    }
+
+    prod_feature_configuration = {
+        "FLAGGING": False,
+        "COMMENTING": True,
+        "REMINDERS": False
+    }
+
     @classmethod
     def get_default_round_id(cls):
         try:
