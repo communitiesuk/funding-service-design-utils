@@ -294,15 +294,16 @@ class CommonConfig:
     # ---------------
 
     dev_feature_configuration = {
-        "FLAGGING": True,
-        "COMMENTING": True,
-        "REMINDERS": False
+        # TODO: add features we'd like to toggle like so:
+        # "FLAGGING": True,
+        # "COMMENTING": True,
+        # "REMINDERS": False
     }
 
     prod_feature_configuration = {
-        "FLAGGING": False,
-        "COMMENTING": True,
-        "REMINDERS": False
+        # "FLAGGING": False,
+        # "COMMENTING": True,
+        # "REMINDERS": False
     }
 
     @classmethod
