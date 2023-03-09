@@ -1,25 +1,25 @@
-import pytest
+from flask_migrate import upgrade
+from sqlalchemy_utils.functions import create_database
+from sqlalchemy_utils.functions import database_exists
+from sqlalchemy_utils.functions import drop_database
 
 
-@pytest.fixture(autouse=True)
-def clear_database(_db):
-    """
-    Fixture to clean up the database after each test.
+def prep_db(reuse_db=False):
+    """Provide the transactional fixtures with access to the database via a
+    Flask-SQLAlchemy database connection."""
 
-    This fixture clears the database by deleting all data
-    from tables and disabling foreign key checks before the test,
-    and resetting foreign key checks after the test.
+    from config import Config
 
-    Args:
-    _db: The database instance.
-    """
-    yield
+    no_db = not database_exists(Config.SQLALCHEMY_DATABASE_URI)
+    refresh_db = not reuse_db
 
-    # disable foreign key checks
-    _db.session.execute("SET session_replication_role = replica")
-    # delete all data from tables
-    for table in reversed(_db.metadata.sorted_tables):
-        _db.session.execute(table.delete())
-    # reset foreign key checks
-    _db.session.execute("SET session_replication_role = DEFAULT")
-    _db.session.commit()
+    if no_db:
+
+        create_database(Config.SQLALCHEMY_DATABASE_URI)
+
+    elif refresh_db:
+
+        drop_database(Config.SQLALCHEMY_DATABASE_URI)
+        create_database(Config.SQLALCHEMY_DATABASE_URI)
+
+    upgrade()
