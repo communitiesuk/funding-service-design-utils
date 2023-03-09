@@ -1,3 +1,4 @@
+import pytest
 from flask_migrate import upgrade
 from sqlalchemy_utils.functions import create_database
 from sqlalchemy_utils.functions import database_exists
@@ -23,3 +24,51 @@ def prep_db(reuse_db=False):
         create_database(Config.SQLALCHEMY_DATABASE_URI)
 
     upgrade()
+
+
+@pytest.fixture(scope="session")
+def _db(app, request):
+    yield app.extensions["sqlalchemy"]
+
+
+@pytest.fixture(scope="session")
+def recreate_db(request, _db, app):
+    reuse_db = bool(request.config.cache.get("reuse_db", False))
+    with app.app_context():
+        prep_db(reuse_db)
+    request.config.cache.set("reuse_db", True)
+    yield
+
+
+@pytest.fixture(scope="module")
+def clear_test_data(app, _db, request):
+    """
+    Fixture to clean up the database after each test.
+
+    This fixture clears the database by deleting all data
+    from tables and disabling foreign key checks before the test,
+    and resetting foreign key checks after the test.
+
+    """
+    with app.app_context():
+
+        yield
+        preserve_test_data = request.config.cache.get(
+            "preserve_test_data", None
+        )
+        if not preserve_test_data:
+            # rollback incase of any errors during test session
+            _db.session.rollback()
+            # disable foreign key checks
+            _db.session.execute("SET session_replication_role = replica")
+            # delete all data from tables
+            for table in reversed(_db.metadata.sorted_tables):
+                _db.session.execute(table.delete())
+            # reset foreign key checks
+            _db.session.execute("SET session_replication_role = DEFAULT")
+            _db.session.commit()
+        else:
+            # If test requests 'preserve test data' make sure
+            # on the next run we clear out the DB completely.
+            request.config.cache.set("reuse_db", False)
+            request.config.cache.remove("preserve_test_data")
