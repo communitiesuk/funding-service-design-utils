@@ -280,6 +280,65 @@ class CommonConfig:
         },
     )
 
+
+    TEST_ORDERED_FORMS_CONFIG = (
+        {
+            "section_title": {
+                "en": "About your organisation",
+            },
+            "ordered_form_names_within_section": [
+                {
+                    "en": "org-info-2",
+                },
+            ],
+            "section_weighting": 40,
+        },
+        {
+            "section_title": {
+                "en": "Values",
+            },
+            "ordered_form_names_within_section": [
+                {
+                    "en": "test-info",
+                },
+            ],
+            "section_weighting": 50,
+        },
+        {
+            "section_title": {
+                "en": "Declarations"
+            },
+            "ordered_form_names_within_section": [
+                {
+                    "en": "declarations"
+                },
+            ],
+            "section_weighting": 10,
+        },
+        {
+            "section_title": {"en": "Management case", "cy": "Achos rheoli"},
+            "ordered_form_names_within_section": [
+                {"en": "funding-required", "cy": "cyllid-sydd-ei-angen"},
+                {"en": "feasibility", "cy": "dichonoldeb"},
+                {"en": "risk", "cy": "risg"},
+                {"en": "project-costs", "cy": "costau'r-prosiect"},
+                {"en": "skills-and-resources", "cy": "sgiliau-ac-adnoddau"},
+                {
+                    "en": "community-representation",
+                    "cy": "cynrychiolaeth-gymunedol",
+                },
+                {
+                    "en": "inclusiveness-and-integration",
+                    "cy": "cynhwysiant-ac-integreiddio",
+                },
+                {
+                    "en": "upload-business-plan",
+                    "cy": "lanlwythwch-y-cynllun-busnes",
+                },
+            ],
+            "section_weighting": 30,
+        },
+ )
     # ---------------
     #  Fund Config
     # ---------------
@@ -287,7 +346,17 @@ class CommonConfig:
     COF_FUND_ID = "47aef2f5-3fcb-4d45-acb5-f0152b5f03c4"
     COF_ROUND_2_ID = "c603d114-5364-4474-a0c4-c41cbf4d3bbd"
     COF_ROUND_2_W3_ID = "5cf439bf-ef6f-431e-92c5-a1d90a4dd32f"
+
+    TEST_FUND_ID = "47aef2f5-3fcb-4d45-acb5-f01test-fund"
+    TEST_ROUND_1_ID = "5cf439bf-ef6f-431e-92c5-a1test-round"
+
     DEFAULT_FUND_ID = COF_FUND_ID
+
+    FORMS_CONFIG_FOR_FUND_ROUND = {
+    f"{COF_FUND_ID}:{COF_ROUND_2_ID}": COF_R2_ORDERED_FORMS_CONFIG,
+    f"{COF_FUND_ID}:{COF_ROUND_2_W3_ID}": COF_R2_ORDERED_FORMS_CONFIG,
+    }
+
 
     # ---------------
     #  Feature Toggles
@@ -325,8 +394,3 @@ class CommonConfig:
                 return cls.COF_ROUND_2_ID
         except Exception as e:  # noqa:F841
             return cls.COF_ROUND_2_ID
-
-    FORMS_CONFIG_FOR_FUND_ROUND = {
-        f"{COF_FUND_ID}:{COF_ROUND_2_ID}": COF_R2_ORDERED_FORMS_CONFIG,
-        f"{COF_FUND_ID}:{COF_ROUND_2_W3_ID}": COF_R2_ORDERED_FORMS_CONFIG,
-    }
