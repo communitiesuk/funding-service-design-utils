@@ -315,29 +315,6 @@ class CommonConfig:
             ],
             "section_weighting": 10,
         },
-        {
-            "section_title": {"en": "Management case", "cy": "Achos rheoli"},
-            "ordered_form_names_within_section": [
-                {"en": "funding-required", "cy": "cyllid-sydd-ei-angen"},
-                {"en": "feasibility", "cy": "dichonoldeb"},
-                {"en": "risk", "cy": "risg"},
-                {"en": "project-costs", "cy": "costau'r-prosiect"},
-                {"en": "skills-and-resources", "cy": "sgiliau-ac-adnoddau"},
-                {
-                    "en": "community-representation",
-                    "cy": "cynrychiolaeth-gymunedol",
-                },
-                {
-                    "en": "inclusiveness-and-integration",
-                    "cy": "cynhwysiant-ac-integreiddio",
-                },
-                {
-                    "en": "upload-business-plan",
-                    "cy": "lanlwythwch-y-cynllun-busnes",
-                },
-            ],
-            "section_weighting": 30,
-        },
  )
     # ---------------
     #  Fund Config
