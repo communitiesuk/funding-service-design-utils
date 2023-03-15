@@ -71,4 +71,11 @@ def clear_test_data(app, _db, request):
             # If test requests 'preserve test data' make sure
             # on the next run we clear out the DB completely.
             request.config.cache.set("reuse_db", False)
-            request.config.cache.remove("preserve_test_data")
+            request.config.cache.set("preserve_test_data", False)
+
+
+@pytest.fixture(scope="function")
+def enable_preserve_test_data(request):
+    marker = request.node.get_closest_marker("preserve_test_data")
+    if marker is not None:
+        request.config.cache.set("preserve_test_data", True)
