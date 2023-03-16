@@ -1,15 +1,17 @@
-from flipper import FeatureFlagClient, RedisFeatureFlagStore
-from flask_redis import FlaskRedis
 from flask import Flask
+from flask_redis import FlaskRedis
+from flipper import FeatureFlagClient
+from flipper import RedisFeatureFlagStore
 
 redis_store = FlaskRedis()
+
 
 def initialise_toggles_redis_store(flask_app: Flask):
     redis_store.init_app(flask_app)
 
 
 def create_toggles_client():
-    store = RedisFeatureFlagStore(redis_store, base_key='feature')
+    store = RedisFeatureFlagStore(redis_store, base_key="feature")
     client = FeatureFlagClient(store)
     return client
 
