@@ -14,7 +14,9 @@ class TestGetLang:
         with flask_test_client.application.test_request_context(
             "/?lang=fr"
         ):
-            with pytest.raises(ValueError, match="Invalid language code. Supported codes are 'cy' and 'en'."):
+            with pytest.raises(ValueError, match="Invalid language code. "
+                                                 "Supported codes are 'cy' "
+                                                 "and 'en'."):
                 get_lang()
 
     def test_get_lang_cookie_preference(self, flask_test_client):
