@@ -3,7 +3,6 @@ from fsd_utils import fixtures
 from fsd_utils import gunicorn  # noqa
 from fsd_utils import healthchecks
 from fsd_utils import logging  # noqa
-from fsd_utils import test_utils
 from fsd_utils import toggles
 from fsd_utils.config.commonconfig import CommonConfig  # noqa
 from fsd_utils.config.configclass import configclass  # noqa
@@ -26,6 +25,6 @@ __all__ = [
     init_sentry,
     clear_sentry,
     date_utils,
-    test_utils,
+    fixtures,
     toggles,
 ]
