@@ -243,3 +243,69 @@ Folder to hold miscellaneous simple utilities.
 
 ### date_utils
 Date comparison functions that accept an ISO Format string, for use in the frontend determining display logic based on dates.
+
+## Fixtures
+Contains shared fixtures that can be used for unit tests in other repos. To include a fixture from `fsd_utils` in your project, add the following to your `conftest.py`:
+
+    pytest_plugins = ["fsd_utils.fixtures.db_fixtures"]
+
+Where the part inside `[]` is the paths to the python files you want to load as fixtures.
+
+### DB_Fixtures
+
+Individual fixtures are explained below, but this is the general expected usage. In the `conftest.py` of your repo, define a fixture that will seed the database with the test data you require and make those records avaialble to tests. That fixture should request `clear_test_data` and `enable_preserve_test_data` to prevent test pollution and ensure a suitable database is available for tests. The tests themselves should only update data that is inserted by that fixture. Examples:
+
+1. Basic Usage
+
+    In conftest.py
+
+        @pytest.fixture(scope="function")
+        def create_test_data(clear_test_data, enable_preserve_test_data):
+            # Logic to insert some test data
+            created_data = [all_created_data]
+
+            yield created_data
+
+            # No teardown logic required as this is covered in clear_test_data
+
+    In your test file
+
+        def test_get_data(create_test_data):
+            id = create_test_data[0].id
+            record = get_record_using_api_under_test(id)
+            assert record.id == id
+
+1. If your tests need to directly manipulate the database, use the `_db` fixture:
+
+        def test_after_update(create_test_data, _db):
+            id = create_test_data[0].id
+            record = get_record(id)
+            record.name = "new name"
+
+            _db.session.add(record)
+            _db.session.commit()
+
+            # Do some further tests post update
+
+1. If you want to be able to inspect the database after running a test:
+
+        @pytest.mark.preserve_test_data(True)
+        def test_get_data(create_test_data):
+            id = create_test_data[0].id
+            record = get_record_using_api_under_test(id)
+            assert record.id == id
+
+    After the test runs, any created data will still be there for manual inspection. It will then be removed at the start of the next test run.
+
+#### clear_test_data
+This fixture is module scoped so at the end of each test file all data is removed from the database (providing `preserve_test_data` is not set - see below.) Helps to prevent test pollution.
+#### enable_preserve_test_data
+This fixture looks for the marker `pytest.mark.preserve_test_data(True)` and if found, test data is not cleared at the end of the test session, allowing you to manually inspect the database to aid debugging.
+
+**Note**: Not intended to be used as a default for tests as it can lead to test pollution, so only use to debug and then remove again.
+#### _db
+Provides direct access to the database for tests. Useful if your test needs to explicitly insert/update records to prepare test data.
+#### recreate_db
+This fixture reads the pytest cache to determine whether the DB can be reused for this test run and then the db is recreated accordingly. Updates the cache value to enable reuse of the DB for future test runs. This is session scoped so the DB is not recreated for each test in a run.
+
+This is requested by `clear_test_data` so you do not need to include it separately in your project if using that fixture.

@@ -4,16 +4,18 @@ from fsd_utils import CommonConfig
 
 
 def get_lang():
-    
+
     # get lang if lang query arg is set
     language_from_query_args = request.args.get("lang")
     if language_from_query_args:
         if language_from_query_args not in ["cy", "en"]:
-            raise ValueError("Invalid language code. Supported codes are 'cy' and 'en'.")
+            raise ValueError(
+                "Invalid language code. Supported codes are 'cy' and 'en'."
+            )
         else:
             return language_from_query_args
 
-     # get locale from cookie if set
+    # get locale from cookie if set
     locale_from_cookie = request.cookies.get(CommonConfig.FSD_LANG_COOKIE_NAME)
     if locale_from_cookie:
         return locale_from_cookie
