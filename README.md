@@ -247,7 +247,7 @@ Date comparison functions that accept an ISO Format string, for use in the front
 ## Fixtures
 Contains shared fixtures that can be used for unit tests in other repos. To include a fixture from `fsd_utils` in your project, add the following to your `conftest.py`:
 
-    pytest_plugins = ["fsd_utils.fixtures.db_fixtures"]
+    pytest_plugins = ["fsd_test_utils.fixtures.db_fixtures"]
 
 Where the part inside `[]` is the paths to the python files you want to load as fixtures.
 
