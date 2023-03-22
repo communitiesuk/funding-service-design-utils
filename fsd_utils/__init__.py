@@ -1,5 +1,4 @@
 from fsd_utils import authentication
-from fsd_utils import fixtures
 from fsd_utils import gunicorn  # noqa
 from fsd_utils import healthchecks
 from fsd_utils import logging  # noqa
@@ -25,6 +24,5 @@ __all__ = [
     init_sentry,
     clear_sentry,
     date_utils,
-    fixtures,
     toggles,
 ]
