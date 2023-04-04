@@ -4,7 +4,6 @@ from fsd_utils import CommonConfig
 
 
 def get_lang():
-
     # get lang if lang query arg is set
     language_from_query_args = request.args.get("lang")
     if language_from_query_args:

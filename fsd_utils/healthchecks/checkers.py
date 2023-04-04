@@ -41,7 +41,6 @@ class RedisChecker(CheckerInterface):
         self.redis_client = redis_client
 
     def check(self):
-
         try:
             self.redis_client.client_list()
             return True, "OK"

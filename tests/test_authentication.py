@@ -4,7 +4,6 @@ import jwt as jwt
 
 
 class TestAuthentication:
-
     test_payload = {
         "accountId": "test-user",
         "email": "test@example.com",
@@ -30,7 +29,6 @@ class TestAuthentication:
     }
 
     def _create_valid_token(self):
-
         _test_private_key_path = (
             str(Path(__file__).parent) + "/keys/rsa256/private.pem"
         )
@@ -42,7 +40,6 @@ class TestAuthentication:
             )
 
     def _create_invalid_token(self):
-
         _test_private_key_path = (
             str(Path(__file__).parent) + "/keys/rsa256/private_invalid.pem"
         )

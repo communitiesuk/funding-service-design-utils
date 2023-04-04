@@ -1,5 +1,4 @@
 class NotifyConstants:
-
     # ---- Notification service endpoint ----#
 
     NOTIFICATION_SERVICE_ENDPOINT = "/send"

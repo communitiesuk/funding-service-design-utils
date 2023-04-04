@@ -8,7 +8,6 @@ from fsd_utils.simple_utils.date_utils import (
 
 
 class CommonConfig:
-
     FSD_LOG_LEVELS = {
         "development": logging.DEBUG,
         "unit_test": logging.DEBUG,

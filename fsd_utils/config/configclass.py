@@ -1,5 +1,4 @@
 def configclass(cls):
-
     # Checks base classes for _config_info_, a dict containing
     # all infomation about config. attrs, and
     # adds them to a list.
@@ -27,7 +26,6 @@ def configclass(cls):
 
     @classmethod
     def pretty_print(self):
-
         from rich.table import Table
         from rich.console import Console
 

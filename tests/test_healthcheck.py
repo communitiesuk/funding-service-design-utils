@@ -49,7 +49,6 @@ class TestHealthcheck:
 
     @mock.patch.dict(os.environ, clear=True)
     def testWithChecksFailing_mocks(self, flask_test_client):
-
         test_app = Mock()
         health = Healthcheck(test_app)
         test_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY)
@@ -71,7 +70,6 @@ class TestHealthcheck:
 
     @mock.patch.dict(os.environ, clear=True)
     def testWithChecksException_mocks(self, flask_test_client):
-
         test_app = Mock()
         health = Healthcheck(test_app)
         test_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY)
