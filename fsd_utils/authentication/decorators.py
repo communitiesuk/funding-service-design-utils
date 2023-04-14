@@ -102,10 +102,11 @@ def login_required(f=None, roles_required: List[str] = None):
             g.user = User.set_with_token(token_payload)
 
         authenticator_host = current_app.config[config_var_auth_host]
+        print(f"PRINT USER ROLE::::::::: TESTING") 
         g.logout_url = authenticator_host + signout_route
         g.is_authenticated = True
         if roles_required:
-            if not all(
+            if not any(
                 role_required in g.user.roles
                 for role_required in roles_required
             ):
