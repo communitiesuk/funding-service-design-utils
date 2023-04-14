@@ -83,9 +83,8 @@ def login_required(f=None, roles_required: List[str] = None):
     """
     if f is None:
         return lambda f: login_required(f=f, roles_required=roles_required)
-    
-    print(f"PRINT USER ROLE::::::::: {f}")   
-    
+
+    print(f"PRINT USER ROLE::::::::: {f}")
 
     @wraps(f)
     def _wrapper(*args, **kwargs):
