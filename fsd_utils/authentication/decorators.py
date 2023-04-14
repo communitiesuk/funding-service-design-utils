@@ -85,7 +85,7 @@ def login_required(f=None, roles_required: List[str] = None):
         return lambda f: login_required(f=f, roles_required=roles_required)
     
     print(f"PRINT USER ROLE::::::::: {f}")   
-    current_app.logger.error((f"LOG USER ROLE::::::::: {f}"))
+    
 
     @wraps(f)
     def _wrapper(*args, **kwargs):
