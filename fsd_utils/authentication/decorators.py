@@ -102,7 +102,7 @@ def login_required(f=None, roles_required: List[str] = None):
         g.logout_url = authenticator_host + signout_route
         g.is_authenticated = True
         if roles_required:
-            if not all(
+            if not any(
                 role_required in g.user.roles
                 for role_required in roles_required
             ):
