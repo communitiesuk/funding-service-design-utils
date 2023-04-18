@@ -3,7 +3,7 @@ from flask_redis import FlaskRedis
 from flipper import FeatureFlagClient
 from flipper import RedisFeatureFlagStore
 
-redis_store = FlaskRedis()
+redis_store = FlaskRedis(config_prefix="TOGGLES")
 
 
 def initialise_toggles_redis_store(flask_app: Flask):
