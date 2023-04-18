@@ -293,13 +293,9 @@ class CommonConfig:
     #  Feature Toggles
     # ---------------
 
-    dev_feature_configuration = {
-        "MULTIFUND_DASHBOARD": True
-    }
+    dev_feature_configuration = {"MULTIFUND_DASHBOARD": True}
 
-    prod_feature_configuration = {
-        "MULTIFUND_DASHBOARD": True
-    }
+    prod_feature_configuration = {"MULTIFUND_DASHBOARD": True}
 
     @classmethod
     def get_default_round_id(cls):
