@@ -293,18 +293,9 @@ class CommonConfig:
     #  Feature Toggles
     # ---------------
 
-    dev_feature_configuration = {
-        # TODO: add features we'd like to toggle like so:
-        # "FLAGGING": True,
-        # "COMMENTING": True,
-        # "REMINDERS": False
-    }
+    dev_feature_configuration = {"MULTIFUND_DASHBOARD": True}
 
-    prod_feature_configuration = {
-        # "FLAGGING": False,
-        # "COMMENTING": True,
-        # "REMINDERS": False
-    }
+    prod_feature_configuration = {"MULTIFUND_DASHBOARD": False}
 
     @classmethod
     def get_default_round_id(cls):
