@@ -295,7 +295,7 @@ class CommonConfig:
 
     dev_feature_configuration = {"MULTIFUND_DASHBOARD": True}
 
-    prod_feature_configuration = {"MULTIFUND_DASHBOARD": True}
+    prod_feature_configuration = {"MULTIFUND_DASHBOARD": False}
 
     @classmethod
     def get_default_round_id(cls):
