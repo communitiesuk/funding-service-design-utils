@@ -153,9 +153,9 @@ tmp_upload_dir = None
 
 class CustomLogger(Logger):
     def now(self):
-        return datetime.datetime.now(
-            tz=pytz.timezone("Europe/London")
-        ).strftime("%d-%b-%y %H:%M:%S")
+        return datetime.datetime.now(tz=pytz.timezone("Europe/London")).strftime(
+            "%d-%b-%y %H:%M:%S"
+        )
 
 
 logger_class = CustomLogger
@@ -226,13 +226,9 @@ def worker_int(worker):
     id2name = {th.ident: th.name for th in threading.enumerate()}
     code = []
     for threadId, stack in sys._current_frames().items():
-        code.append(
-            "\n# Thread: %s(%d)" % (id2name.get(threadId, ""), threadId)
-        )
+        code.append("\n# Thread: %s(%d)" % (id2name.get(threadId, ""), threadId))
         for filename, lineno, name, line in traceback.extract_stack(stack):
-            code.append(
-                'File: "%s", line %d, in %s' % (filename, lineno, name)
-            )
+            code.append('File: "%s", line %d, in %s' % (filename, lineno, name))
             if line:
                 code.append("  %s" % (line.strip()))
     worker.log.debug("\n".join(code))
@@ -256,6 +252,4 @@ class RequestPathFilter(logging.Filter):
 
 
 def on_starting(server):
-    server.log.access_log.addFilter(
-        RequestPathFilter(path_re=r"^/healthcheck$")
-    )
+    server.log.access_log.addFilter(RequestPathFilter(path_re=r"^/healthcheck$"))

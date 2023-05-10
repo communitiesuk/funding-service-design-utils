@@ -81,18 +81,12 @@ def init_app(app):
                 extra={
                     "status": response.status_code,
                     "duration_real": (
-                        (
-                            time.perf_counter()
-                            - request.before_request_real_time
-                        )
+                        (time.perf_counter() - request.before_request_real_time)
                         if hasattr(request, "before_request_real_time")
                         else None
                     ),
                     "duration_process": (
-                        (
-                            time.process_time()
-                            - request.before_request_process_time
-                        )
+                        (time.process_time() - request.before_request_process_time)
                         if hasattr(request, "before_request_process_time")
                         else None
                     ),
@@ -143,9 +137,7 @@ def configure_handler(handler, app, formatter):
 
 
 def get_json_log_format():
-    return LOG_FORMAT + "".join(
-        f" %({key})s" for key in LOG_FORMAT_EXTRA_JSON_KEYS
-    )
+    return LOG_FORMAT + "".join(f" %({key})s" for key in LOG_FORMAT_EXTRA_JSON_KEYS)
 
 
 class AppInstanceFilter(logging.Filter):
@@ -315,9 +307,7 @@ class JSONFormatter(BaseJSONFormatter):
             s = time.strftime(datefmt, ct)
         else:
             s = (
-                datetime.datetime.fromtimestamp(
-                    record.created, datetime.timezone.utc
-                )
+                datetime.datetime.fromtimestamp(record.created, datetime.timezone.utc)
                 .astimezone()
                 .isoformat(sep=" ", timespec="milliseconds")
             )

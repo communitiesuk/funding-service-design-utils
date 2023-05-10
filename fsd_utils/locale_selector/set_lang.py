@@ -21,9 +21,7 @@ class LanguageSelector:
                 return cookie_domain
 
         response = make_response(
-            redirect(
-                request.referrer or request.args.get("return_url") or "/", 302
-            )
+            redirect(request.referrer or request.args.get("return_url") or "/", 302)
         )
         response.set_cookie(
             CommonConfig.FSD_LANG_COOKIE_NAME,

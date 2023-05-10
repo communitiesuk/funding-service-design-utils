@@ -47,9 +47,7 @@ def _check_access_token(auto_redirect=True):
             -- If auto_redirect is True then issue a _failed_redirect()
             -- If auto_redirect is False then return False
     """
-    user_token_cookie_name = current_app.config[
-        config_var_user_token_cookie_name
-    ]
+    user_token_cookie_name = current_app.config[config_var_user_token_cookie_name]
 
     login_cookie = request.cookies.get(user_token_cookie_name)
     if not login_cookie:
@@ -103,8 +101,7 @@ def login_required(f=None, roles_required: List[str] = None):
         g.is_authenticated = True
         if roles_required:
             if not any(
-                role_required in g.user.roles
-                for role_required in roles_required
+                role_required in g.user.roles for role_required in roles_required
             ):
                 _failed_roles_redirect(roles_required)
         return f(*args, **kwargs)
