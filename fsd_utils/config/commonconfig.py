@@ -74,9 +74,7 @@ class CommonConfig:
     #  Fund hosts, endpoints
     # ---------------
 
-    FUND_STORE_API_HOST = os.getenv(
-        "FUND_STORE_API_HOST", TEST_FUND_STORE_API_HOST
-    )
+    FUND_STORE_API_HOST = os.getenv("FUND_STORE_API_HOST", TEST_FUND_STORE_API_HOST)
     FUNDS_ENDPOINT = "/funds"
     FUND_ENDPOINT = "/funds/{fund_id}"  # account id in assessment store
 
@@ -306,9 +304,7 @@ class CommonConfig:
                     fund_id=cls.COF_FUND_ID, round_id=cls.COF_ROUND_2_W3_ID
                 )
             )
-            cof_r2_w3_is_open = current_datetime_after_given_iso_string(
-                r2_w3["opens"]
-            )
+            cof_r2_w3_is_open = current_datetime_after_given_iso_string(r2_w3["opens"])
 
             if cof_r2_w3_is_open:
                 return cls.COF_ROUND_2_W3_ID

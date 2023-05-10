@@ -6,9 +6,7 @@ from requests.exceptions import HTTPError
 class TestDataUtils:
     def test_get_remote_data_json(self, flask_test_client):
         postcode = "SW1P 4DF"
-        result = get_remote_data_as_json(
-            f"https://postcodes.io/postcodes/{postcode}"
-        )
+        result = get_remote_data_as_json(f"https://postcodes.io/postcodes/{postcode}")
         assert postcode == result["result"]["postcode"]
 
     def test_get_remote_data_json_404(self, flask_test_client):

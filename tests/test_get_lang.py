@@ -12,8 +12,7 @@ class TestGetLang:
             with pytest.raises(
                 ValueError,
                 match=(
-                    "Invalid language code. Supported codes"
-                    + " are 'cy' and 'en'."
+                    "Invalid language code. Supported codes" + " are 'cy' and 'en'."
                 ),
             ):
                 get_lang()
