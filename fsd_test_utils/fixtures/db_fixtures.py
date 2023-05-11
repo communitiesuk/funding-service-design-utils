@@ -1,5 +1,6 @@
 import pytest
 from flask_migrate import upgrade
+from sqlalchemy import text
 from sqlalchemy_utils.functions import create_database
 from sqlalchemy_utils.functions import database_exists
 from sqlalchemy_utils.functions import drop_database
@@ -52,7 +53,7 @@ def recreate_db(request, _db, app):
     yield
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def clear_test_data(app, _db, request, recreate_db):
     """
     Fixture to clean up the database after each test.
@@ -75,12 +76,12 @@ def clear_test_data(app, _db, request, recreate_db):
             # rollback incase of any errors during test session
             _db.session.rollback()
             # disable foreign key checks
-            _db.session.execute("SET session_replication_role = replica")
+            _db.session.execute(text("SET session_replication_role = replica"))
             # delete all data from tables
             for table in reversed(_db.metadata.sorted_tables):
                 _db.session.execute(table.delete())
             # reset foreign key checks
-            _db.session.execute("SET session_replication_role = DEFAULT")
+            _db.session.execute(text("SET session_replication_role = DEFAULT"))
             _db.session.commit()
         else:
             # If test requests 'preserve test data' make sure
