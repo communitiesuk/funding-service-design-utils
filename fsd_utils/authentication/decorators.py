@@ -51,6 +51,7 @@ def _check_access_token(auto_redirect=True):
 
     login_cookie = request.cookies.get(user_token_cookie_name)
     if not login_cookie:
+        current_app.logger.error("NO LOGIN COOKIEEEEEEEEEEE")
         if auto_redirect:
             _failed_redirect()
         return False
@@ -61,6 +62,7 @@ def _check_access_token(auto_redirect=True):
         current_app.logger.warn(
                     f"Error: {e.__class__.__name__} - {e}"
                 )
+        current_app.logger.error("PyJWTERROR!!!!!!!!!!!!!!!!!!!!")
         if auto_redirect:
             _failed_redirect()
         return False
