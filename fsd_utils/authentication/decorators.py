@@ -82,6 +82,7 @@ def login_required(f=None, roles_required: List[str] = None):
             roles required to access the decorated route
     :return:
     """
+    current_app.logger.error("YOOOOOOO")
     if f is None:
         return lambda f: login_required(f=f, roles_required=roles_required)
 
