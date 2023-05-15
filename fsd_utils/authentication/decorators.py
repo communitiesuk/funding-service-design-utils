@@ -51,7 +51,6 @@ def _check_access_token(auto_redirect=True):
 
     login_cookie = request.cookies.get(user_token_cookie_name)
     if not login_cookie:
-        current_app.logger.error("NO LOGIN COOKIEEEEEEEEEEE")
         if auto_redirect:
             _failed_redirect()
         return False
@@ -87,7 +86,6 @@ def login_required(f=None, roles_required: List[str] = None):
 
     @wraps(f)
     def _wrapper(*args, **kwargs):
-        current_app.logger.error("YOOOOOOO")
         if (
             current_app.config.get("FLASK_ENV") == "development"
             and current_app.config.get("DEBUG_USER_ROLE")
@@ -128,7 +126,6 @@ def login_requested(f):
 
     @wraps(f)
     def decorated(*args, **kwargs):
-        current_app.logger.error("YOOOOOOO22222222")
         token_payload = _check_access_token(auto_redirect=False)
         authenticator_host = current_app.config[config_var_auth_host]
         g.logout_url = authenticator_host + signout_route
