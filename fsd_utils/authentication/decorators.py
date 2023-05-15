@@ -89,6 +89,7 @@ def login_required(f=None, roles_required: List[str] = None):
 
     @wraps(f)
     def _wrapper(*args, **kwargs):
+        current_app.logger.error("YOOOOOOO")
         if (
             current_app.config.get("FLASK_ENV") == "development"
             and current_app.config.get("DEBUG_USER_ROLE")
