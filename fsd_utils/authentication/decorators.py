@@ -128,6 +128,7 @@ def login_requested(f):
 
     @wraps(f)
     def decorated(*args, **kwargs):
+        current_app.logger.error("YOOOOOOO22222222")
         token_payload = _check_access_token(auto_redirect=False)
         authenticator_host = current_app.config[config_var_auth_host]
         g.logout_url = authenticator_host + signout_route
