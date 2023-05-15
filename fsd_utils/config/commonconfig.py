@@ -1,6 +1,11 @@
 import logging
 import os
 
+from fsd_utils.simple_utils.data_utils import get_remote_data_as_json
+from fsd_utils.simple_utils.date_utils import (
+    current_datetime_after_given_iso_string,
+)
+
 
 class CommonConfig:
 
@@ -69,9 +74,7 @@ class CommonConfig:
     #  Fund hosts, endpoints
     # ---------------
 
-    FUND_STORE_API_HOST = os.getenv(
-        "FUND_STORE_API_HOST", TEST_FUND_STORE_API_HOST
-    )
+    FUND_STORE_API_HOST = os.getenv("FUND_STORE_API_HOST", TEST_FUND_STORE_API_HOST)
     FUNDS_ENDPOINT = "/funds"
     FUND_ENDPOINT = "/funds/{fund_id}"  # account id in assessment store
 
@@ -168,3 +171,21 @@ class CommonConfig:
     dev_feature_configuration = {"MULTIFUND_DASHBOARD": True}
 
     prod_feature_configuration = {"MULTIFUND_DASHBOARD": False}
+
+    @classmethod
+    def get_default_round_id(cls):
+        try:
+            r2_w3 = get_remote_data_as_json(
+                cls.FUND_STORE_API_HOST
+                + cls.ROUND_ENDPOINT.format(
+                    fund_id=cls.COF_FUND_ID, round_id=cls.COF_ROUND_2_W3_ID
+                )
+            )
+            cof_r2_w3_is_open = current_datetime_after_given_iso_string(r2_w3["opens"])
+
+            if cof_r2_w3_is_open:
+                return cls.COF_ROUND_2_W3_ID
+            else:
+                return cls.COF_ROUND_2_ID
+        except Exception as e:  # noqa:F841
+            return cls.COF_ROUND_2_ID

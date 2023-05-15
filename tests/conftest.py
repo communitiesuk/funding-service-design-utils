@@ -24,9 +24,7 @@ def flask_test_client():
     """
 
     with create_app().app_context() as app_context:
-        _test_public_key_path = (
-            str(Path(__file__).parent) + "/keys/rsa256/public.pem"
-        )
+        _test_public_key_path = str(Path(__file__).parent) + "/keys/rsa256/public.pem"
         with open(_test_public_key_path, mode="rb") as public_key_file:
             rsa256_public_key = public_key_file.read()
 
@@ -72,9 +70,7 @@ def flask_test_development_client():
     """
 
     with create_app().app_context() as app_context:
-        _test_public_key_path = (
-            str(Path(__file__).parent) + "/keys/rsa256/public.pem"
-        )
+        _test_public_key_path = str(Path(__file__).parent) + "/keys/rsa256/public.pem"
         with open(_test_public_key_path, mode="rb") as public_key_file:
             rsa256_public_key = public_key_file.read()
 

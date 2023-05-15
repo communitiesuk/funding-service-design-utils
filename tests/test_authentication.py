@@ -31,15 +31,11 @@ class TestAuthentication:
 
     def _create_valid_token(self):
 
-        _test_private_key_path = (
-            str(Path(__file__).parent) + "/keys/rsa256/private.pem"
-        )
+        _test_private_key_path = str(Path(__file__).parent) + "/keys/rsa256/private.pem"
         with open(_test_private_key_path, mode="rb") as private_key_file:
             rsa256_private_key = private_key_file.read()
 
-            return jwt.encode(
-                self.test_payload, rsa256_private_key, algorithm="RS256"
-            )
+            return jwt.encode(self.test_payload, rsa256_private_key, algorithm="RS256")
 
     def _create_invalid_token(self):
 
@@ -49,9 +45,7 @@ class TestAuthentication:
         with open(_test_private_key_path, mode="rb") as private_key_file:
             rsa256_private_key = private_key_file.read()
 
-            return jwt.encode(
-                self.test_payload, rsa256_private_key, algorithm="RS256"
-            )
+            return jwt.encode(self.test_payload, rsa256_private_key, algorithm="RS256")
 
     def test_login_required_redirects_to_signed_out_without_token(
         self, flask_test_client
@@ -66,9 +60,7 @@ class TestAuthentication:
         mock_request = flask_test_client.get("/mock_login_required_route")
 
         assert mock_request.status_code == 302
-        assert (
-            mock_request.location == "https://authenticator/sessions/sign-out"
-        )
+        assert mock_request.location == "https://authenticator/sessions/sign-out"
 
     def test_login_required_redirects_to_signed_out_with_invalid_token(
         self, flask_test_client
@@ -82,15 +74,11 @@ class TestAuthentication:
         :param flask_test_client:
         """
         invalid_token = self._create_invalid_token()
-        flask_test_client.set_cookie(
-            "localhost", "fsd-user-token", invalid_token
-        )
+        flask_test_client.set_cookie("localhost", "fsd-user-token", invalid_token)
         mock_request = flask_test_client.get("/mock_login_required_route")
 
         assert mock_request.status_code == 302
-        assert (
-            mock_request.location == "https://authenticator/sessions/sign-out"
-        )
+        assert mock_request.location == "https://authenticator/sessions/sign-out"
 
     def test_login_required_sets_user_attributes_with_valid_token(
         self, flask_test_client
@@ -104,9 +92,7 @@ class TestAuthentication:
         :param flask_test_client:
         """
         valid_token = self._create_valid_token()
-        flask_test_client.set_cookie(
-            "localhost", "fsd-user-token", valid_token
-        )
+        flask_test_client.set_cookie("localhost", "fsd-user-token", valid_token)
         mock_request = flask_test_client.get("/mock_login_required_route")
         assert mock_request.status_code == 200
         assert mock_request.json == self.expected_valid_g_attributes
@@ -124,12 +110,8 @@ class TestAuthentication:
         :param flask_test_client:
         """
         valid_token = self._create_valid_token()
-        flask_test_client.set_cookie(
-            "localhost", "fsd-user-token", valid_token
-        )
-        mock_request = flask_test_client.get(
-            "/mock_login_required_admin_roles_route"
-        )
+        flask_test_client.set_cookie("localhost", "fsd-user-token", valid_token)
+        mock_request = flask_test_client.get("/mock_login_required_admin_roles_route")
         assert mock_request.status_code == 302
         assert (
             mock_request.location
@@ -148,12 +130,8 @@ class TestAuthentication:
         :param flask_test_client:
         """
         valid_token = self._create_valid_token()
-        flask_test_client.set_cookie(
-            "localhost", "fsd-user-token", valid_token
-        )
-        mock_request = flask_test_client.get(
-            "/mock_login_required_roles_route"
-        )
+        flask_test_client.set_cookie("localhost", "fsd-user-token", valid_token)
+        mock_request = flask_test_client.get("/mock_login_required_roles_route")
         assert mock_request.status_code == 200
         assert mock_request.json == self.expected_valid_g_attributes
 
@@ -183,9 +161,7 @@ class TestAuthentication:
         :param flask_test_client:
         """
         valid_token = self._create_valid_token()
-        flask_test_client.set_cookie(
-            "localhost", "fsd-user-token", valid_token
-        )
+        flask_test_client.set_cookie("localhost", "fsd-user-token", valid_token)
         mock_request = flask_test_client.get("/mock_login_requested_route")
         assert mock_request.status_code == 200
         assert mock_request.json == self.expected_valid_g_attributes
@@ -203,9 +179,7 @@ class TestAuthentication:
         THEN the route is still accessible
         :param flask_test_client:
         """
-        flask_test_development_client.set_cookie(
-            "localhost", "fsd-user-token", ""
-        )
+        flask_test_development_client.set_cookie("localhost", "fsd-user-token", "")
         mock_request = flask_test_development_client.get(
             "/mock_login_required_admin_roles_route"
         )
@@ -224,9 +198,7 @@ class TestAuthentication:
         THEN the route redirects to the authenticator /sessions/sign-out url
         :param flask_test_client:
         """
-        flask_test_development_client.set_cookie(
-            "localhost", "fsd-user-token", ""
-        )
+        flask_test_development_client.set_cookie("localhost", "fsd-user-token", "")
         mock_request = flask_test_development_client.get(
             "/mock_login_required_roles_route"
         )

@@ -69,9 +69,7 @@ def clear_test_data(app, _db, request, recreate_db):
     """
     with app.app_context():
         yield
-        preserve_test_data = request.config.cache.get(
-            "preserve_test_data", None
-        )
+        preserve_test_data = request.config.cache.get("preserve_test_data", None)
         if not preserve_test_data:
             # rollback incase of any errors during test session
             _db.session.rollback()
