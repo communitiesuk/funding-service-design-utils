@@ -59,9 +59,7 @@ def _check_access_token(auto_redirect=True):
     try:
         return validate_token_rs256(login_cookie)
     except (PyJWTError, ExpiredSignatureError) as e:
-        current_app.logger.warn(
-                    f"Error: {e.__class__.__name__} - {e}"
-                )
+        current_app.logger.warn(f"Error: {e.__class__.__name__} - {e}")
         current_app.logger.error("PyJWTERROR!!!!!!!!!!!!!!!!!!!!")
         if auto_redirect:
             _failed_redirect()
