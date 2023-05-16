@@ -26,10 +26,9 @@ class DbChecker(CheckerInterface):
 
     def check(self):
         from sqlalchemy.exc import SQLAlchemyError
-        from sqlalchemy import text
 
         try:
-            self.db.session.execute(text("SELECT 1"))
+            self.db.session.execute("SELECT 1")
             return True, "OK"
         except SQLAlchemyError:
             current_app.logger.exception("DB Check failed")
