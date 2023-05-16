@@ -1,11 +1,6 @@
 import logging
 import os
 
-from fsd_utils.simple_utils.data_utils import get_remote_data_as_json
-from fsd_utils.simple_utils.date_utils import (
-    current_datetime_after_given_iso_string,
-)
-
 
 class CommonConfig:
 
