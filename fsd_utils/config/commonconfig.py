@@ -171,5 +171,3 @@ class CommonConfig:
     dev_feature_configuration = {"MULTIFUND_DASHBOARD": True}
 
     prod_feature_configuration = {"MULTIFUND_DASHBOARD": False}
-
-
