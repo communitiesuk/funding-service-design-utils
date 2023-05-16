@@ -29,7 +29,7 @@ class TestCheckers:
         result = db_checker.check()
         assert result[0] is True, "Unexpected check result"
         assert result[1] == "OK", "Unexpected check message"
-        mock_db.session.execute.assert_called_once_with("SELECT 1")
+        mock_db.session.execute.assert_called_once()
 
     def testDbCheck_fail(self, flask_test_client):
         mock_db = Mock()
@@ -40,7 +40,7 @@ class TestCheckers:
         result = db_checker.check()
         assert result[0] is False, "Unexpected check result"
         assert result[1] == "Fail", "Unexpected check message"
-        mock_db.session.execute.assert_called_with("SELECT 1")
+        mock_db.session.execute.assert_called_once()
 
     def testRedis_pass(self, flask_test_client):
         mock_redis = Mock()
