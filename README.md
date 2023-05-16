@@ -148,7 +148,6 @@ For dev/test environments, these have been set manually with the following:
 cf t -s sandbox
 cf set-env {app} RSA256_PRIVATE_KEY_BASE64 $(cat private_key.pem | base64)
 cf set-env {app} RSA256_PUBLIC_KEY_BASE64 $(cat public_key.pem | base64)
-```
 
 Then - to use the `@login_required` decorator just add it to routes you need to protect eg:
 
