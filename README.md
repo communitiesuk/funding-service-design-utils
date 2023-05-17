@@ -136,18 +136,15 @@ First - ensure that the following environment variables are set to the appropria
 
 NOTE: These values (and keys) need to be shared/common across all microservices that use each common authenticator host. If any of the environment *keys* for each of these attributes needs to be modified these can be reconfigured in fsd_utils/authentication/config.py.
 
-To generate new keys, you use the following commands:
-(Note: be aware of where your keys get created, when setting these keys as envvars in cf you'll need to be in the directory where you created them).
+To generate new keys in your cwd, you use the following commands:
 ```bash
 openssl genrsa -out private_key.pem 2048
 openssl rsa -pubout -in private_key.pem -out public_key.pem
 ```
 
-For dev/test environments, these have been set manually with the following:
-```bash
-cf t -s sandbox
-cf set-env {app} RSA256_PRIVATE_KEY_BASE64 $(cat private_key.pem | base64)
-cf set-env {app} RSA256_PUBLIC_KEY_BASE64 $(cat public_key.pem | base64)
+If you're changing keys, you'll need to change them in GitHub secrets across repos.
+Please also add them to BitWarden and let the team know.
+
 
 Then - to use the `@login_required` decorator just add it to routes you need to protect eg:
 
