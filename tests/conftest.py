@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 from flask import Flask
 from flask import g
+from fsd_utils.authentication.config import SupportedApp
 from fsd_utils.authentication.decorators import login_requested
 from fsd_utils.authentication.decorators import login_required
 
@@ -57,6 +58,13 @@ def flask_test_client():
             "mock_login_required_admin_roles_route",
             mock_login_required_admin_roles_route,
         )
+
+        app_context.app.add_url_rule(
+            "/mock_login_requested_return_app_route",
+            "mock_login_requested_return_app_route",
+            mock_login_requested_return_app_route,
+        )
+
         with app_context.app.test_client() as test_client:
             yield test_client
 
@@ -202,6 +210,35 @@ def mock_login_required_admin_roles_route():
             highest_role="LEAD_ASSESSOR",
             roles=["LEAD_ASSESSOR", "ASSESSOR", "COMMENTER"]
         )
+    :return: the Flask g variable serialised as a dict/json
+    """
+    return vars(g)
+
+
+@login_required(return_app=SupportedApp.POST_AWARD_FRONTEND)
+def mock_login_requested_return_app_route():
+    """
+    A mock route function decorated with @login_requested
+    Here we expect a logged in user to have the required
+    Flask request g variables set as below:
+    NOTE: the logout_url should end with the query string "?return_app=post-award-frontend" in both cases.
+    g: {
+        "is_authenticated": True,
+        "logout_url": "https://authenticator/sessions/sign-out?return_app=post-award-frontend",
+        "account_id": "test-user",
+        "user": User(
+            email="test@example.com",
+            full_name="Test User",
+            highest_role="LEAD_ASSESSOR",
+            roles=["LEAD_ASSESSOR", "ASSESSOR", "COMMENTER"]
+        )
+    and a non logged in user to have the Flask request g variables
+    set as below:
+    g: {
+        "is_authenticated": False,
+        "logout_url": "https://authenticator/sessions/sign-out?return_app=post-award-frontend",
+        "account_id": None,
+    }
     :return: the Flask g variable serialised as a dict/json
     """
     return vars(g)
