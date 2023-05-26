@@ -6,6 +6,8 @@ To use this utility please ensure that all the
 in the environment of the application that is using
 this utility.
 """
+import enum
+
 config_var_auth_host = "AUTHENTICATOR_HOST"
 config_var_user_token_cookie_name = "FSD_USER_TOKEN_COOKIE_NAME"
 config_var_rs256_public_key = "RSA256_PUBLIC_KEY"
@@ -16,3 +18,7 @@ azure_ad_role_map = {
     "Assessor": "ASSESSOR",
     "Commenter": "COMMENTER",
 }
+
+
+class SupportedApp(enum.Enum):
+    POST_AWARD_FRONTEND = "post-award-frontend"

@@ -22,25 +22,23 @@ class TestCheckers:
 
     def testDbCheck_pass(self):
         mock_db = Mock()
-        mock_db.session = Mock()
         mock_db.session.execute.return_value = True
         db_checker = DbChecker(mock_db)
 
         result = db_checker.check()
         assert result[0] is True, "Unexpected check result"
         assert result[1] == "OK", "Unexpected check message"
-        mock_db.session.execute.assert_called_once()
+        assert mock_db.session.execute.call_args.args[0].text == "SELECT 1"
 
     def testDbCheck_fail(self, flask_test_client):
         mock_db = Mock()
-        mock_db.session = Mock()
         mock_db.session.execute.side_effect = ArgumentError
         db_checker = DbChecker(mock_db)
 
         result = db_checker.check()
         assert result[0] is False, "Unexpected check result"
         assert result[1] == "Fail", "Unexpected check message"
-        mock_db.session.execute.assert_called_once()
+        assert mock_db.session.execute.call_args.args[0].text == "SELECT 1"
 
     def testRedis_pass(self, flask_test_client):
         mock_redis = Mock()

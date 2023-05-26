@@ -1,5 +1,6 @@
 from functools import wraps
 from typing import List
+from urllib.parse import urlencode
 
 from flask import abort
 from flask import current_app
@@ -13,14 +14,14 @@ from jwt import PyJWTError
 from .config import config_var_auth_host
 from .config import config_var_user_token_cookie_name
 from .config import signout_route
+from .config import SupportedApp
 from .config import user_route
 from .models import User
 
 
-def _failed_redirect():
-    authenticator_host = current_app.config[config_var_auth_host]
-
-    return abort(redirect(authenticator_host + signout_route))
+def _failed_redirect(return_app: SupportedApp | None):
+    logout_url = _build_logout_url(return_app)
+    return abort(redirect(logout_url))
 
 
 def _failed_roles_redirect(roles_required: List[str]):
@@ -36,7 +37,7 @@ def _failed_roles_redirect(roles_required: List[str]):
     )
 
 
-def _check_access_token(auto_redirect=True):
+def _check_access_token(return_app: SupportedApp | None = None, auto_redirect=True):
     """
     Check the expected auth cookie for a
     valid JWT token.
@@ -52,18 +53,32 @@ def _check_access_token(auto_redirect=True):
     login_cookie = request.cookies.get(user_token_cookie_name)
     if not login_cookie:
         if auto_redirect:
-            _failed_redirect()
+            _failed_redirect(return_app)
         return False
 
     try:
         return validate_token_rs256(login_cookie)
     except (PyJWTError, ExpiredSignatureError):
         if auto_redirect:
-            _failed_redirect()
+            _failed_redirect(return_app)
         return False
 
 
-def login_required(f=None, roles_required: List[str] = None):
+def _build_logout_url(return_app: SupportedApp | None):
+    authenticator_host = current_app.config[config_var_auth_host]
+    if return_app:
+        return (
+            authenticator_host
+            + signout_route
+            + f"?{urlencode({'return_app': return_app.value})}"
+        )
+    else:
+        return authenticator_host + signout_route
+
+
+def login_required(
+    f=None, roles_required: List[str] = None, return_app: SupportedApp | None = None
+):
     """
      Execute function if request contains valid JWT
      and pass account auth params to route as attributes
@@ -75,12 +90,15 @@ def login_required(f=None, roles_required: List[str] = None):
      If no valid auth JWT found then redirect to
      service config invalid login route
     :param f:
+    :param return_app: app to return to after login
     :param roles_required: (List(str), optional) a list of the
             roles required to access the decorated route
     :return:
     """
     if f is None:
-        return lambda f: login_required(f=f, roles_required=roles_required)
+        return lambda f: login_required(
+            f=f, roles_required=roles_required, return_app=return_app
+        )
 
     @wraps(f)
     def _wrapper(*args, **kwargs):
@@ -92,12 +110,11 @@ def login_required(f=None, roles_required: List[str] = None):
             g.account_id = "dev-account-id"
             g.user = User(**current_app.config.get("DEBUG_USER"))
         else:
-            token_payload = _check_access_token()
+            token_payload = _check_access_token(return_app=return_app)
             g.account_id = token_payload.get("accountId")
             g.user = User.set_with_token(token_payload)
 
-        authenticator_host = current_app.config[config_var_auth_host]
-        g.logout_url = authenticator_host + signout_route
+        g.logout_url = _build_logout_url(return_app)
         g.is_authenticated = True
         if roles_required:
             if not any(
