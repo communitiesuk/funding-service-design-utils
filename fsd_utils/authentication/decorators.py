@@ -64,7 +64,7 @@ def _check_access_token(return_app: SupportedApp | None = None, auto_redirect=Tr
         return False
 
 
-def _build_logout_url(return_app: SupportedApp | None):
+def _build_logout_url(return_app: SupportedApp | None = None):
     authenticator_host = current_app.config[config_var_auth_host]
     if return_app:
         return (
