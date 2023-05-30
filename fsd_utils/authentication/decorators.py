@@ -19,7 +19,7 @@ from .config import user_route
 from .models import User
 
 
-def _failed_redirect(return_app: SupportedApp | None):
+def _failed_redirect(return_app: SupportedApp | None = None):
     logout_url = _build_logout_url(return_app)
     return abort(redirect(logout_url))
 
