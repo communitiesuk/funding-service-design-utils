@@ -5,7 +5,7 @@ import pytz
 
 def current_datetime_after_given_iso_string(value: str) -> bool:
     # Grab local timezone
-    uk_tz = pytz.timezone('Europe/London')
+    uk_tz = pytz.timezone("Europe/London")
     # Grab current localised datetime
     now_datetime = datetime.now(uk_tz)
     # Convert now_datetime to offset-naive
@@ -17,7 +17,7 @@ def current_datetime_after_given_iso_string(value: str) -> bool:
 
 def current_datetime_before_given_iso_string(value: str) -> bool:
     # Grab local timezone
-    uk_tz = pytz.timezone('Europe/London')
+    uk_tz = pytz.timezone("Europe/London")
     # Grab current localised datetime
     now_datetime = datetime.now(uk_tz)
     # Convert now_datetime to offset-naive
