@@ -10,7 +10,7 @@ def current_datetime_after_given_iso_string(value: str) -> bool:
     now_datetime = datetime.now(uk_tz)
     # Convert now_datetime to offset-naive
     now_datetime_naive = now_datetime.replace(tzinfo=None)
-    # Convert value datetime to correct format for camparison
+    # Convert value datetime to correct format for comparison
     parsed = datetime.fromisoformat(value)
     return now_datetime_naive > parsed
 
