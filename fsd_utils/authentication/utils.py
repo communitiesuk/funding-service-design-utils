@@ -21,3 +21,12 @@ def get_highest_role(roles: List[str]):
         for _, role in azure_ad_role_map.items():
             if role in roles:
                 return role
+
+
+def enable_debug_user(required_roles):
+    return {
+        "account_id": "00000000-0000-0000-0000-000000000000",
+        "full_name": "Development User",
+        "email": "dev@example.com",
+        "roles": required_roles if required_roles else ["COMMENTER"],
+    }
