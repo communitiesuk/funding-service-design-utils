@@ -87,6 +87,7 @@ def flask_test_development_client():
                 "FSD_LANG_COOKIE_NAME": "language",
                 "COOKIE_DOMAIN": None,
                 "FLASK_ENV": "development",
+                "DEBUG_USER_ON": True,
                 "DEBUG_USER_ROLE": "ADMIN",
                 "DEBUG_USER": {
                     "full_name": "Development User",
