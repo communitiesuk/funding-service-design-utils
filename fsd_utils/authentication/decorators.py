@@ -102,12 +102,10 @@ def login_required(
 
     @wraps(f)
     def _wrapper(*args, **kwargs):
-        if (
-            current_app.config.get("FLASK_ENV") == "development"
-            and current_app.config.get("DEBUG_USER_ROLE")
-            and current_app.config.get("DEBUG_USER")
-        ):
-            g.account_id = "dev-account-id"
+        if current_app.config.get(
+            "FLASK_ENV"
+        ) == "development" and current_app.config.get("DEBUG_USER_ON"):
+            g.account_id = current_app.config.get("DEBUG_USER_ACCOUNT_ID")
             g.user = User(**current_app.config.get("DEBUG_USER"))
         else:
             token_payload = _check_access_token(return_app=return_app)
