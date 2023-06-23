@@ -9,7 +9,7 @@ class TestAuthentication:
         "accountId": "test-user",
         "email": "test@example.com",
         "fullName": "Test User",
-        "roles": ["LEAD_ASSESSOR", "ASSESSOR", "COMMENTER"],
+        "roles": ["COF_LEAD_ASSESSOR", "COF_ASSESSOR", "COF_COMMENTER"],
     }
     expected_valid_g_attributes = {
         "is_authenticated": True,
@@ -18,8 +18,8 @@ class TestAuthentication:
         "user": {
             "email": "test@example.com",
             "full_name": "Test User",
-            "highest_role": "LEAD_ASSESSOR",
-            "roles": ["LEAD_ASSESSOR", "ASSESSOR", "COMMENTER"],
+            "highest_role_map": {"COF": "LEAD_ASSESSOR"},
+            "roles": ["COF_LEAD_ASSESSOR", "COF_ASSESSOR", "COF_COMMENTER"],
         },
     }
 
@@ -115,7 +115,7 @@ class TestAuthentication:
         assert mock_request.status_code == 302
         assert (
             mock_request.location
-            == "https://authenticator/service/user?roles_required=ADMIN|TEST"
+            == "https://authenticator/service/user?roles_required=COF_ADMIN|COF_TEST"
         )
 
     def test_login_required_roles_sets_user_attributes_if_user_has_roles(
@@ -205,7 +205,7 @@ class TestAuthentication:
         assert mock_request.status_code == 302
         assert (
             mock_request.location
-            == "https://authenticator/service/user?roles_required=COMMENTER"
+            == "https://authenticator/service/user?roles_required=COF_COMMENTER"
         )
 
     def test_login_required_with_return_app_redirects_to_signed_out_without_token(

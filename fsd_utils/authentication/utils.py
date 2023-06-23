@@ -1,10 +1,8 @@
-from typing import List
 from typing import Mapping
 
 import jwt as jwt
 from flask import current_app
 
-from .config import azure_ad_role_map
 from .config import config_var_rs256_public_key
 
 
