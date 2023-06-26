@@ -1,9 +1,11 @@
-from flask import current_app
-from bs4 import BeautifulSoup
-from fsd_utils import NotifyConstants
 from collections import defaultdict
-from fsd_utils.mapping.application.multi_input  import MultiInput
+
+from bs4 import BeautifulSoup
+from flask import current_app
+from fsd_utils import NotifyConstants
 from fsd_utils.mapping.application.application_utils import format_checkbox
+from fsd_utils.mapping.application.multi_input import MultiInput
+
 
 def remove_html_tags(answer):
     """
@@ -72,9 +74,7 @@ def extract_questions_and_answers_from_json_blob(
             for form in forms:
                 form_name = form["name"]
                 if form_name in form[NotifyConstants.APPLICATION_NAME_FIELD]:
-                    for question in form[
-                        NotifyConstants.APPLICATION_QUESTIONS_FIELD
-                    ]:
+                    for question in form[NotifyConstants.APPLICATION_QUESTIONS_FIELD]:
                         for field in question["fields"]:
                             answer = field.get("answer")
 
@@ -91,14 +91,11 @@ def extract_questions_and_answers_from_json_blob(
                                         field["title"]
                                     ] = answer
 
-                            elif (
-                                isinstance(answer, bool)
-                                and field["type"] == "list"
-                            ):
+                            elif isinstance(answer, bool) and field["type"] == "list":
 
-                                questions_answers[form_name][
-                                    field["title"]
-                                ] = ("Yes" if answer else "No")
+                                questions_answers[form_name][field["title"]] = (
+                                    "Yes" if answer else "No"
+                                )
 
                             elif (
                                 isinstance(answer, list)
@@ -115,24 +112,15 @@ def extract_questions_and_answers_from_json_blob(
                                     field["title"]
                                 ] = clean_html_answer
 
-                            elif (
-                                isinstance(answer, list)
-                                and field["type"] == "list"
-                            ):
+                            elif isinstance(answer, list) and field["type"] == "list":
                                 questions_answers[form_name][
                                     field["title"]
                                 ] = format_checkbox(answer)
 
                             else:
-                                questions_answers[form_name][
-                                    field["title"]
-                                ] = answer
+                                questions_answers[form_name][field["title"]] = answer
         except Exception as e:
-            current_app.logger.error(
-                f"Error occurred while processing form data: {e}"
-            )
-            current_app.logger.error(
-                f"Could not map the data for form: {form_name}"
-            )
+            current_app.logger.error(f"Error occurred while processing form data: {e}")
+            current_app.logger.error(f"Could not map the data for form: {form_name}")
             raise Exception(f"Could not map the data for form: {form_name}")
     return questions_answers

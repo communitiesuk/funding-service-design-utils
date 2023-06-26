@@ -4,7 +4,6 @@ import uuid
 from fsd_utils.mapping.application.application_utils import convert_bool_value
 
 
-
 class MultiInput:
     indent = " " * 5
 
@@ -114,9 +113,7 @@ class MultiInput:
                     )
                 # handles all other multiple values
                 else:
-                    output.append(
-                        cls.format_keys_and_values(key, value, index)
-                    )
+                    output.append(cls.format_keys_and_values(key, value, index))
 
         return output
 
@@ -144,9 +141,7 @@ class MultiInput:
                         sorted_data[key] = values
                     except TypeError:
                         value = tuple(item.values())
-                        if isinstance(value[0], dict) and isinstance(
-                            value[1], str
-                        ):
+                        if isinstance(value[0], dict) and isinstance(value[1], str):
                             *values, key = item.values()
                             sorted_data[key] = values
                     except:  # noqa
@@ -159,9 +154,5 @@ class MultiInput:
             output = cls.process_data(sorted_data)
             return "\n".join(output)
         except Exception as e:
-            print(
-                f"Error occurred while processing the multi input data: {e}"
-            )
-            print(
-                f"Couldn't map the multi input data for: {multi_input_data}"
-            )
+            print(f"Error occurred while processing the multi input data: {e}")
+            print(f"Couldn't map the multi input data for: {multi_input_data}")
