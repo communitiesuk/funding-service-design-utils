@@ -1,7 +1,7 @@
 import re
+from io import StringIO
 
 from flask import current_app
-from io import StringIO
 
 
 def convert_bool_value(data):
@@ -20,8 +20,7 @@ def convert_bool_value(data):
         if isinstance(data, list):
             if all(isinstance(sublist, list) for sublist in data):
                 converted_data = [
-                    [convert_values(value) for value in sublist]
-                    for sublist in data
+                    [convert_values(value) for value in sublist] for sublist in data
                 ]
             else:
                 converted_data = [convert_values(value) for value in data]

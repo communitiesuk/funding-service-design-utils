@@ -1,9 +1,11 @@
-from flask import current_app
-from bs4 import BeautifulSoup
-from fsd_utils import NotifyConstants
 from collections import defaultdict
-from fsd_utils.mapping.application.multi_input  import MultiInput
+
+from bs4 import BeautifulSoup
+from flask import current_app
+from fsd_utils import NotifyConstants
 from fsd_utils.mapping.application.application_utils import format_checkbox
+from fsd_utils.mapping.application.multi_input import MultiInput
+
 
 def remove_html_tags(answer):
     """
