@@ -83,7 +83,9 @@ def format_checkbox(answer):
 
 def generate_text_of_application(q_and_a: dict, fund_name: str):
     output = StringIO()
+
     output.write(f"********* {fund_name} **********\n")
+
     for section_name, values in q_and_a.items():
         title = simplify_title(section_name, remove_text=["cof", "ns"])
         output.write(f"\n* {' '.join(title).capitalize()}\n\n")

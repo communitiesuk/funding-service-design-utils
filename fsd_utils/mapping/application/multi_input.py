@@ -1,6 +1,7 @@
 import json
 import uuid
 
+from flask import current_app
 from fsd_utils.mapping.application.application_utils import convert_bool_value
 
 
@@ -154,5 +155,9 @@ class MultiInput:
             output = cls.process_data(sorted_data)
             return "\n".join(output)
         except Exception as e:
-            print(f"Error occurred while processing the multi input data: {e}")
-            print(f"Couldn't map the multi input data for: {multi_input_data}")
+            current_app.logger.error(
+                f"Error occurred while processing the multi input data: {e}"
+            )
+            current_app.logger.error(
+                f"Couldn't map the multi input data for: {multi_input_data}"
+            )
