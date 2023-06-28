@@ -1,13 +1,13 @@
 import pytest
-from fsd_utils.mapping.application.application_utils import convert_bool_value, format_answer, simplify_title, format_checkbox
-
-from fsd_utils.mapping.application.qa_mapping import extract_questions_and_answers
+from fsd_utils.mapping.application.application_utils import convert_bool_value
+from fsd_utils.mapping.application.application_utils import format_answer
+from fsd_utils.mapping.application.application_utils import format_checkbox
+from fsd_utils.mapping.application.application_utils import simplify_title
 from fsd_utils.mapping.application.free_text import FreeText
-
-from tests.test_data_utils import test_data_sort_questions_answers, multi_input_test_data
-import pytest
 from fsd_utils.mapping.application.multi_input import MultiInput
-
+from fsd_utils.mapping.application.qa_mapping import extract_questions_and_answers
+from tests.test_data_utils import multi_input_test_data
+from tests.test_data_utils import test_data_sort_questions_answers
 
 
 @pytest.mark.parametrize(
@@ -55,13 +55,9 @@ def test_format_answer(input_data, expected_response):
         ("organisation-address", ["cof", "ns"], ["organisation", "address"]),
     ],
 )
-def test_simplify_title(
-    section_name, remove_text, expected_response
-):
+def test_simplify_title(section_name, remove_text, expected_response):
     response = simplify_title(section_name, remove_text)
     assert response == expected_response
-
-
 
 
 @pytest.mark.parametrize(
@@ -89,9 +85,7 @@ def test_remove_html_tags(input_value, expected_response):
 def test_sort_questions_and_answers(app_context):
     forms = test_data_sort_questions_answers["forms"]
 
-    response = extract_questions_and_answers(
-        forms
-    )
+    response = extract_questions_and_answers(forms)
 
     assert response == test_data_sort_questions_answers["questions_answers"]
 
@@ -100,13 +94,9 @@ def test_sort_questions_and_answers_fail(app_context):
     forms = test_data_sort_questions_answers["incorrect_form_data"]
 
     with pytest.raises(Exception) as exc:
-        extract_questions_and_answers(
-            forms
-        )
+        extract_questions_and_answers(forms)
 
-    assert (
-        str(exc.value) == test_data_sort_questions_answers["exception_message"]
-    )
+    assert str(exc.value) == test_data_sort_questions_answers["exception_message"]
 
 
 @pytest.mark.parametrize(
@@ -129,7 +119,6 @@ def test_format_checkbox(input_value, expected_response):
 
     response = format_checkbox(input_value)
     assert response == expected_response
-    
 
 
 class TestMultiInput:
@@ -137,25 +126,19 @@ class TestMultiInput:
         "input_data, expected_response",
         [
             (
-                multi_input_test_data["process_data"]["multiple_values"][
-                    "input_data"
-                ],
+                multi_input_test_data["process_data"]["multiple_values"]["input_data"],
                 multi_input_test_data["process_data"]["multiple_values"][
                     "expected_response"
                 ],
             ),
             (
-                multi_input_test_data["process_data"]["single_value"][
-                    "input_data"
-                ],
+                multi_input_test_data["process_data"]["single_value"]["input_data"],
                 multi_input_test_data["process_data"]["single_value"][
                     "expected_response"
                 ],
             ),
             (
-                multi_input_test_data["process_data"]["iso_values"][
-                    "input_data"
-                ],
+                multi_input_test_data["process_data"]["iso_values"]["input_data"],
                 multi_input_test_data["process_data"]["iso_values"][
                     "expected_response"
                 ],
@@ -172,45 +155,33 @@ class TestMultiInput:
         "input_data, expected_response",
         [
             (
-                multi_input_test_data["map_data"]["multiple_values"][
-                    "input_data"
-                ],
+                multi_input_test_data["map_data"]["multiple_values"]["input_data"],
                 multi_input_test_data["map_data"]["multiple_values"][
                     "expected_response"
                 ],
             ),
             (
-                multi_input_test_data["map_data"]["single_value"][
-                    "input_data"
-                ],
-                multi_input_test_data["map_data"]["single_value"][
-                    "expected_response"
-                ],
+                multi_input_test_data["map_data"]["single_value"]["input_data"],
+                multi_input_test_data["map_data"]["single_value"]["expected_response"],
             ),
             (
-                multi_input_test_data["map_data"]["integer_values"][
-                    "input_data"
-                ],
+                multi_input_test_data["map_data"]["integer_values"]["input_data"],
                 multi_input_test_data["map_data"]["integer_values"][
                     "expected_response"
                 ],
             ),
             (
-                multi_input_test_data["map_data"][
-                    "nested_dict_value_with_str_value"
-                ]["input_data"],
-                multi_input_test_data["map_data"][
-                    "nested_dict_value_with_str_value"
-                ]["expected_response"],
+                multi_input_test_data["map_data"]["nested_dict_value_with_str_value"][
+                    "input_data"
+                ],
+                multi_input_test_data["map_data"]["nested_dict_value_with_str_value"][
+                    "expected_response"
+                ],
             ),
         ],
     )
-    def test_map_multi_input_data(
-        self, app_context, input_data, expected_response
-    ):
+    def test_map_multi_input_data(self, app_context, input_data, expected_response):
 
         response = MultiInput.map_multi_input_data(input_data)
 
         assert response == expected_response
-
-

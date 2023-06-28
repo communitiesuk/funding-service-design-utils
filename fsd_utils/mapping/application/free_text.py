@@ -4,7 +4,7 @@ from flask import current_app
 
 class FreeText:
     indent = " " * 5
-    
+
     @classmethod
     def remove_html_tags(cls, answer):
         """
