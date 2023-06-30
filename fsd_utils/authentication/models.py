@@ -4,10 +4,11 @@ Data models for authentication
 from dataclasses import dataclass
 from os import getenv
 from typing import List
+from typing import Mapping
 
 from sentry_sdk import set_user
 
-from .utils import get_highest_role
+from .utils import get_highest_role_map
 
 
 @dataclass
@@ -15,7 +16,7 @@ class User:
     full_name: str
     email: str
     roles: List[str]
-    highest_role: str
+    highest_role_map: Mapping[str, str]
 
     @classmethod
     def set_with_token(cls, token_payload):
@@ -35,5 +36,5 @@ class User:
             full_name=full_name,
             email=email,
             roles=roles,
-            highest_role=get_highest_role(roles),
+            highest_role_map=get_highest_role_map(roles),
         )
