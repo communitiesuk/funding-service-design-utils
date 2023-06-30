@@ -43,7 +43,29 @@ To reference a particular tag from pip, add the following to your `requirements.
 ## Latest / in-dev version
 To reference the latest commit from a particular branch from pip, add the following to your `requirements.txt` file or use `pip install`:
 
+pip install
+
+    pip install git+https://github.com/communitiesuk/funding-service-design-utils.git@<branchName>
+
+**or**
+
+To navigate requirements.txt to your branch:
+
+Replace `funding-service-design-utils` in `requirements.in` with
+
     git+https://github.com/communitiesuk/funding-service-design-utils.git@<branchName>
+
+Build requirements with following commands
+
+    pip-compile requirements.in
+    pip-compile requirements-dev.in
+    python3 -m pip install --upgrade pip && pip install -r requirements-dev.txt
+
+Build docker with following commands
+
+    docker compose build <service_name> --no-cache
+    or
+    docker compose build --no-cache
 
 ## Local changes
 When working and testing locally, you can also install the `fsd_utils` package from your local filesystem:
@@ -318,3 +340,20 @@ Provides direct access to the database for tests. Useful if your test needs to e
 This fixture reads the pytest cache to determine whether the DB can be reused for this test run and then the db is recreated accordingly. Updates the cache value to enable reuse of the DB for future test runs. This is session scoped so the DB is not recreated for each test in a run.
 
 This is requested by `clear_test_data` so you do not need to include it separately in your project if using that fixture.
+
+
+
+## Mapping
+
+The mapping feature serves the purpose of mapping and formatting the questions and answers of the application into a text file. This functionality is utilised in the following scenarios:
+
+- Within the assessment service, it facilitates the downloading of the application's questions and answers.
+- In the notification service, it enables the posting of the applicant's application answer.
+
+To accomplish the mapping of the application's questions and answers, import
+
+    from fsd_utils import extract_questions_and_answers
+
+To format the questions and answers of the application into a text file, import
+
+    from fsd_utils import generate_text_of_application

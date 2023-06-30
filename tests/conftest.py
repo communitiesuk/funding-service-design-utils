@@ -16,6 +16,12 @@ def create_app():
     return app
 
 
+@pytest.fixture()
+def app_context():
+    with create_app().app_context():
+        yield
+
+
 @pytest.fixture(scope="function")
 def flask_test_client():
     """
@@ -92,8 +98,8 @@ def flask_test_development_client():
                 "DEBUG_USER": {
                     "full_name": "Development User",
                     "email": "dev@example.com",
-                    "roles": ["ADMIN", "TEST"],
-                    "highest_role": "ADMIN",
+                    "roles": ["COF_ADMIN", "COF_TEST"],
+                    "highest_role_map": {"COF": "ADMIN"},
                 },
                 "FSD_USER_TOKEN_COOKIE_NAME": "fsd-user-token",
                 "AUTHENTICATOR_HOST": "https://authenticator",
@@ -128,8 +134,8 @@ def mock_login_required_route():
         "user": User(
             email="test@example.com",
             full_name="Test User",
-            highest_role="LEAD_ASSESSOR",
-            roles=["LEAD_ASSESSOR", "ASSESSOR", "COMMENTER"]
+            highest_role_map={"COF": "LEAD_ASSESSOR"},
+            roles=["COF_LEAD_ASSESSOR", "COF_ASSESSOR", "COF_COMMENTER"]
         )
     :return: the Flask g variable serialised as a dict/json
     """
@@ -149,8 +155,8 @@ def mock_login_requested_route():
         "user": User(
             email="test@example.com",
             full_name="Test User",
-            highest_role="LEAD_ASSESSOR",
-            roles=["LEAD_ASSESSOR", "ASSESSOR", "COMMENTER"]
+            highest_role_map={"COF": "LEAD_ASSESSOR"},
+            roles=["COF_LEAD_ASSESSOR", "COF_ASSESSOR", "COF_COMMENTER"]
         )
     and a non logged in user to have the Flask request g variables
     set as below:
@@ -164,7 +170,7 @@ def mock_login_requested_route():
     return vars(g)
 
 
-@login_required(roles_required=["COMMENTER"])
+@login_required(roles_required=["COF_COMMENTER"])
 def mock_login_required_roles_route():
     """
     A mock route function decorated with
@@ -182,15 +188,15 @@ def mock_login_required_roles_route():
         "user": User(
             email="test@example.com",
             full_name="Test User",
-            highest_role="LEAD_ASSESSOR",
-            roles=["LEAD_ASSESSOR", "ASSESSOR", "COMMENTER"]
+            highest_role_map={"COF": "LEAD_ASSESSOR"},
+            roles=["COF_LEAD_ASSESSOR", "COF_ASSESSOR", "COF_COMMENTER"]
         )
     :return: the Flask g variable serialised as a dict/json
     """
     return vars(g)
 
 
-@login_required(roles_required=["ADMIN", "TEST"])
+@login_required(roles_required=["COF_ADMIN", "COF_TEST"])
 def mock_login_required_admin_roles_route():
     """
     A mock route function decorated with
@@ -208,8 +214,8 @@ def mock_login_required_admin_roles_route():
         "user": User(
             email="test@example.com",
             full_name="Test User",
-            highest_role="LEAD_ASSESSOR",
-            roles=["LEAD_ASSESSOR", "ASSESSOR", "COMMENTER"]
+            highest_role_map={"COF": "LEAD_ASSESSOR"},
+            roles=["COF_LEAD_ASSESSOR", "COF_ASSESSOR", "COF_COMMENTER"]
         )
     :return: the Flask g variable serialised as a dict/json
     """
@@ -230,8 +236,8 @@ def mock_login_requested_return_app_route():
         "user": User(
             email="test@example.com",
             full_name="Test User",
-            highest_role="LEAD_ASSESSOR",
-            roles=["LEAD_ASSESSOR", "ASSESSOR", "COMMENTER"]
+            highest_role_map={"COF": "LEAD_ASSESSOR"},
+            roles=["COF_LEAD_ASSESSOR", "COF_ASSESSOR", "COF_COMMENTER"]
         )
     and a non logged in user to have the Flask request g variables
     set as below:
