@@ -91,5 +91,5 @@ def generate_text_of_application(q_and_a: dict, fund_name: str):
         output.write(f"\n* {' '.join(title).capitalize()}\n\n")
         for questions, answers in values.items():
             output.write(f"  Q) {questions}\n")
-            output.write(f"  A) {answers}\n\n")
+            output.write(f"  A) {format_answer(answers)}\n\n")
     return output.getvalue()

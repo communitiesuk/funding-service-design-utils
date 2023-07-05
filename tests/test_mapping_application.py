@@ -32,6 +32,10 @@ def test_convert_bool_values(input_data, expected_response):
     [
         ("null", ""),
         (None, "Not provided"),
+        (
+            "555 dummy road, null, beautiful town, optional county, UU8 8UU",
+            "555 dummy road, beautiful town, optional county, UU8 8UU",
+        ),
     ],
 )
 def test_format_answer(input_data, expected_response):

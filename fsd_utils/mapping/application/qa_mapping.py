@@ -39,7 +39,6 @@ def extract_questions_and_answers(forms) -> dict:
                             )
 
                         elif isinstance(answer, list) and field["type"] == "multiInput":
-                            print(f"MULTI INPUT ::: {answer}")
                             questions_answers[form_name][
                                 field["title"]
                             ] = MultiInput.map_multi_input_data(answer)
@@ -51,16 +50,12 @@ def extract_questions_and_answers(forms) -> dict:
                                 field["title"]
                             ] = clean_html_answer
 
-                        elif isinstance(answer, list) and field["type"] == "list":
-                            print(f"FORMAT CHECKBOX ::: {answer}")
-                            
-                            
+                        elif isinstance(answer, list) and field["type"] == "list":         
                             questions_answers[form_name][
                                 field["title"]
                             ] = format_checkbox(answer)
 
                         else:
-                            print(f"QA MAPPING ELSE::: {answer}")
                             questions_answers[form_name][field["title"]] = answer
     except Exception as e:
         current_app.logger.error(f"Error occurred while processing form data: {e}")
