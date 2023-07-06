@@ -50,7 +50,7 @@ def extract_questions_and_answers(forms) -> dict:
                                 field["title"]
                             ] = clean_html_answer
 
-                        elif isinstance(answer, list) and field["type"] == "list":         
+                        elif isinstance(answer, list) and field["type"] == "list":
                             questions_answers[form_name][
                                 field["title"]
                             ] = format_checkbox(answer)

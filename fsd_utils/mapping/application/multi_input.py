@@ -18,7 +18,7 @@ class MultiInput:
         Returns:
             str: The formatted string representation of the value.
         """
-        return f"{cls.indent}- {value}" if index != 1 else f"- {value}"
+        return f"{cls.indent}. {value}" if index != 1 else f". {value}"
 
     @classmethod
     def format_keys_and_values(cls, key, value, index):
@@ -48,9 +48,9 @@ class MultiInput:
             )
 
         return (
-            f"{cls.indent}- {key}: {formatted_values(value)}"  # noqa
+            f"{cls.indent}. {key}: {formatted_values(value)}"  # noqa
             if index != 1
-            else (f"- {key}: {formatted_values(value)}")  # noqa
+            else (f". {key}: {formatted_values(value)}")  # noqa
         )
 
     @classmethod
@@ -92,6 +92,8 @@ class MultiInput:
         output = []
 
         for index, (key, value) in enumerate(data.items(), start=1):
+            if isinstance(key, int):
+                key = str(key)
 
             # handles single value/answer containing uuid and excludes uuid key
             # & display the value only.
@@ -108,9 +110,9 @@ class MultiInput:
                 ):
                     formatted_nested_values = cls.format_nested_data(value)
                     output.append(
-                        f"{cls.indent}- {key}: {formatted_nested_values}"
+                        f"{cls.indent}. {key}: {formatted_nested_values}"
                         if index != 1
-                        else f"- {key}: {formatted_nested_values}"
+                        else f". {key}: {formatted_nested_values}"
                     )
                 # handles all other multiple values
                 else:
