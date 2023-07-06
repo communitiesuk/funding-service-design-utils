@@ -1,3 +1,4 @@
+import calendar
 import re
 from io import StringIO
 
@@ -40,12 +41,24 @@ def format_answer(answer):
         if "null" in answer:
             return re.sub(r"\s*null\s*,?", "", answer)
 
-        if isinstance(answer, list):
-            return [a.replace("'", "") for a in answer if isinstance(a, str)]
+        if isinstance(answer, str):
+            if answer.startswith("http") or answer.startswith("https"):
+                return answer
+            elif "-" in answer:
+                return answer.replace("-", " ")
 
-        return answer
+        if isinstance(answer, list):
+            return [
+                a.replace("'", "").replace("-", " ")
+                if isinstance(a, str) and "-" in a
+                else a
+                for a in answer
+            ]
+        else:
+
+            return answer
     except Exception as e:
-        current_app.logger.error(f"Could not format the answer, {e}")
+        current_app.logger.error(f"Could not format the answer: {e}")
 
 
 def simplify_title(section_name, remove_text: list):
@@ -70,7 +83,7 @@ def format_checkbox(answer):
     formatted_elements = []
     indent = " " * 5
     for index, element in enumerate(answer, start=1):
-        separator = f"{indent}-" if index > 1 else "-"
+        separator = f"{indent}." if index > 1 else "."
         if "-" in element:
             sub_elements = element.split("-")
             formatted_sub_elements = " ".join(sub_elements).strip()
@@ -93,3 +106,15 @@ def generate_text_of_application(q_and_a: dict, fund_name: str):
             output.write(f"  Q) {questions}\n")
             output.write(f"  A) {format_answer(answers)}\n\n")
     return output.getvalue()
+
+
+def number_to_month(number: list, iso_key):
+    try:
+        if iso_key == "month":
+            month_name = calendar.month_name[number]
+            return month_name
+        else:
+            return number
+    except IndexError:
+        current_app.logger.warn("Invalid month number")
+        return number

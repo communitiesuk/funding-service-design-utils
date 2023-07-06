@@ -3,6 +3,7 @@ import uuid
 
 from flask import current_app
 from fsd_utils.mapping.application.application_utils import convert_bool_value
+from fsd_utils.mapping.application.application_utils import number_to_month
 
 
 class MultiInput:
@@ -63,7 +64,8 @@ class MultiInput:
                 for iso_keys in ["date", "month", "year"]:
                     try:
                         if iso_keys in k.split("__"):
-                            formatted_nested_values.append(f"{iso_keys}: {v}")
+                            v = number_to_month(v, iso_keys)
+                            formatted_nested_values.append(f"{v}")
                             break
 
                     # handles all other nested multiple values
@@ -78,7 +80,7 @@ class MultiInput:
                                 )
                             )
                         )
-        return formatted_nested_values
+        return " ".join(formatted_nested_values)
 
     @classmethod
     def process_data(cls, data):

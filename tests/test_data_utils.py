@@ -52,8 +52,8 @@ multi_input_test_data = {
             },
             "expected_response": (
                 [
-                    ". Project one: ['month: 1', 'year: 2021']",
-                    "     . Project two: ['month: 2', 'year: 2022']",
+                    ". Project one: January 2021",
+                    "     . Project two: February 2022",
                 ]
             ),
         },
@@ -104,12 +104,15 @@ multi_input_test_data = {
                 },
                 {
                     "fFIuPP": "Milestone two",
-                    "PrulfI": {"PrulfI__month": 3, "PrulfI__year": 2023},
+                    "PrulfI": {
+                        "PrulfI__date": 12,
+                        "PrulfI__month": 3,
+                        "PrulfI__year": 2023,
+                    },
                 },
             ],
             "expected_response": (
-                ". Milestone one: ['month: 2', 'year: 2022']\n     . Milestone"
-                " two: ['month: 3', 'year: 2023']"
+                ". Milestone one: February 2022\n     . Milestone" " two: 12 March 2023"
             ),
         },
     },
