@@ -90,6 +90,7 @@ def test_sort_questions_and_answers(app_context):
     forms = test_data_sort_questions_answers["forms"]
 
     response = extract_questions_and_answers(forms)
+    print(f"RESPONSE:::; {response}")
 
     assert response == test_data_sort_questions_answers["questions_answers"]
 

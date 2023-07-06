@@ -32,9 +32,9 @@ multi_input_test_data = {
                 ],
             },
             "expected_response": [
-                "- trusts one: [125, '1 April 2023 to 31 March 2024',"
+                ". trusts one: [125, '1 April 2023 to 31 March 2024',"
                 " 'Capital', 'Yes']",
-                "     - trust two: [456, '1 April 2024 to 31 March 2025',"
+                "     . trust two: [456, '1 April 2024 to 31 March 2025',"
                 " 'Revenue', 'No']",
             ],
         },
@@ -43,7 +43,7 @@ multi_input_test_data = {
                 "bbd0ec2a-972f-4d06-bf93-bf24786c3859": "Sky builders",
                 "ac8bbdfe-6a39-45b8-8c0a-6558148388d1": "trust builders",
             },
-            "expected_response": ["- Sky builders", "     - trust builders"],
+            "expected_response": [". Sky builders", "     . trust builders"],
         },
         "iso_values": {
             "input_data": {
@@ -52,8 +52,8 @@ multi_input_test_data = {
             },
             "expected_response": (
                 [
-                    "- Project one: ['month: 1', 'year: 2021']",
-                    "     - Project two: ['month: 2', 'year: 2022']",
+                    ". Project one: ['month: 1', 'year: 2021']",
+                    "     . Project two: ['month: 2', 'year: 2022']",
                 ]
             ),
         },
@@ -77,8 +77,8 @@ multi_input_test_data = {
                 },
             ],
             "expected_response": (
-                "- trusts one: [125, '1 April 2023 to 31 March 2024',"
-                " 'Capital', 'Yes']\n     - trust two: [456, '1 April 2024 to"
+                ". trusts one: [125, '1 April 2023 to 31 March 2024',"
+                " 'Capital', 'Yes']\n     . trust two: [456, '1 April 2024 to"
                 " 31 March 2025', 'Revenue', 'No']"
             ),
         },
@@ -87,14 +87,14 @@ multi_input_test_data = {
                 {"CZZYvE": "Sky builders"},
                 {"CZZYvE": "trust builders"},
             ],
-            "expected_response": "- Sky builders\n     - trust builders",
+            "expected_response": ". Sky builders\n     . trust builders",
         },
         "integer_values": {
             "input_data": [
                 {"GLQlOh": "cost one", "JtwkMy": 4444},
                 {"GLQl6y": "cost two", "JtwkMt": 4455},
             ],
-            "expected_response": "- cost one: 4444\n     - cost two: 4455",
+            "expected_response": ". cost one: 4444\n     . cost two: 4455",
         },
         "nested_dict_value_with_str_value": {
             "input_data": [
@@ -108,7 +108,7 @@ multi_input_test_data = {
                 },
             ],
             "expected_response": (
-                "- Milestone one: ['month: 2', 'year: 2022']\n     - Milestone"
+                ". Milestone one: ['month: 2', 'year: 2022']\n     . Milestone"
                 " two: ['month: 3', 'year: 2023']"
             ),
         },
@@ -119,41 +119,98 @@ multi_input_test_data = {
 test_data_sort_questions_answers = {
     "forms": [
         {
+            "name": "funding-required-ns",
             "questions": [
                 {
-                    "category": "ZbxIUV",
-                    "question": "Lead contact details",
                     "fields": [
                         {
-                            "key": "fUMWcd",
-                            "title": "Name of lead contact",
+                            "answer": "both-revenue-and-capital",
+                            "key": "NxVqXd",
+                            "title": "What funding are you applying for?",
+                            "type": "list",
+                        }
+                    ],
+                    "question": "What funding are you applying for?",
+                },
+                {
+                    "fields": [
+                        {
+                            "answer": "4020",
+                            "key": "GRWtfV",
+                            "title": "Both revenue and capital",
                             "type": "text",
-                            "answer": "test name",
                         },
                         {
-                            "key": "ayzqnK",
-                            "title": (
-                                "Is the lead contact the same person as the"
-                                " authorised signatory?"
-                            ),
-                            "type": "list",
-                            "answer": True,
+                            "answer": "4020",
+                            "key": "zvPzXN",
+                            "title": "Revenue for 1 April 2024 to 31 March 2025",
+                            "type": "text",
+                        },
+                        {
+                            "answer": "1230",
+                            "title": "Capital for 1 April 2023 to 31 March 2024",
+                            "type": "text",
+                        },
+                        {
+                            "answer": "1230",
+                            "key": "pppiYl",
+                            "title": "Capital for 1 April 2024 to 31 March 2025",
+                            "type": "text",
                         },
                     ],
-                }
+                    "question": "How much funding are you applying for?",
+                },
+                {
+                    "fields": [
+                        {
+                            "answer": [
+                                {
+                                    "TrTaZQ": "Test Funding Required NS Form",
+                                    "dpDFgB": "Test Funding Required NS Form",
+                                    "iZdZrr": 40,
+                                    "leIxEX": "1 April 2023 to 31 March 2024",
+                                }
+                            ],
+                            "key": "mCbbyN",
+                            "title": "Revenue costs",
+                            "type": "multiInput",
+                        }
+                    ],
+                    "question": "Revenue funding",
+                },
+                {
+                    "fields": [
+                        {
+                            "answer": [
+                                {
+                                    "JtBjFp": 50,
+                                    "cpFthG": "Test Funding Required NS Form",
+                                    "mmwzGc": "1 April 2024 to 31 March 2025",
+                                    "pMffVz": "Test Funding Required NS Form",
+                                }
+                            ],
+                            "key": "XsAoTv",
+                            "title": "Capital costs",
+                            "type": "multiInput",
+                        }
+                    ],
+                    "question": "Capital funding",
+                },
             ],
-            "name": "applicant-information-ns",
-        },
+        }
     ],
     "form_names": [
-        "objectives-and-activities-ns",
-        "risk-and-deliverability-ns",
-        "applicant-information-ns",
+        "funding-required-ns",
     ],
     "questions_answers": {
-        "applicant-information-ns": {
-            "Name of lead contact": "test name",
-            "Is the lead contact the same person as the authorised signatory?": ("Yes"),
+        "funding-required-ns": {
+            "What funding are you applying for?": "both-revenue-and-capital",
+            "Both revenue and capital": "4020",
+            "Revenue for 1 April 2024 to 31 March 2025": "4020",
+            "Capital for 1 April 2023 to 31 March 2024": "1230",
+            "Capital for 1 April 2024 to 31 March 2025": "1230",
+            "Revenue costs": ". Test Funding Required NS Form: ['Test Funding Required NS Form', 40, '1 April 2023 to 31 March 2024']",  # noqa
+            "Capital costs": ". 50: ['Test Funding Required NS Form', '1 April 2024 to 31 March 2025', 'Test Funding Required NS Form']",  # noqa
         }
     },
     "incorrect_form_data": [
