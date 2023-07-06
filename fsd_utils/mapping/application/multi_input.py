@@ -56,30 +56,35 @@ class MultiInput:
 
     @classmethod
     def format_nested_data(cls, value):
+        """
+        Formats nested data based on specific keys and data and returns the formatted result.
+        Args:
+            value: A nested data structure to be processed and formatted.
+
+        Returns:
+            str: The formatted result obtained from the nested data.
+        """
 
         formatted_nested_values = []
-        for inner_items in value:
-
-            for k, v in inner_items.items():
-                for iso_keys in ["date", "month", "year"]:
-                    try:
+        try:
+            for inner_items in value:
+                for k, v in inner_items.items():
+                    for iso_keys in ["date", "month", "year"]:
                         if iso_keys in k.split("__"):
                             v = number_to_month(v, iso_keys)
                             formatted_nested_values.append(f"{v}")
                             break
 
                     # handles all other nested multiple values
-                    except:  # noqa
-                        formatted_nested_values.append(
-                            ", ".join(
-                                map(
-                                    lambda item: ", ".join(
-                                        [f"{k}: {v}" for k, v in item.items()]
-                                    ),
-                                    value,
-                                )
-                            )
-                        )
+        except:  # noqa
+            formatted_nested_values.append(
+                ", ".join(
+                    map(
+                        lambda item: ", ".join([f"{k}: {v}" for k, v in item.items()]),
+                        value,
+                    )
+                )
+            )
         return " ".join(formatted_nested_values)
 
     @classmethod

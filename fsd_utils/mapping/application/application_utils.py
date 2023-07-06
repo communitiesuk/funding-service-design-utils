@@ -108,7 +108,8 @@ def generate_text_of_application(q_and_a: dict, fund_name: str):
     return output.getvalue()
 
 
-def number_to_month(number: list, iso_key):
+def number_to_month(number, iso_key):
+    """Converts a month number to its corresponding month name."""
     try:
         if iso_key == "month":
             month_name = calendar.month_name[number]
