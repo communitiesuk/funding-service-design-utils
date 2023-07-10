@@ -3,6 +3,7 @@ import uuid
 
 from flask import current_app
 from fsd_utils.mapping.application.application_utils import convert_bool_value
+from fsd_utils.mapping.application.application_utils import number_to_month
 
 
 class MultiInput:
@@ -18,7 +19,7 @@ class MultiInput:
         Returns:
             str: The formatted string representation of the value.
         """
-        return f"{cls.indent}- {value}" if index != 1 else f"- {value}"
+        return f"{cls.indent}. {value}" if index != 1 else f". {value}"
 
     @classmethod
     def format_keys_and_values(cls, key, value, index):
@@ -48,37 +49,43 @@ class MultiInput:
             )
 
         return (
-            f"{cls.indent}- {key}: {formatted_values(value)}"  # noqa
+            f"{cls.indent}. {key}: {formatted_values(value)}"  # noqa
             if index != 1
-            else (f"- {key}: {formatted_values(value)}")  # noqa
+            else (f". {key}: {formatted_values(value)}")  # noqa
         )
 
     @classmethod
     def format_nested_data(cls, value):
+        """
+        Formats nested data based on specific keys and data and returns the formatted result.
+        Args:
+            value: A nested data structure to be processed and formatted.
+
+        Returns:
+            str: The formatted result obtained from the nested data.
+        """
 
         formatted_nested_values = []
-        for inner_items in value:
-
-            for k, v in inner_items.items():
-                for iso_keys in ["date", "month", "year"]:
-                    try:
+        try:
+            for inner_items in value:
+                for k, v in inner_items.items():
+                    for iso_keys in ["date", "month", "year"]:
                         if iso_keys in k.split("__"):
-                            formatted_nested_values.append(f"{iso_keys}: {v}")
+                            v = number_to_month(v, iso_keys)
+                            formatted_nested_values.append(f"{v}")
                             break
 
                     # handles all other nested multiple values
-                    except:  # noqa
-                        formatted_nested_values.append(
-                            ", ".join(
-                                map(
-                                    lambda item: ", ".join(
-                                        [f"{k}: {v}" for k, v in item.items()]
-                                    ),
-                                    value,
-                                )
-                            )
-                        )
-        return formatted_nested_values
+        except:  # noqa
+            formatted_nested_values.append(
+                ", ".join(
+                    map(
+                        lambda item: ", ".join([f"{k}: {v}" for k, v in item.items()]),
+                        value,
+                    )
+                )
+            )
+        return " ".join(formatted_nested_values)
 
     @classmethod
     def process_data(cls, data):
@@ -92,6 +99,8 @@ class MultiInput:
         output = []
 
         for index, (key, value) in enumerate(data.items(), start=1):
+            if isinstance(key, int):
+                key = str(key)
 
             # handles single value/answer containing uuid and excludes uuid key
             # & display the value only.
@@ -108,9 +117,9 @@ class MultiInput:
                 ):
                     formatted_nested_values = cls.format_nested_data(value)
                     output.append(
-                        f"{cls.indent}- {key}: {formatted_nested_values}"
+                        f"{cls.indent}. {key}: {formatted_nested_values}"
                         if index != 1
-                        else f"- {key}: {formatted_nested_values}"
+                        else f". {key}: {formatted_nested_values}"
                     )
                 # handles all other multiple values
                 else:

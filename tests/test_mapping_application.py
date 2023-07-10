@@ -32,6 +32,17 @@ def test_convert_bool_values(input_data, expected_response):
     [
         ("null", ""),
         (None, "Not provided"),
+        (
+            "555 dummy road, null, beautiful town, optional county, UU8 8UU",
+            "555 dummy road, beautiful town, optional county, UU8 8UU",
+        ),
+        ("https://example.com/test-the-link", "https://example.com/test-the-link"),
+        (["one-two-three"], ["one two three"]),
+        (["four five six"], ["four five six"]),
+        ("seven-eight-nine", "seven eight nine"),
+        ("seven-eight-nine", "seven eight nine"),
+        ("ten eleven twelve", "ten eleven twelve"),
+        ({"title": ["one-two-three"]}, {"title": ["one-two-three"]}),
     ],
 )
 def test_format_answer(input_data, expected_response):
@@ -86,7 +97,6 @@ def test_sort_questions_and_answers(app_context):
     forms = test_data_sort_questions_answers["forms"]
 
     response = extract_questions_and_answers(forms)
-
     assert response == test_data_sort_questions_answers["questions_answers"]
 
 
@@ -107,11 +117,11 @@ def test_sort_questions_and_answers_fail(app_context):
                 "health-interventions",
                 "employment-support",
             ],
-            "- health interventions\n     - employment support",
+            ". health interventions\n     . employment support",
         ),
         (
             ["Survivors of domestic abuse", "ethnic minorities"],
-            "- Survivors of domestic abuse\n     - ethnic minorities",
+            ". Survivors of domestic abuse\n     . ethnic minorities",
         ),
     ],
 )
