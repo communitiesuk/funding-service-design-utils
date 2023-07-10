@@ -41,24 +41,12 @@ def format_answer(answer):
         if "null" in answer:
             return re.sub(r"\s*null\s*,?", "", answer)
 
-        if isinstance(answer, str):
-            if answer.startswith("http") or answer.startswith("https"):
-                return answer
-            elif "-" in answer:
-                return answer.replace("-", " ")
-
         if isinstance(answer, list):
-            return [
-                a.replace("'", "").replace("-", " ")
-                if isinstance(a, str) and "-" in a
-                else a
-                for a in answer
-            ]
-        else:
+            return [a.replace("'", "") for a in answer if isinstance(a, str)]
 
-            return answer
-    except Exception as e:
-        current_app.logger.error(f"Could not format the answer: {e}")
+        return answer
+    except Exception:
+        current_app.logger.error(f"No formatting required for an answer: {answer}")
 
 
 def simplify_title(section_name, remove_text: list):
