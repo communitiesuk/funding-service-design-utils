@@ -48,7 +48,7 @@ class MultiInput:
                 else convert_bool_value(value)
             )
 
-        values = ".\n".join([f". {item}" for item in value])
+        values = cls.indent + ".\n".join([f". {item}" for item in value])
 
         return (
             f"{cls.indent}-> {key} \n {formatted_values(values)}"  # noqa
