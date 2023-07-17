@@ -7,7 +7,9 @@ from fsd_utils.mapping.application.application_utils import number_to_month
 
 
 class MultiInput:
-    indent = " " * 5
+    @classmethod
+    def indent(cls, indent_space):
+        return " " * indent_space
 
     @classmethod
     def format_values(cls, value, index):
@@ -19,10 +21,10 @@ class MultiInput:
         Returns:
             str: The formatted string representation of the value.
         """
-        return f"{cls.indent}. {value}" if index != 1 else f". {value}"
+        return f"{cls.indent(5)}. {value}" if index != 1 else f". {value}"
 
     @classmethod
-    def format_keys_and_values(cls, key, value, index):
+    def format_keys_and_values(cls, key: str, value: list, index: enumerate):
 
         """
         Format the given key-value pair based on specified conditions.
@@ -47,13 +49,18 @@ class MultiInput:
                 if isinstance(value, list)
                 else convert_bool_value(value)
             )
-        value_indent = " " * 7
-        values = ".\n".join([f"{value_indent}. {item.strip()}" for item in value])
+
+        values = ".\n".join(
+            [
+                f"{cls.indent(7) if i == 1 else cls.indent(8)}. {str(item).strip()}"
+                for i, item in enumerate(value, start=1)
+            ]
+        )
 
         return (
-            f"{cls.indent}-> \n{key} \n {formatted_values(values)}"  # noqa
+            f"\n{cls.indent(5)}-> {str(key.strip())} \n {formatted_values(values)}"  # noqa
             if index != 1
-            else (f"-> {key} \n {formatted_values(values)}")  # noqa
+            else (f"-> {str(key.strip())} \n {formatted_values(values)}")  # noqa
         )
 
     @classmethod
@@ -119,7 +126,7 @@ class MultiInput:
                 ):
                     formatted_nested_values = cls.format_nested_data(value)
                     output.append(
-                        f"{cls.indent}. {key}: {formatted_nested_values}"
+                        f"{cls.indent(5)}. {key}: {formatted_nested_values}"
                         if index != 1
                         else f". {key}: {formatted_nested_values}"
                     )

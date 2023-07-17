@@ -124,5 +124,5 @@ def number_to_month(number, iso_key):
         else:
             return number
     except IndexError:
-        current_app.logger.warn("Invalid month number")
+        current_app.logger.warning("Invalid month number")
         return number
