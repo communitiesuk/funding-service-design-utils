@@ -47,11 +47,11 @@ class MultiInput:
                 if isinstance(value, list)
                 else convert_bool_value(value)
             )
-
-        values = ".\n".join([f"{cls.indent}. {item}" for item in value])
+        value_indent = " " * 7
+        values = ".\n".join([f"{value_indent}. {item.strip()}" for item in value])
 
         return (
-            f"{cls.indent}-> {key} \n {formatted_values(values)}"  # noqa
+            f"{cls.indent}-> \n{key} \n {formatted_values(values)}"  # noqa
             if index != 1
             else (f"-> {key} \n {formatted_values(values)}")  # noqa
         )
