@@ -47,6 +47,7 @@ class MultiInput:
                 if isinstance(value, list)
                 else convert_bool_value(value)
             )
+
         value_indent = " " * 7
         values = ".\n".join([f"{value_indent}. {item.strip()}" for item in value])
 
