@@ -82,6 +82,25 @@ def format_checkbox(answer):
     return "\n".join(formatted_elements)
 
 
+def format_radio_field(answer):
+    try:
+        if answer is None or isinstance(answer, (bool, list)):
+            return answer
+
+        # Check if answer looks like a URL
+        if answer.startswith("http://") or answer.startswith("https://"):
+            return answer
+
+        if "-" in answer:
+            answer = answer.split("-")
+            formatted_answer = " ".join(answer).strip()
+            return formatted_answer
+
+    except Exception:  # noqa
+        current_app.logger.info("The answer doesn't seem to be a radio field.")
+        return answer
+
+
 def generate_text_of_application(q_and_a: dict, fund_name: str):
     output = StringIO()
 

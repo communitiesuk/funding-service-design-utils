@@ -2,6 +2,7 @@ import pytest
 from fsd_utils.mapping.application.application_utils import convert_bool_value
 from fsd_utils.mapping.application.application_utils import format_answer
 from fsd_utils.mapping.application.application_utils import format_checkbox
+from fsd_utils.mapping.application.application_utils import format_radio_field
 from fsd_utils.mapping.application.application_utils import simplify_title
 from fsd_utils.mapping.application.free_text import FreeText
 from fsd_utils.mapping.application.multi_input import MultiInput
@@ -90,14 +91,14 @@ def test_remove_html_tags(input_value, expected_response):
     assert response == expected_response
 
 
-def test_sort_questions_and_answers(app_context):
+def test_extract_questions_and_answers(app_context):
     forms = test_data_sort_questions_answers["forms"]
 
     response = extract_questions_and_answers(forms)
     assert response == test_data_sort_questions_answers["questions_answers"]
 
 
-def test_sort_questions_and_answers_fail(app_context):
+def test_extract_questions_and_answers_fail(app_context):
     forms = test_data_sort_questions_answers["incorrect_form_data"]
 
     with pytest.raises(Exception) as exc:
@@ -125,6 +126,22 @@ def test_sort_questions_and_answers_fail(app_context):
 def test_format_checkbox(input_value, expected_response):
 
     response = format_checkbox(input_value)
+    assert response == expected_response
+
+
+@pytest.mark.parametrize(
+    "input_value, expected_response",
+    [
+        ("health-interventions", "health interventions"),
+        ("https://my-website.com", "https://my-website.com"),
+        (None, None),
+        (True, True),
+        (["test-list-answer"], ["test-list-answer"]),
+    ],
+)
+def test_format_radio_field(input_value, expected_response):
+
+    response = format_radio_field(input_value)
     assert response == expected_response
 
 

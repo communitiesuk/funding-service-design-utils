@@ -48,10 +48,12 @@ class MultiInput:
                 else convert_bool_value(value)
             )
 
+        values = ".".join([f". {item}" for item in value])
+
         return (
-            f"{cls.indent}. {key}: {formatted_values(value)}"  # noqa
+            f"{cls.indent}-> {key} \n {formatted_values(values)}"  # noqa
             if index != 1
-            else (f". {key}: {formatted_values(value)}")  # noqa
+            else (f"-> {key} \n {formatted_values(values)}")  # noqa
         )
 
     @classmethod
@@ -161,7 +163,10 @@ class MultiInput:
                         )
                         key, *values = item.values()
                         sorted_data[json.dumps(key)] = values
+
             output = cls.process_data(sorted_data)
+            test = "\n".join(output)
+            print(f"FINALLLLLLL OUTPUT:: {test}")
             return "\n".join(output)
         except Exception as e:
             current_app.logger.error(
