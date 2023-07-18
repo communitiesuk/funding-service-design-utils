@@ -50,9 +50,9 @@ class MultiInput:
                 else convert_bool_value(values)
             )
 
-        values = ".\n".join(
+        values = "\n".join(
             [
-                f"{cls.indent(7) if i == 1 else cls.indent(8)}. {str(item).strip()}"
+                f"{cls.indent(6) if i == 1 else cls.indent(7)}. {str(item).strip()}"
                 for i, item in enumerate(value, start=1)
             ]
         )
