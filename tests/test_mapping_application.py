@@ -156,7 +156,6 @@ def test_format_radio_field(input_value, expected_response):
 def test_format_month_year(input_value, expected_response):
 
     response = format_month_year(input_value)
-
     assert response == expected_response
 
 
