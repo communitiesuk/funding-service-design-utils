@@ -128,3 +128,25 @@ def number_to_month(number, iso_key):
     except IndexError:
         current_app.logger.warning("Invalid month number")
         return number
+
+
+def format_month_year(answer):
+    answer_text = answer.split("-")
+    try:
+        year = int(answer_text[0])
+        month = f"{calendar.month_name[int(answer_text[1])]}"
+        if month:
+            return f"{month} {year}"
+
+    except IndexError:
+        year = int(answer_text[1])
+        month = f"{calendar.month_name[int(answer_text[0])]}"
+        if month:
+            return f"{month} {year}"
+
+    except Exception as e:
+        current_app.logger.warning(
+            f"Invalid month-year formatting for answer: {answer}. Error: {str(e)}"
+        )
+
+    return answer
