@@ -35,19 +35,21 @@ class MultiInput:
         Returns:
             str: The formatted string representation of the key-value pair.
         """
+        
+        print(f"VALUE: {value}")
 
-        def formatted_values(value):
+        def formatted_values(values):
             return (
                 ", ".join(
                     map(
                         str,
-                        convert_bool_value([value])
-                        if len(value) > 1
-                        else convert_bool_value(value),
+                        convert_bool_value([values])
+                        if len(values) > 1
+                        else convert_bool_value(values),
                     )
                 )
-                if isinstance(value, list)
-                else convert_bool_value(value)
+                if isinstance(values, list)
+                else convert_bool_value(values)
             )
 
         values = ".\n".join(

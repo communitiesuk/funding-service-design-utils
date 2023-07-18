@@ -97,7 +97,7 @@ def format_radio_field(answer):
             return formatted_answer
 
     except Exception:  # noqa
-        current_app.logger.info("The answer doesn't seem to be a radio field.")
+        current_app.logger.info("continue: the answer doesn't seem to be a radio field.")
         return answer
 
 
