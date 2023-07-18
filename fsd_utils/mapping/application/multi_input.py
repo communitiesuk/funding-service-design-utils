@@ -60,9 +60,9 @@ class MultiInput:
         )
 
         return (
-            f"\n{cls.indent(5)}-> {str(key.strip())} \n {formatted_values(values)}"  # noqa
+            f"\n{cls.indent(5)}* {str(key.strip())} \n {formatted_values(values)}"  # noqa
             if index != 1
-            else (f"-> {str(key.strip())} \n {formatted_values(values)}")  # noqa
+            else (f"* {str(key.strip())} \n {formatted_values(values)}")  # noqa
         )
 
     @classmethod

@@ -108,7 +108,7 @@ def generate_text_of_application(q_and_a: dict, fund_name: str):
 
     for section_name, values in q_and_a.items():
         title = simplify_title(section_name, remove_text=["cof", "ns"])
-        output.write(f"\n* {' '.join(title).capitalize()}\n\n")
+        output.write(f"\n** {' '.join(title).capitalize()} **\n\n")
         for questions, answers in values.items():
             output.write(f"  Q) {questions}\n")
             output.write(f"  A) {format_answer(answers)}\n\n")
