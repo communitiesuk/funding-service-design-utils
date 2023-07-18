@@ -35,7 +35,7 @@ class MultiInput:
         Returns:
             str: The formatted string representation of the key-value pair.
         """
-        
+
         print(f"VALUE: {value}")
 
         def formatted_values(values):
