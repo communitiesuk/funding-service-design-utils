@@ -82,6 +82,27 @@ def format_checkbox(answer):
     return "\n".join(formatted_elements)
 
 
+def format_radio_field(answer):
+    try:
+        if answer is None or isinstance(answer, (bool, list)):
+            return answer
+
+        # Check if answer looks like a URL
+        if answer.startswith("http://") or answer.startswith("https://"):
+            return answer
+
+        if "-" in answer:
+            answer = answer.split("-")
+            formatted_answer = " ".join(answer).strip()
+            return formatted_answer
+
+    except Exception:  # noqa
+        current_app.logger.info(
+            "continue: the answer doesn't seem to be a radio field."
+        )
+        return answer
+
+
 def generate_text_of_application(q_and_a: dict, fund_name: str):
     output = StringIO()
 
@@ -89,7 +110,7 @@ def generate_text_of_application(q_and_a: dict, fund_name: str):
 
     for section_name, values in q_and_a.items():
         title = simplify_title(section_name, remove_text=["cof", "ns"])
-        output.write(f"\n* {' '.join(title).capitalize()}\n\n")
+        output.write(f"\n** {' '.join(title).capitalize()} **\n\n")
         for questions, answers in values.items():
             output.write(f"  Q) {questions}\n")
             output.write(f"  A) {format_answer(answers)}\n\n")
@@ -105,5 +126,21 @@ def number_to_month(number, iso_key):
         else:
             return number
     except IndexError:
-        current_app.logger.warn("Invalid month number")
+        current_app.logger.warning("Invalid month number")
         return number
+
+
+def format_month_year(answer):
+    try:
+        answer_text = answer.split("-")
+        month = answer_text[0] if len(answer_text[0]) == 2 else answer_text[1]
+        month_name = calendar.month_name[int(month)]
+        if month_name:
+            year = answer_text[1] if len(answer_text[1]) == 4 else answer_text[0]
+            return f"{month_name} {year}"
+    except Exception as e:
+        current_app.logger.warning(
+            f"Invalid month-year formatting for answer: {answer}. Error: {str(e)}"
+        )
+
+    return answer

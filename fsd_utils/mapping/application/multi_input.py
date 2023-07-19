@@ -7,7 +7,9 @@ from fsd_utils.mapping.application.application_utils import number_to_month
 
 
 class MultiInput:
-    indent = " " * 5
+    @classmethod
+    def indent(cls, indent_space):
+        return " " * indent_space
 
     @classmethod
     def format_values(cls, value, index):
@@ -19,10 +21,10 @@ class MultiInput:
         Returns:
             str: The formatted string representation of the value.
         """
-        return f"{cls.indent}. {value}" if index != 1 else f". {value}"
+        return f"{cls.indent(5)}. {value}" if index != 1 else f". {value}"
 
     @classmethod
-    def format_keys_and_values(cls, key, value, index):
+    def format_keys_and_values(cls, key: str, value: list, index: enumerate):
 
         """
         Format the given key-value pair based on specified conditions.
@@ -34,24 +36,31 @@ class MultiInput:
             str: The formatted string representation of the key-value pair.
         """
 
-        def formatted_values(value):
+        def formatted_values(values):
             return (
                 ", ".join(
                     map(
                         str,
-                        convert_bool_value([value])
-                        if len(value) > 1
-                        else convert_bool_value(value),
+                        convert_bool_value([values])
+                        if len(values) > 1
+                        else convert_bool_value(values),
                     )
                 )
-                if isinstance(value, list)
-                else convert_bool_value(value)
+                if isinstance(values, list)
+                else convert_bool_value(values)
             )
 
+        values = "\n".join(
+            [
+                f"{cls.indent(6) if i == 1 else cls.indent(7)}. {str(item).strip()}"
+                for i, item in enumerate(value, start=1)
+            ]
+        )
+
         return (
-            f"{cls.indent}. {key}: {formatted_values(value)}"  # noqa
+            f"\n{cls.indent(5)}* {str(key.strip())} \n {formatted_values(values)}"  # noqa
             if index != 1
-            else (f". {key}: {formatted_values(value)}")  # noqa
+            else (f"* {str(key.strip())} \n {formatted_values(values)}")  # noqa
         )
 
     @classmethod
@@ -117,7 +126,7 @@ class MultiInput:
                 ):
                     formatted_nested_values = cls.format_nested_data(value)
                     output.append(
-                        f"{cls.indent}. {key}: {formatted_nested_values}"
+                        f"{cls.indent(5)}. {key}: {formatted_nested_values}"
                         if index != 1
                         else f". {key}: {formatted_nested_values}"
                     )
@@ -161,6 +170,7 @@ class MultiInput:
                         )
                         key, *values = item.values()
                         sorted_data[json.dumps(key)] = values
+
             output = cls.process_data(sorted_data)
             return "\n".join(output)
         except Exception as e:

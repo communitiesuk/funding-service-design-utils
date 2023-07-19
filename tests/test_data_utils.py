@@ -32,10 +32,8 @@ multi_input_test_data = {
                 ],
             },
             "expected_response": [
-                ". trusts one: [125, '1 April 2023 to 31 March 2024',"
-                " 'Capital', 'Yes']",
-                "     . trust two: [456, '1 April 2024 to 31 March 2025',"
-                " 'Revenue', 'No']",
+                "* trusts one \n       . 125\n       . 1 April 2023 to 31 March 2024\n       . Capital\n       . True",  # noqa
+                "\n     * trust two \n       . 456\n       . 1 April 2024 to 31 March 2025\n       . Revenue\n       . False",  # noqa
             ],
         },
         "single_value": {
@@ -76,11 +74,7 @@ multi_input_test_data = {
                     "sIFBGc": False,
                 },
             ],
-            "expected_response": (
-                ". trusts one: [125, '1 April 2023 to 31 March 2024',"
-                " 'Capital', 'Yes']\n     . trust two: [456, '1 April 2024 to"
-                " 31 March 2025', 'Revenue', 'No']"
-            ),
+            "expected_response": "* trusts one \n       . 125\n       . 1 April 2023 to 31 March 2024\n       . Capital\n       . True\n\n     * trust two \n       . 456\n       . 1 April 2024 to 31 March 2025\n       . Revenue\n       . False",  # noqa
         },
         "single_value": {
             "input_data": [
@@ -94,7 +88,7 @@ multi_input_test_data = {
                 {"GLQlOh": "cost one", "JtwkMy": 4444},
                 {"GLQl6y": "cost two", "JtwkMt": 4455},
             ],
-            "expected_response": ". cost one: 4444\n     . cost two: 4455",
+            "expected_response": "* cost one \n       . 4444\n\n     * cost two \n       . 4455",
         },
         "nested_dict_value_with_str_value": {
             "input_data": [
@@ -144,6 +138,12 @@ test_data_sort_questions_answers = {
                             "type": "text",
                         },
                         {
+                            "answer": "This-is-a-type-text-answer",
+                            "key": "SRWtfV",
+                            "title": "Testing hyphen in field type text",
+                            "type": "text",
+                        },
+                        {
                             "answer": "4020",
                             "key": "zvPzXN",
                             "title": "Revenue for 1 April 2024 to 31 March 2025",
@@ -159,6 +159,18 @@ test_data_sort_questions_answers = {
                             "key": "pppiYl",
                             "title": "Capital for 1 April 2024 to 31 March 2025",
                             "type": "text",
+                        },
+                        {
+                            "key": "NENGMj",
+                            "title": "Which membership organisations are you a member of?",
+                            "type": "list",
+                            "answer": "homeless-link",
+                        },
+                        {
+                            "key": "bCXNtj",
+                            "title": "When did you start providing day provision?",
+                            "type": "monthYear",
+                            "answer": "2023-03",
                         },
                     ],
                     "question": "How much funding are you applying for?",
@@ -207,13 +219,16 @@ test_data_sort_questions_answers = {
     ],
     "questions_answers": {
         "funding-required-ns": {
-            "What funding are you applying for?": "both-revenue-and-capital",
+            "What funding are you applying for?": "both revenue and capital",
             "Both revenue and capital": "4020",
             "Revenue for 1 April 2024 to 31 March 2025": "4020",
+            "Testing hyphen in field type text": "This-is-a-type-text-answer",
             "Capital for 1 April 2023 to 31 March 2024": "1230",
             "Capital for 1 April 2024 to 31 March 2025": "1230",
-            "Revenue costs": ". Test Funding Required NS Form: ['Test Funding Required NS Form', 40, '1 April 2023 to 31 March 2024']",  # noqa
-            "Capital costs": ". 50: ['Test Funding Required NS Form', '1 April 2024 to 31 March 2025', 'Test Funding Required NS Form']",  # noqa
+            "Which membership organisations are you a member of?": "homeless link",
+            "When did you start providing day provision?": "March 2023",
+            "Revenue costs": "* Test Funding Required NS Form \n       . Test Funding Required NS Form\n       . 40\n       . 1 April 2023 to 31 March 2024",  # noqa
+            "Capital costs": "* 50 \n       . Test Funding Required NS Form\n       . 1 April 2024 to 31 March 2025\n       . Test Funding Required NS Form",  # noqa
         }
     },
     "incorrect_form_data": [
