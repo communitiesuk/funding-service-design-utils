@@ -7,14 +7,11 @@ from flask import current_app
 
 def convert_bool_value(data):
     try:
-
         def convert_values(value):
-            if value is None:
+            if value is None or value == "None":
                 return "Not provided"
-            elif value is True:
-                return "Yes"
-            elif value is False:
-                return "No"
+            if isinstance(value, bool):
+                return "Yes" if value else "No"
             else:
                 return value
 
