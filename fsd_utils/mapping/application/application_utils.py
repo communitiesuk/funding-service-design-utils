@@ -93,7 +93,7 @@ def format_radio_field(answer):
             answer = answer.split("-")
             formatted_answer = " ".join(answer).strip()
             return formatted_answer
-        else: 
+        else:
             return answer
 
     except Exception:  # noqa
