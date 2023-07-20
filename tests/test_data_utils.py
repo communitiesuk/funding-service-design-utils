@@ -54,7 +54,7 @@ multi_input_test_data = {
                     "     . Project two: February 2022",
                 ]
             ),
-        }
+        },
     },
     "map_data": {
         "multiple_values": {

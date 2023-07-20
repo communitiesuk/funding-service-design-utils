@@ -35,9 +35,9 @@ class MultiInput:
         Returns:
             str: The formatted string representation of the key-value pair.
         """
-        
+
         sanitised_values = convert_bool_value(value)
-   
+
         values = "\n".join(
             [
                 f"{cls.indent(6) if i == 1 else cls.indent(7)}. {str(item).strip()}"
