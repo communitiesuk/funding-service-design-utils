@@ -125,7 +125,8 @@ test_data_sort_questions_answers = {
                             "key": "NxVqXd",
                             "title": "What funding are you applying for?",
                             "type": "list",
-                        }
+                        },
+                        {'key': 'NxVqXd', 'title': 'What funding are you applying for?', 'type': 'list', 'answer': 'capital'}
                     ],
                     "question": "What funding are you applying for?",
                 },
@@ -220,6 +221,7 @@ test_data_sort_questions_answers = {
     "questions_answers": {
         "funding-required-ns": {
             "What funding are you applying for?": "both revenue and capital",
+            "What funding are you applying for?": "capital",
             "Both revenue and capital": "4020",
             "Revenue for 1 April 2024 to 31 March 2025": "4020",
             "Testing hyphen in field type text": "This-is-a-type-text-answer",

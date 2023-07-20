@@ -32,7 +32,7 @@ def convert_bool_value(data):
 
 def format_answer(answer):
     try:
-        if answer is None:
+        if answer is None or answer == "None":
             return "Not provided"
 
         if "null" in answer:
@@ -92,6 +92,8 @@ def format_radio_field(answer):
             answer = answer.split("-")
             formatted_answer = " ".join(answer).strip()
             return formatted_answer
+        else: 
+            return answer
 
     except Exception:  # noqa
         current_app.logger.info(
