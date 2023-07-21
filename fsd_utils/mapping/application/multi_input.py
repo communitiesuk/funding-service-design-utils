@@ -36,31 +36,19 @@ class MultiInput:
             str: The formatted string representation of the key-value pair.
         """
 
-        def formatted_values(values):
-            return (
-                ", ".join(
-                    map(
-                        str,
-                        convert_bool_value([values])
-                        if len(values) > 1
-                        else convert_bool_value(values),
-                    )
-                )
-                if isinstance(values, list)
-                else convert_bool_value(values)
-            )
+        sanitised_values = convert_bool_value(value)
 
         values = "\n".join(
             [
                 f"{cls.indent(6) if i == 1 else cls.indent(7)}. {str(item).strip()}"
-                for i, item in enumerate(value, start=1)
+                for i, item in enumerate(sanitised_values, start=1)
             ]
         )
 
         return (
-            f"\n{cls.indent(5)}* {str(key.strip())} \n {formatted_values(values)}"  # noqa
+            f"\n{cls.indent(5)}* {str(key.strip())} \n {values}"  # noqa
             if index != 1
-            else (f"* {str(key.strip())} \n {formatted_values(values)}")  # noqa
+            else (f"* {str(key.strip())} \n {values}")  # noqa
         )
 
     @classmethod

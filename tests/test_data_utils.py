@@ -32,8 +32,8 @@ multi_input_test_data = {
                 ],
             },
             "expected_response": [
-                "* trusts one \n       . 125\n       . 1 April 2023 to 31 March 2024\n       . Capital\n       . True",  # noqa
-                "\n     * trust two \n       . 456\n       . 1 April 2024 to 31 March 2025\n       . Revenue\n       . False",  # noqa
+                "* trusts one \n       . 125\n       . 1 April 2023 to 31 March 2024\n       . Capital\n       . Yes",  # noqa
+                "\n     * trust two \n       . 456\n       . 1 April 2024 to 31 March 2025\n       . Revenue\n       . No",  # noqa
             ],
         },
         "single_value": {
@@ -74,7 +74,7 @@ multi_input_test_data = {
                     "sIFBGc": False,
                 },
             ],
-            "expected_response": "* trusts one \n       . 125\n       . 1 April 2023 to 31 March 2024\n       . Capital\n       . True\n\n     * trust two \n       . 456\n       . 1 April 2024 to 31 March 2025\n       . Revenue\n       . False",  # noqa
+            "expected_response": "* trusts one \n       . 125\n       . 1 April 2023 to 31 March 2024\n       . Capital\n       . Yes\n\n     * trust two \n       . 456\n       . 1 April 2024 to 31 March 2025\n       . Revenue\n       . No",  # noqa
         },
         "single_value": {
             "input_data": [
@@ -125,7 +125,13 @@ test_data_sort_questions_answers = {
                             "key": "NxVqXd",
                             "title": "What funding are you applying for?",
                             "type": "list",
-                        }
+                        },
+                        {
+                            "key": "NxVqXd",
+                            "title": "What funding are you applying?",
+                            "type": "list",
+                            "answer": "capital",
+                        },
                     ],
                     "question": "What funding are you applying for?",
                 },
@@ -180,10 +186,10 @@ test_data_sort_questions_answers = {
                         {
                             "answer": [
                                 {
-                                    "TrTaZQ": "Test Funding Required NS Form",
                                     "dpDFgB": "Test Funding Required NS Form",
                                     "iZdZrr": 40,
                                     "leIxEX": "1 April 2023 to 31 March 2024",
+                                    "TrTaZQ": "None",
                                 }
                             ],
                             "key": "mCbbyN",
@@ -220,6 +226,7 @@ test_data_sort_questions_answers = {
     "questions_answers": {
         "funding-required-ns": {
             "What funding are you applying for?": "both revenue and capital",
+            "What funding are you applying?": "capital",
             "Both revenue and capital": "4020",
             "Revenue for 1 April 2024 to 31 March 2025": "4020",
             "Testing hyphen in field type text": "This-is-a-type-text-answer",
@@ -227,7 +234,7 @@ test_data_sort_questions_answers = {
             "Capital for 1 April 2024 to 31 March 2025": "1230",
             "Which membership organisations are you a member of?": "homeless link",
             "When did you start providing day provision?": "March 2023",
-            "Revenue costs": "* Test Funding Required NS Form \n       . Test Funding Required NS Form\n       . 40\n       . 1 April 2023 to 31 March 2024",  # noqa
+            "Revenue costs": "* Test Funding Required NS Form \n       . 40\n       . 1 April 2023 to 31 March 2024\n       . Not provided",  # noqa
             "Capital costs": "* 50 \n       . Test Funding Required NS Form\n       . 1 April 2024 to 31 March 2025\n       . Test Funding Required NS Form",  # noqa
         }
     },
