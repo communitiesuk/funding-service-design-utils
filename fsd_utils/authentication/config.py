@@ -35,3 +35,4 @@ azure_ad_role_map = {
 
 class SupportedApp(enum.Enum):
     POST_AWARD_FRONTEND = "post-award-frontend"
+    POST_AWARD_SUBMIT = "post-award-submit"
