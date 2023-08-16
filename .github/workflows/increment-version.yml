@@ -1,3 +1,5 @@
+name: Increment version
+
 on:
   pull_request:
     types: [opened, reopened]
@@ -21,6 +23,8 @@ jobs:
     - name: 'Get latest tag'
       id: latest_tag
       run: |
+        git status
+        git checkout $GITHUB_HEAD_REF
         git status
         git for-each-ref --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/*"
         echo "tag="$(git for-each-ref --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/*") >> $GITHUB_OUTPUT
