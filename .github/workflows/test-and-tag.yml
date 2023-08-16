@@ -55,7 +55,7 @@ jobs:
       uses: mukunku/tag-exists-action@v1.0.0
       id: check_tag
       with:
-        tag: ${{ steps.bump_version.outputs.app_version }}
+        tag: ${{ steps.package_version.outputs.app_version }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -65,7 +65,7 @@ jobs:
       if: ${{ steps.check_tag.outputs.exists == 'false' }}
       with:
         commit: main
-        tag: ${{ steps.bump_version.outputs.app_version }}
+        tag: ${{ steps.package_version.outputs.app_version }}
         token: ${{ secrets.GITHUB_TOKEN }}
 
   publish-release:
