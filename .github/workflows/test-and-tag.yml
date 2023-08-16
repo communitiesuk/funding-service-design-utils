@@ -65,7 +65,7 @@ jobs:
       if: ${{ steps.check_tag.outputs.exists == 'false' }}
       with:
         commit: main
-        tag: ${{ steps.bump_version.outputs.next-version }}
+        tag: ${{ steps.bump_version.outputs.app_version }}
         token: ${{ secrets.GITHUB_TOKEN }}
 
   publish-release:
