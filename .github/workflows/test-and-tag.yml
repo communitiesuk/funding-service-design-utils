@@ -66,7 +66,8 @@ jobs:
         git config user.name 'FSD Github Actions'
         git add pyproject.toml
         git commit -m "Version bump in action"
-        git push origin master
+        git push origin $GITHUB_HEAD_REF
+        echo "{Updated pyproject.toml with version ${{ steps.bump_version.outputs.next-version }}}" >> $GITHUB_STEP_SUMMARY
 
   #   - name: Check if tag exists
   #     uses: mukunku/tag-exists-action@v1.0.0
