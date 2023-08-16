@@ -26,8 +26,6 @@ jobs:
     - name: 'Get latest tag'
       id: latest_tag
       run: |
-        git status
-        git for-each-ref --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/*"
         echo "tag="$(git for-each-ref --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/*") >> $GITHUB_OUTPUT
 
     - name: Bump release version
@@ -44,6 +42,6 @@ jobs:
         sed -i 's/version = "${{ steps.package_version.outputs.app_version}}"/version = "${{ steps.bump_version.outputs.next-version }}"/' pyproject.toml
         git config user.name 'FSD Github Actions'
         git add pyproject.toml
-        git commit -m "Version bump in action"
+        git commit -m "Update version to ${{ steps.bump_version.outputs.next-version }}"
         git push origin $GITHUB_HEAD_REF
         echo "Updated pyproject.toml with version ${{ steps.bump_version.outputs.next-version }}" >> $GITHUB_STEP_SUMMARY
