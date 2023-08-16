@@ -60,9 +60,10 @@ jobs:
 
     - name: Update version in pyproject.toml
       id: update_version
-      run:
+      run: |
         echo Updating version from ${{ steps.package_version.outputs.app_version}} to ${{ steps.bump_version.outputs.next-version }}
-        sed -i 's/version = "${{ steps.package_version.outputs.app_version}}"/version = "${{ steps.bump_version.outputs.next-version }}"/' filename
+        sed -i 's/version = "${{ steps.package_version.outputs.app_version}}"/version = "${{ steps.bump_version.outputs.next-version }}"/' pyproject.toml
+        cat pyproject.toml
 
   #   - name: Check if tag exists
   #     uses: mukunku/tag-exists-action@v1.0.0
