@@ -7,7 +7,6 @@ name: Test and Tag
 # for that version.
 # If a tag already exists with that name, the Create Release step is skipped.
 
-# Currently version must be manually updated in setup.py to enable this tagging job to run
 
 on:
   workflow_dispatch:
@@ -50,16 +49,30 @@ jobs:
         python-version: '3.10'
     - name: Get package version
       id: package_version
-      run: echo "::set-output name=app_version::"$(python setup.py --version)
-    - name: Print package version
-      id: print_version
-      run: echo ${{ steps.package_version.outputs.app_version}}
+      run: echo "app_version="$(python setup.py --version) >> $GITHUB_OUTPUT
+    - name: Bump release version
+      id: bump_version
+      uses: christian-draeger/increment-semantic-version@1.1.0
+      with:
+        current-version: ${{ steps.package_version.outputs.app_version}}
+        version-fragment: 'bug'
+
+    - name: Update version in pyproject.toml
+      id: update_version
+      run: |
+        echo Updating version from ${{ steps.package_version.outputs.app_version}} to ${{ steps.bump_version.outputs.next-version }}
+        sed -i 's/version = "${{ steps.package_version.outputs.app_version}}"/version = "${{ steps.bump_version.outputs.next-version }}"/' pyproject.toml
+        git config user.name 'FSD Github Actions'
+        git add pyproject.toml
+        git commit -m "Version bump in action"
+        git push origin $GITHUB_HEAD_REF
+        echo "Updated pyproject.toml with version ${{ steps.bump_version.outputs.next-version }}" >> $GITHUB_STEP_SUMMARY
 
     - name: Check if tag exists
       uses: mukunku/tag-exists-action@v1.0.0
       id: check_tag
       with:
-        tag: ${{ steps.package_version.outputs.app_version}}
+        tag: ${{ steps.bump_version.outputs.next-version }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -69,7 +82,7 @@ jobs:
       if: ${{ steps.check_tag.outputs.exists == 'false' }}
       with:
         commit: main
-        tag: ${{ steps.package_version.outputs.app_version }}
+        tag: ${{ steps.bump_version.outputs.next-version }}
         token: ${{ secrets.GITHUB_TOKEN }}
 
   publish-release:
