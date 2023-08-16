@@ -64,6 +64,9 @@ jobs:
         echo Updating version from ${{ steps.package_version.outputs.app_version}} to ${{ steps.bump_version.outputs.next-version }}
         sed -i 's/version = "${{ steps.package_version.outputs.app_version}}"/version = "${{ steps.bump_version.outputs.next-version }}"/' pyproject.toml
         cat pyproject.toml
+        git add pyproject.toml
+        git commit -m "Version bump in action"
+        git push origin master
 
   #   - name: Check if tag exists
   #     uses: mukunku/tag-exists-action@v1.0.0
