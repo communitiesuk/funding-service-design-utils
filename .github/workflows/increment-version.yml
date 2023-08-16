@@ -21,6 +21,7 @@ jobs:
     - name: 'Get latest tag'
       id: latest_tag
       run: |
+        git for-each-ref --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/*"
         echo "tag="$(git for-each-ref --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/*") >> $GITHUB_OUTPUT
 
     - name: Bump release version
