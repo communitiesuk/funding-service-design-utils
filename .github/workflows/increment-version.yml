@@ -1,0 +1,33 @@
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: 'Get latest tag'
+      id: latest_tag
+      uses: "WyriHaximus/github-action-get-previous-tag@v1"
+
+    - name: Bump release version
+      id: bump_version
+      uses: christian-draeger/increment-semantic-version@1.1.0
+      with:
+        current-version: ${{ steps.latest_tag.outputs.tag}}
+        version-fragment: 'bug'
+
+    - name: Update version in pyproject.toml
+      id: update_version
+      run: |
+        echo Updating version from ${{ steps.package_version.outputs.app_version}} to ${{ steps.bump_version.outputs.next-version }}
+        sed -i 's/version = "${{ steps.package_version.outputs.app_version}}"/version = "${{ steps.bump_version.outputs.next-version }}"/' pyproject.toml
+        git config user.name 'FSD Github Actions'
+        git add pyproject.toml
+        git commit -m "Version bump in action"
+        git push origin $GITHUB_HEAD_REF
+        echo "Updated pyproject.toml with version ${{ steps.bump_version.outputs.next-version }}" >> $GITHUB_STEP_SUMMARY
