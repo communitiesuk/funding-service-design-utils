@@ -1,0 +1,47 @@
+name: Increment version
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.head.ref }}
+    - name: Setup python
+      id: setup_python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    - name: Get package version
+      id: package_version
+      run: echo "app_version="$(python setup.py --version) >> $GITHUB_OUTPUT
+
+    - name: 'Get latest tag'
+      id: latest_tag
+      run: |
+        echo "tag="$(git for-each-ref --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/*") >> $GITHUB_OUTPUT
+
+    - name: Bump release version
+      id: bump_version
+      uses: christian-draeger/increment-semantic-version@1.1.0
+      with:
+        current-version: ${{ steps.latest_tag.outputs.tag}}
+        version-fragment: 'bug'
+
+    - name: Update version in pyproject.toml
+      id: update_version
+      run: |
+        echo Updating version from ${{ steps.package_version.outputs.app_version}} to ${{ steps.bump_version.outputs.next-version }}
+        sed -i 's/version = "${{ steps.package_version.outputs.app_version}}"/version = "${{ steps.bump_version.outputs.next-version }}"/' pyproject.toml
+        git config user.name 'FSD Github Actions'
+        git add pyproject.toml
+        git commit -m "Update version to ${{ steps.bump_version.outputs.next-version }}"
+        git push origin $GITHUB_HEAD_REF
+        echo "Updated pyproject.toml with version ${{ steps.bump_version.outputs.next-version }}" >> $GITHUB_STEP_SUMMARY

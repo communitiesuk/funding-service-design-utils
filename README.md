@@ -13,12 +13,11 @@ In order to run the unit tests, setup a virtual env and install requirements
 1. If you add any packages needed by services that consume `fsd_utils`, add them into `pyproject.yaml`.
 
 # Releasing
-To create a new release of funding-service-design-utils:
+To create a new release of funding-service-design-utils (note no longer need to manually update the version):
 1. Make and test your changes as normal in this repo
-2. Update the `version` tag in `pyproject.toml`
-3. Push your changes to `main`.
-4. The Action at `.github/workflows/test-and-tag.yml` will create a new tag and release, named for the version in `pyproject.toml`. This is triggered automatically on a push to main.
-5. That action will also push this tag up to PyPI at: https://pypi.org/project/funding-service-design-utils/
+1. Push your changes to `main`.
+1. The Action at `.github/workflows/test-and-tag.yml` will create a new tag and release, named for the version in `pyproject.toml`. This is triggered automatically on a push to main.
+1. That action will also push this tag up to PyPI at: https://pypi.org/project/funding-service-design-utils/
 
 ## Updating the release workflow
 - If making changes to the release flow etc, you can publish to test.pypi.org when testing. To do this, update the `Publish to PyPI` step with the following:

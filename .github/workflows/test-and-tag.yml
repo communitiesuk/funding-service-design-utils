@@ -50,29 +50,12 @@ jobs:
     - name: Get package version
       id: package_version
       run: echo "app_version="$(python setup.py --version) >> $GITHUB_OUTPUT
-    - name: Bump release version
-      id: bump_version
-      uses: christian-draeger/increment-semantic-version@1.1.0
-      with:
-        current-version: ${{ steps.package_version.outputs.app_version}}
-        version-fragment: 'bug'
-
-    - name: Update version in pyproject.toml
-      id: update_version
-      run: |
-        echo Updating version from ${{ steps.package_version.outputs.app_version}} to ${{ steps.bump_version.outputs.next-version }}
-        sed -i 's/version = "${{ steps.package_version.outputs.app_version}}"/version = "${{ steps.bump_version.outputs.next-version }}"/' pyproject.toml
-        git config user.name 'FSD Github Actions'
-        git add pyproject.toml
-        git commit -m "Version bump in action"
-        git push origin $GITHUB_HEAD_REF
-        echo "Updated pyproject.toml with version ${{ steps.bump_version.outputs.next-version }}" >> $GITHUB_STEP_SUMMARY
 
     - name: Check if tag exists
       uses: mukunku/tag-exists-action@v1.0.0
       id: check_tag
       with:
-        tag: ${{ steps.bump_version.outputs.next-version }}
+        tag: ${{ steps.bump_version.outputs.app_version }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
