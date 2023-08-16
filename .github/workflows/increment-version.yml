@@ -11,6 +11,9 @@ jobs:
       contents: write
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.head.ref }}
     - name: Setup python
       id: setup_python
       uses: actions/setup-python@v4
@@ -23,8 +26,6 @@ jobs:
     - name: 'Get latest tag'
       id: latest_tag
       run: |
-        git status
-        git checkout $GITHUB_HEAD_REF
         git status
         git for-each-ref --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/*"
         echo "tag="$(git for-each-ref --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/*") >> $GITHUB_OUTPUT
