@@ -3,8 +3,8 @@ from collections import defaultdict
 from flask import current_app
 from fsd_utils import NotifyConstants
 from fsd_utils.mapping.application.application_utils import format_checkbox
-from fsd_utils.mapping.application.application_utils import format_month_year
 from fsd_utils.mapping.application.application_utils import format_date_month_year
+from fsd_utils.mapping.application.application_utils import format_month_year
 from fsd_utils.mapping.application.application_utils import format_radio_field
 from fsd_utils.mapping.application.free_text import FreeText
 from fsd_utils.mapping.application.multi_input import MultiInput
@@ -70,7 +70,7 @@ def extract_questions_and_answers(forms) -> dict:
                         elif field["type"] == "date":
                             questions_answers[form_name][
                                 field["title"]
-                            ] = format_date_month_year(answer)    
+                            ] = format_date_month_year(answer)
                         else:
                             questions_answers[form_name][field["title"]] = answer
     except Exception as e:
