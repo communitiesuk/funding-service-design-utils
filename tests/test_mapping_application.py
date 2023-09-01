@@ -2,6 +2,7 @@ import pytest
 from fsd_utils.mapping.application.application_utils import convert_bool_value
 from fsd_utils.mapping.application.application_utils import format_answer
 from fsd_utils.mapping.application.application_utils import format_checkbox
+from fsd_utils.mapping.application.application_utils import format_date_month_year
 from fsd_utils.mapping.application.application_utils import format_month_year
 from fsd_utils.mapping.application.application_utils import format_radio_field
 from fsd_utils.mapping.application.application_utils import simplify_title
@@ -156,6 +157,23 @@ def test_format_radio_field(input_value, expected_response):
 def test_format_month_year(input_value, expected_response):
 
     response = format_month_year(input_value)
+    assert response == expected_response
+
+
+@pytest.mark.parametrize(
+    "input_value, expected_response",
+    [
+        ("2023-11-01", "01 November 2023"),
+        ("2023-11-1", "01 November 2023"),
+        ("01-11-2023", "01 November 2023"),
+        ("1-11-2023", "01 November 2023"),
+        ("2023-11-19", "19 November 2023"),
+        ("2023-1-1", "01 January 2023"),
+    ],
+)
+def test_format_date_month_year(input_value, expected_response):
+
+    response = format_date_month_year(input_value)
     assert response == expected_response
 
 
