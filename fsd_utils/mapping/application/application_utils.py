@@ -133,7 +133,7 @@ def number_to_month(number, iso_key):
 def format_month_year(answer):
     try:
         answer_text = answer.split("-")
-        month = answer_text[0] if len(answer_text[0]) == 2 else answer_text[1]
+        month = answer_text[0] if len(answer_text[0]) <= 2 else answer_text[1]
         month_name = calendar.month_name[int(month)]
         if month_name:
             year = answer_text[1] if len(answer_text[1]) == 4 else answer_text[0]
@@ -143,4 +143,21 @@ def format_month_year(answer):
             f"Invalid month-year formatting for answer: {answer}. Error: {str(e)}"
         )
 
+    return answer
+
+
+def format_date_month_year(answer):
+    try:
+        answer_text = answer.split("-")
+        month = answer_text[1]
+        month_name = calendar.month_name[int(month)]
+        if month_name:
+            date = answer_text[2] if len(answer_text[2]) <= 2 else answer_text[0]
+            date = f"{'0'+date if len(date)==1 else date}"
+            year = answer_text[0] if len(answer_text[0]) == 4 else answer_text[2]
+            return f"{date} {month_name} {year}"
+    except Exception as e:
+        current_app.logger.warning(
+            f"Invalid date-month-year formatting for answer: {answer}. Error: {str(e)}"
+        )
     return answer
