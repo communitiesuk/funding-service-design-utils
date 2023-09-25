@@ -62,28 +62,37 @@ class MultiInput:
             str: The formatted result obtained from the nested data.
         """
 
-        current_app.logger.error(f"Formay nested data:-----> {value}")
-
         formatted_nested_values = []
         try:
-            for inner_items in value:
-                for k, v in inner_items.items():
-                    for iso_keys in ["date", "month", "year"]:
-                        if iso_keys in k.split("__"):
-                            v = number_to_month(v, iso_keys)
-                            formatted_nested_values.append(f"{v}")
-                            break
+            try:
+                current_app.logger.error(f"Format nested data in try block: {value}")
+                for inner_items in value:
+                    for k, v in inner_items.items():
+                        for iso_keys in ["date", "month", "year"]:
+                            if iso_keys in k.split("__"):
+                                v = number_to_month(v, iso_keys)
+                                formatted_nested_values.append(f"{v}")
+                                break
 
-                    # handles all other nested multiple values
-        except:  # noqa
-            formatted_nested_values.append(
-                ", ".join(
-                    map(
-                        lambda item: ", ".join([f"{k}: {v}" for k, v in item.items()]),
-                        value,
+                        # handles all other nested multiple values
+            except:  # noqa
+
+                current_app.logger.error(f"Format nested data in except block: {value}")
+                formatted_nested_values.append(
+                    ", ".join(
+                        map(
+                            lambda item: ", ".join(
+                                [f"{k}: {v}" for k, v in item.items()]
+                            ),
+                            value,
+                        )
                     )
                 )
+        except:  # noqa
+            current_app.logger.error(
+                f"Couldn't format the multi input nested data for: {value}"
             )
+
         return " ".join(formatted_nested_values)
 
     @classmethod
