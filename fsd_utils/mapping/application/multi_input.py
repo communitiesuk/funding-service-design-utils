@@ -62,6 +62,8 @@ class MultiInput:
             str: The formatted result obtained from the nested data.
         """
 
+        current_app.logger.error(f"Formay nested data:-----> {value}")
+
         formatted_nested_values = []
         try:
             for inner_items in value:
@@ -93,6 +95,8 @@ class MultiInput:
         Returns:
             list: The formatted output list generated from the data.
         """
+
+        current_app.logger.error(f"OUTPUT:------->{data}")
         output = []
 
         for index, (key, value) in enumerate(data.items(), start=1):
@@ -135,6 +139,8 @@ class MultiInput:
         Returns:
             str: The processed output as a formatted string.
         """
+
+        current_app.logger.error(f"RAW Multi input data: {multi_input_data}")
         try:
             sorted_data = {}
             for item in multi_input_data:
