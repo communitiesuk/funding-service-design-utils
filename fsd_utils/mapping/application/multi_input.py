@@ -63,25 +63,57 @@ class MultiInput:
         """
 
         formatted_nested_values = []
-        try:
-            for inner_items in value:
-                for k, v in inner_items.items():
-                    for iso_keys in ["date", "month", "year"]:
-                        if iso_keys in k.split("__"):
-                            v = number_to_month(v, iso_keys)
-                            formatted_nested_values.append(f"{v}")
-                            break
 
-                    # handles all other nested multiple values
-        except:  # noqa
-            formatted_nested_values.append(
-                ", ".join(
-                    map(
-                        lambda item: ", ".join([f"{k}: {v}" for k, v in item.items()]),
-                        value,
+        def get_validated_key(key, iso_keys):
+            for iso_key in iso_keys:
+                if iso_key in key:
+                    return iso_key
+            return None
+
+        def process_value(inner_items):
+            formatted_values = []
+            iso_keys = ["date", "month", "year"]
+            for k, v in inner_items.items():
+                key = k.split("__")
+                if v is not None and v != "":
+                    validated_key = get_validated_key(key, iso_keys)
+                    if any(iso_key in key for iso_key in iso_keys):
+                        value = number_to_month(v, validated_key)
+                        formatted_values.append(f"{value}")
+                    else:
+                        formatted_values.append(v)
+            formatted_values = [
+                value for value in formatted_values if value is not None
+            ]
+            return formatted_values
+
+        try:
+            try:
+                for inner_items in value:
+                    if isinstance(inner_items, dict):
+                        v = process_value(inner_items)
+                        formatted_nested_values.append(", ".join(v))
+                    else:
+                        if inner_items is not None and v != "":
+                            formatted_nested_values.append(f"{inner_items}")
+
+            # handles all other nested multiple values
+            except:  # noqa
+                formatted_nested_values.append(
+                    ", ".join(
+                        map(
+                            lambda item: ", ".join(
+                                [f"{k}: {v}" for k, v in item.items()]
+                            ),
+                            value,
+                        )
                     )
                 )
+        except:  # noqa
+            current_app.logger.error(
+                f"Couldn't format the multi input nested data for: {value}"
             )
+
         return " ".join(formatted_nested_values)
 
     @classmethod
@@ -93,6 +125,8 @@ class MultiInput:
         Returns:
             list: The formatted output list generated from the data.
         """
+
+        current_app.logger.error(f"OUTPUT:------->{data}")
         output = []
 
         for index, (key, value) in enumerate(data.items(), start=1):
@@ -135,6 +169,8 @@ class MultiInput:
         Returns:
             str: The processed output as a formatted string.
         """
+
+        current_app.logger.error(f"RAW Multi input data: {multi_input_data}")
         try:
             sorted_data = {}
             for item in multi_input_data:

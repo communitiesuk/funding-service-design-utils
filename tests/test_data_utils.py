@@ -50,8 +50,8 @@ multi_input_test_data = {
             },
             "expected_response": (
                 [
-                    ". Project one: January 2021",
-                    "     . Project two: February 2022",
+                    ". Project one: January, 2021",
+                    "     . Project two: February, 2022",
                 ]
             ),
         },
@@ -106,7 +106,8 @@ multi_input_test_data = {
                 },
             ],
             "expected_response": (
-                ". Milestone one: February 2022\n     . Milestone" " two: 12 March 2023"
+                ". Milestone one: February, 2022\n     . Milestone"
+                " two: 12, March, 2023"
             ),
         },
     },
