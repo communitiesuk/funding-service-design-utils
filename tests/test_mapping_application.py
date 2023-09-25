@@ -243,9 +243,19 @@ class TestMultiInput:
         assert response == expected_response
 
     def test_format_nested_data(self, app_context):
-
-        data = [{"HpLJyL__month": 3, "HpLJyL__year": 2022}, "capital", "test"]
+        data = [
+            {"HpLJyL__month": 3, "HpLJyL__year": 2022},
+            {
+                "addressLine1": "test",
+                "addressLine2": "",
+                "county": "",
+                "postcode": "te3 2nr",
+                "town": "teest",
+            },
+            "wwww.example.com",
+            None,
+            None,
+        ]
 
         response = MultiInput.format_nested_data(data)
-
-        assert response == "March 2022 capital test"
+        assert response == "March, 2022 test, te3 2nr, teest wwww.example.com"
