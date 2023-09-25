@@ -241,3 +241,11 @@ class TestMultiInput:
         response = MultiInput.map_multi_input_data(input_data)
 
         assert response == expected_response
+
+    def test_format_nested_data(self, app_context):
+
+        data = [{"HpLJyL__month": 3, "HpLJyL__year": 2022}, "capital", "test"]
+
+        response = MultiInput.format_nested_data(data)
+
+        assert response == "March 2022 capital test"

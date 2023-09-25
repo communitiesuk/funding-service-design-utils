@@ -67,16 +67,19 @@ class MultiInput:
             try:
                 current_app.logger.error(f"Format nested data in try block: {value}")
                 for inner_items in value:
-                    for k, v in inner_items.items():
-                        for iso_keys in ["date", "month", "year"]:
-                            if iso_keys in k.split("__"):
-                                v = number_to_month(v, iso_keys)
-                                formatted_nested_values.append(f"{v}")
-                                break
+                    if isinstance(inner_items, dict):
+                        for k, v in inner_items.items():
+                            for iso_keys in ["date", "month", "year"]:
+                                if iso_keys in k.split("__"):
+                                    v = number_to_month(v, iso_keys)
+                                    formatted_nested_values.append(f"{v}")
+                                    break
+                    else:
 
-                        # handles all other nested multiple values
+                        formatted_nested_values.append(f"{inner_items}")
+
+            # handles all other nested multiple values
             except:  # noqa
-
                 current_app.logger.error(f"Format nested data in except block: {value}")
                 formatted_nested_values.append(
                     ", ".join(
