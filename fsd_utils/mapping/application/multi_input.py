@@ -21,6 +21,7 @@ class MultiInput:
         Returns:
             str: The formatted string representation of the value.
         """
+        current_app.logger.info(f"[format_values] formatting data: {value}")
         return f"{cls.indent(5)}. {value}" if index != 1 else f". {value}"
 
     @classmethod
@@ -35,6 +36,10 @@ class MultiInput:
         Returns:
             str: The formatted string representation of the key-value pair.
         """
+
+        current_app.logger.info(
+            f"[format_keys_and_values] formatting data:{key}, {value}"
+        )
 
         sanitised_values = convert_bool_value(value)
 
@@ -61,42 +66,42 @@ class MultiInput:
         Returns:
             str: The formatted result obtained from the nested data.
         """
+        current_app.logger.info(f"[format_nested_data] processing data: {value}")
 
         formatted_nested_values = []
-
-        current_app.logger.error(f"nested value: {value}")
 
         def get_validated_key(key, iso_keys):
             for iso_key in iso_keys:
                 if iso_key in key:
                     return iso_key
-            return None
+            return key
 
         def process_value(inner_items):
             formatted_values = []
             iso_keys = ["date", "month", "year"]
+
             for k, v in inner_items.items():
                 key = k.split("__")
-                if v is not None and v != "":
-                    validated_key = get_validated_key(key, iso_keys)
-                    if any(iso_key in key for iso_key in iso_keys):
-                        value = number_to_month(v, validated_key)
+                validated_key = get_validated_key(key, iso_keys)
+
+                if any(iso_key in validated_key for iso_key in iso_keys):
+                    value = number_to_month(v, validated_key)
+                    if v not in (None, " ", ""):
                         formatted_values.append(f"{value}")
-                    else:
-                        formatted_values.append(v)
-            formatted_values = [
-                value for value in formatted_values if value is not None
-            ]
-            return formatted_values
+                else:
+                    if v not in (None, " ", ""):
+                        formatted_values.append(f"{v}")
+
+            return ", ".join(formatted_values)
 
         try:
             try:
                 for inner_items in value:
                     if isinstance(inner_items, dict):
                         v = process_value(inner_items)
-                        formatted_nested_values.append(", ".join(v))
+                        formatted_nested_values.append(v)
                     else:
-                        if inner_items is not None and v != "":
+                        if inner_items not in (None, " ", ""):
                             formatted_nested_values.append(f"{inner_items}")
 
             # handles all other nested multiple values
@@ -128,8 +133,9 @@ class MultiInput:
             list: The formatted output list generated from the data.
         """
 
+        current_app.logger.info(f"[process_data] processing data: {data}")
+
         output = []
-        current_app.logger.error(f"output data: {data}")
 
         for index, (key, value) in enumerate(data.items(), start=1):
             if isinstance(key, int):
@@ -143,10 +149,8 @@ class MultiInput:
 
             # handles multiple nested values containing year, month formatting and others
             except:  # noqa
-                if (
-                    isinstance(value, list)
-                    and len(value) > 0
-                    and isinstance(value[0], dict)
+                if isinstance(value, list) and any(
+                    isinstance(item, dict) for item in value
                 ):
                     formatted_nested_values = cls.format_nested_data(value)
                     output.append(
@@ -171,7 +175,9 @@ class MultiInput:
         Returns:
             str: The processed output as a formatted string.
         """
-        current_app.logger.error(f"output data: {multi_input_data}")
+        current_app.logger.info(
+            f"[map_multi_input_data] processing data: {multi_input_data}"
+        )
 
         try:
             sorted_data = {}

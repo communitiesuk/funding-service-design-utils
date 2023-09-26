@@ -259,3 +259,21 @@ test_data_sort_questions_answers = {
     ],
     "exception_message": ("Could not map the data for form: applicant-information-ns"),
 }
+
+
+iso_and_nested_data = {
+    "input_data": [
+        {"HpLJyL__month": 3, "HpLJyL__year": 2022},
+        {
+            "addressLine1": "test",
+            "addressLine2": "",
+            "county": "",
+            "postcode": "te3 2nr",
+            "town": "test",
+        },
+        "wwww.example.com",
+        None,
+        None,
+    ],
+    "expected_response": "March, 2022 test, te3 2nr, test wwww.example.com",
+}
