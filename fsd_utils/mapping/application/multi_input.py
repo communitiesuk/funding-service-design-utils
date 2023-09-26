@@ -126,7 +126,6 @@ class MultiInput:
             list: The formatted output list generated from the data.
         """
 
-        current_app.logger.error(f"OUTPUT:------->{data}")
         output = []
 
         for index, (key, value) in enumerate(data.items(), start=1):
@@ -170,7 +169,6 @@ class MultiInput:
             str: The processed output as a formatted string.
         """
 
-        current_app.logger.error(f"RAW Multi input data: {multi_input_data}")
         try:
             sorted_data = {}
             for item in multi_input_data:
