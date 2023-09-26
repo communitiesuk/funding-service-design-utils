@@ -129,7 +129,7 @@ class MultiInput:
         """
 
         output = []
-        current_app.logger.errro(f"output data: {data}")
+        current_app.logger.error(f"output data: {data}")
 
         for index, (key, value) in enumerate(data.items(), start=1):
             if isinstance(key, int):
@@ -171,7 +171,7 @@ class MultiInput:
         Returns:
             str: The processed output as a formatted string.
         """
-        current_app.logger.errro(f"output data: {multi_input_data}")
+        current_app.logger.error(f"output data: {multi_input_data}")
 
         try:
             sorted_data = {}
