@@ -64,6 +64,8 @@ class MultiInput:
 
         formatted_nested_values = []
 
+        current_app.logger.error(f"nested value: {value}")
+
         def get_validated_key(key, iso_keys):
             for iso_key in iso_keys:
                 if iso_key in key:
