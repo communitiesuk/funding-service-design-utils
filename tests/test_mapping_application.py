@@ -9,6 +9,7 @@ from fsd_utils.mapping.application.application_utils import simplify_title
 from fsd_utils.mapping.application.free_text import FreeText
 from fsd_utils.mapping.application.multi_input import MultiInput
 from fsd_utils.mapping.application.qa_mapping import extract_questions_and_answers
+from tests.test_data_utils import iso_and_nested_data
 from tests.test_data_utils import multi_input_test_data
 from tests.test_data_utils import test_data_sort_questions_answers
 
@@ -242,20 +243,10 @@ class TestMultiInput:
 
         assert response == expected_response
 
-    def test_format_nested_data(self, app_context):
-        data = [
-            {"HpLJyL__month": 3, "HpLJyL__year": 2022},
-            {
-                "addressLine1": "test",
-                "addressLine2": "",
-                "county": "",
-                "postcode": "te3 2nr",
-                "town": "teest",
-            },
-            "wwww.example.com",
-            None,
-            None,
-        ]
-
-        response = MultiInput.format_nested_data(data)
-        assert response == "March, 2022 test, te3 2nr, teest wwww.example.com"
+    @pytest.mark.parametrize(
+        "input_data, expected_response",
+        [(iso_and_nested_data["input_data"], iso_and_nested_data["expected_response"])],
+    )
+    def test_format_nested_data(self, app_context, input_data, expected_response):
+        response = MultiInput.format_nested_data(input_data)
+        assert response == expected_response
