@@ -86,20 +86,17 @@ class MultiInput:
 
                 if any(iso_key in validated_key for iso_key in iso_keys):
                     value = number_to_month(v, validated_key)
-                    if v not in (None, " ", ""):
-                        formatted_values.append(f"{value}")
-                else:
-                    if v not in (None, " ", ""):
-                        formatted_values.append(f"{v}")
-
-            return ", ".join(formatted_values)
+                    formatted_values.append(f"{value}")
+                elif v not in (None, " ", ""):
+                    formatted_values.append(f"{v}")
+            return " ".join(formatted_values)
 
         try:
             try:
                 for inner_items in value:
                     if isinstance(inner_items, dict):
                         v = process_value(inner_items)
-                        formatted_nested_values.append(v)
+                        formatted_nested_values.append(f"{v},")
                     else:
                         if inner_items not in (None, " ", ""):
                             formatted_nested_values.append(f"{inner_items}")

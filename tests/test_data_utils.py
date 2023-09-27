@@ -50,8 +50,8 @@ multi_input_test_data = {
             },
             "expected_response": (
                 [
-                    ". Project one: January, 2021",
-                    "     . Project two: February, 2022",
+                    ". Project one: January 2021,",
+                    "     . Project two: February 2022,",
                 ]
             ),
         },
@@ -106,8 +106,8 @@ multi_input_test_data = {
                 },
             ],
             "expected_response": (
-                ". Milestone one: February, 2022\n     . Milestone"
-                " two: 12, March, 2023"
+                ". Milestone one: February 2022,\n     . Milestone"
+                " two: 12 March 2023,"
             ),
         },
     },
@@ -275,5 +275,5 @@ iso_and_nested_data = {
         None,
         None,
     ],
-    "expected_response": "March, 2022 test, te3 2nr, test wwww.example.com",
+    "expected_response": "March 2022, test te3 2nr test, wwww.example.com",
 }
