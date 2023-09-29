@@ -133,6 +133,12 @@ test_data_sort_questions_answers = {
                             "type": "list",
                             "answer": "capital",
                         },
+                        {
+                            "key": "NxSxCd",
+                            "title": "Do you want to mark this section as complete?",
+                            "type": "boolean",
+                            "answer": "markAsComplete",
+                        },
                     ],
                     "question": "What funding are you applying for?",
                 },
