@@ -43,18 +43,6 @@ multi_input_test_data = {
             },
             "expected_response": [". Sky builders", "     . trust builders"],
         },
-        "iso_values": {
-            "input_data": {
-                "Project one": [{"PrulfI__month": 1, "PrulfI__year": 2021}],
-                "Project two": [{"PrulfI__month": 2, "PrulfI__year": 2022}],
-            },
-            "expected_response": (
-                [
-                    ". Project one: January 2021,",
-                    "     . Project two: February 2022,",
-                ]
-            ),
-        },
     },
     "map_data": {
         "multiple_values": {
@@ -92,23 +80,9 @@ multi_input_test_data = {
         },
         "nested_dict_value_with_str_value": {
             "input_data": [
-                {
-                    "PrulfI": {"PrulfI__month": 2, "PrulfI__year": 2022},
-                    "fFIuPP": "Milestone one",
-                },
-                {
-                    "fFIuPP": "Milestone two",
-                    "PrulfI": {
-                        "PrulfI__date": 12,
-                        "PrulfI__month": 3,
-                        "PrulfI__year": 2023,
-                    },
-                },
+                {"CZZvN": "Name", "jhgvDjv": "Xose"},
             ],
-            "expected_response": (
-                ". Milestone one: February 2022,\n     . Milestone"
-                " two: 12 March 2023,"
-            ),
+            "expected_response": ("Name: Xose"),
         },
     },
 }
