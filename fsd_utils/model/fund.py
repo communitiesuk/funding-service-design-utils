@@ -8,10 +8,10 @@ from fsd_utils.model.round import Round
 @dataclass
 class Fund:
     id: str
-    name_json: dict
-    title_json: dict
+    name: str
+    title: str
     short_name: str
-    description_json: dict
+    description: str
     owner_organisation_name: str
     owner_organisation_shortname: str
     welsh_available: bool = False

@@ -6,7 +6,7 @@ from dataclasses import dataclass
 class Round:
     id: str
     fund_id: str
-    title_json: dict
+    title: str
     short_name: str
     prospectus: str
     privacy_notice: str
