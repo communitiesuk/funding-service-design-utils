@@ -214,7 +214,6 @@ class TestMultiInput:
         ],
     )
     def test_map_multi_input_data(self, app_context, input_data, expected_response):
-
         response = MultiInput.map_multi_input_data(input_data)
         assert response == expected_response
 
