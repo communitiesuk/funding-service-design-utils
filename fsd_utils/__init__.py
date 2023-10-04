@@ -2,6 +2,7 @@ from fsd_utils import authentication
 from fsd_utils import gunicorn  # noqa
 from fsd_utils import healthchecks
 from fsd_utils import logging  # noqa
+from fsd_utils import model
 from fsd_utils import toggles
 from fsd_utils.config.commonconfig import CommonConfig  # noqa
 from fsd_utils.config.configclass import configclass  # noqa
@@ -17,6 +18,7 @@ from fsd_utils.simple_utils import date_utils  # noqa
 
 
 __all__ = [
+    model,
     configclass,
     logging,
     gunicorn,
