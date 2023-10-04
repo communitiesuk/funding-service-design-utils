@@ -74,7 +74,7 @@ class TestAuthentication:
         :param flask_test_client:
         """
         invalid_token = self._create_invalid_token()
-        flask_test_client.set_cookie("localhost", "fsd-user-token", invalid_token)
+        flask_test_client.set_cookie("fsd-user-token", invalid_token)
         mock_request = flask_test_client.get("/mock_login_required_route")
 
         assert mock_request.status_code == 302
