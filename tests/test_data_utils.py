@@ -42,7 +42,7 @@ multi_input_test_data = {
                 "bbd0ec2a-972f-4d06-bf93-bf24786c3859": "Sky builders",
                 "ac8bbdfe-6a39-45b8-8c0a-6558148388d1": "trust builders",
             },
-            "expected_response": [". Sky builders", "      \n. trust builders"],
+            "expected_response": [". Sky builders", "\n     . trust builders"],
         },
     },
     "map_data": {

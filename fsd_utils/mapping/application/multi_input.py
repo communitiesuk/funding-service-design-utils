@@ -10,7 +10,7 @@ class MultiInput(ProcessTypes):
 
     @classmethod
     def format_values(cls, value, index):
-        return f"{cls.indent(5)} \n. {value}" if index != 1 else f". {value}"
+        return f"\n{cls.indent(5)}. {value}" if index != 1 else f". {value}"
 
     @classmethod
     def format_value_pair(cls, key, value):
