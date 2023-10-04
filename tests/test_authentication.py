@@ -92,7 +92,7 @@ class TestAuthentication:
         :param flask_test_client:
         """
         valid_token = self._create_valid_token()
-        flask_test_client.set_cookie("localhost", "fsd-user-token", valid_token)
+        flask_test_client.set_cookie("fsd-user-token", valid_token)
         mock_request = flask_test_client.get("/mock_login_required_route")
         assert mock_request.status_code == 200
         assert mock_request.json == self.expected_valid_g_attributes
@@ -110,7 +110,7 @@ class TestAuthentication:
         :param flask_test_client:
         """
         valid_token = self._create_valid_token()
-        flask_test_client.set_cookie("localhost", "fsd-user-token", valid_token)
+        flask_test_client.set_cookie("fsd-user-token", valid_token)
         mock_request = flask_test_client.get("/mock_login_required_admin_roles_route")
         assert mock_request.status_code == 302
         assert (
@@ -130,7 +130,7 @@ class TestAuthentication:
         :param flask_test_client:
         """
         valid_token = self._create_valid_token()
-        flask_test_client.set_cookie("localhost", "fsd-user-token", valid_token)
+        flask_test_client.set_cookie("fsd-user-token", valid_token)
         mock_request = flask_test_client.get("/mock_login_required_roles_route")
         assert mock_request.status_code == 200
         assert mock_request.json == self.expected_valid_g_attributes
@@ -161,7 +161,7 @@ class TestAuthentication:
         :param flask_test_client:
         """
         valid_token = self._create_valid_token()
-        flask_test_client.set_cookie("localhost", "fsd-user-token", valid_token)
+        flask_test_client.set_cookie("fsd-user-token", valid_token)
         mock_request = flask_test_client.get("/mock_login_requested_route")
         assert mock_request.status_code == 200
         assert mock_request.json == self.expected_valid_g_attributes
@@ -259,7 +259,7 @@ class TestAuthentication:
         :param flask_test_client:
         """
         valid_token = self._create_valid_token()
-        flask_test_client.set_cookie("localhost", "fsd-user-token", valid_token)
+        flask_test_client.set_cookie("fsd-user-token", valid_token)
         mock_request = flask_test_client.get("/mock_login_requested_return_app_route")
         assert mock_request.status_code == 200
         assert (
