@@ -74,9 +74,7 @@ class TestAuthentication:
         :param flask_test_client:
         """
         invalid_token = self._create_invalid_token()
-        flask_test_client.set_cookie(
-            server_name="localhost", key="fsd-user-token", value=invalid_token
-        )
+        flask_test_client.set_cookie("localhost", "fsd-user-token", invalid_token)
         mock_request = flask_test_client.get("/mock_login_required_route")
 
         assert mock_request.status_code == 302
@@ -254,15 +252,14 @@ class TestAuthentication:
     ):
         """
         GIVEN a flask_test_client and
-            route decorated with @login_required decorator with
-            the "return_app" parameter set to "post-award-frontend"
+            route decorated with @login_required decorator with the "return_app" parameter set to "post-award-frontend"
         WHEN a request is made with a correctly formatted
             and signed "fsd-user-token" cookie
         THEN the route returns with the g variable "logout_url" set correctly
         :param flask_test_client:
         """
         valid_token = self._create_valid_token()
-        flask_test_client.set_cookie("localhost", "fsd-user-token", value=valid_token)
+        flask_test_client.set_cookie("localhost", "fsd-user-token", valid_token)
         mock_request = flask_test_client.get("/mock_login_requested_return_app_route")
         assert mock_request.status_code == 200
         assert (
