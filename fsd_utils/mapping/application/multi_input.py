@@ -13,8 +13,10 @@ class MultiInput(ProcessTypes):
         return f"\n{cls.indent(5)}. {value}" if index != 1 else f". {value}"
 
     @classmethod
-    def format_value_pair(cls, key, value):
-        return f"{key}: {value}"
+    def format_value_pair(cls, key, value, index):
+        return (
+            f"\n{cls.indent(5)}. {key}: {value}" if index != 1 else f". {key}: {value}"
+        )
 
     @classmethod
     def format_keys_and_values(cls, key: str, value: list, index: enumerate):
@@ -33,7 +35,7 @@ class MultiInput(ProcessTypes):
         )
 
     @classmethod
-    def process_data(cls, sorted_data: dict) -> list:
+    def format_data(cls, sorted_data: dict) -> list:
         """
         Process a dictionary of sorted data, generating a list of formatted values.
 
@@ -57,7 +59,7 @@ class MultiInput(ProcessTypes):
                 if isinstance(value, list):
                     output.append(cls.format_keys_and_values(key, value, index))
                 if not uuid and not isinstance(value, list):
-                    output.append(cls.format_value_pair(key, value))
+                    output.append(cls.format_value_pair(key, value, index))
 
             except Exception as e:
                 current_app.logger.error(f"Error occurred while processing data: {e}")
@@ -93,7 +95,7 @@ class MultiInput(ProcessTypes):
                     if isinstance(item, dict):
                         cls._dict_items(item, sorted_data)
 
-            output = cls.process_data(sorted_data)
+            output = cls.format_data(sorted_data)
             output = "\n".join(output)
             return output
 

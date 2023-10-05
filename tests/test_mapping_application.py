@@ -183,21 +183,21 @@ class TestMultiInput:
         "input_data, expected_response",
         [
             (
-                multi_input_test_data["process_data"]["multiple_values"]["input_data"],
-                multi_input_test_data["process_data"]["multiple_values"][
+                multi_input_test_data["format_data"]["multiple_values"]["input_data"],
+                multi_input_test_data["format_data"]["multiple_values"][
                     "expected_response"
                 ],
             ),
             (
-                multi_input_test_data["process_data"]["single_value"]["input_data"],
-                multi_input_test_data["process_data"]["single_value"][
+                multi_input_test_data["format_data"]["single_value"]["input_data"],
+                multi_input_test_data["format_data"]["single_value"][
                     "expected_response"
                 ],
             ),
         ],
     )
-    def test_process_data(self, app_context, input_data, expected_response):
-        response = MultiInput.process_data(input_data)
+    def test_format_data(self, app_context, input_data, expected_response):
+        response = MultiInput.format_data(input_data)
         assert response == expected_response
 
     @pytest.mark.parametrize(

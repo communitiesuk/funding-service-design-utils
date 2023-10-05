@@ -15,7 +15,7 @@ class TestDataUtils:
 
 
 multi_input_test_data = {
-    "process_data": {
+    "format_data": {
         "multiple_values": {
             "input_data": {
                 "trusts one": [
@@ -83,7 +83,7 @@ multi_input_test_data = {
             "input_data": [
                 {"CZZvN": "Name", "jhgvDjv": "Xose"},
             ],
-            "expected_response": ("Name: Xose"),
+            "expected_response": (". Name: Xose"),
         },
     },
 }
