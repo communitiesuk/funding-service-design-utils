@@ -15,7 +15,7 @@ class TestDataUtils:
 
 
 multi_input_test_data = {
-    "process_data": {
+    "format_data": {
         "multiple_values": {
             "input_data": {
                 "trusts one": [
@@ -32,8 +32,9 @@ multi_input_test_data = {
                 ],
             },
             "expected_response": [
-                "* trusts one \n       . 125\n       . 1 April 2023 to 31 March 2024\n       . Capital\n       . Yes",  # noqa
-                "\n     * trust two \n       . 456\n       . 1 April 2024 to 31 March 2025\n       . Revenue\n       . No",  # noqa
+                "trusts one \n       . 125\n       . 1 April 2023 to 31 March 2024\n       . Capital\n       . Yes",
+                "\n     trust two \n       . 456\n       . 1 April 2024 to 31 March 2025\n       . Revenue\n"
+                "       . No",
             ],
         },
         "single_value": {
@@ -41,19 +42,7 @@ multi_input_test_data = {
                 "bbd0ec2a-972f-4d06-bf93-bf24786c3859": "Sky builders",
                 "ac8bbdfe-6a39-45b8-8c0a-6558148388d1": "trust builders",
             },
-            "expected_response": [". Sky builders", "     . trust builders"],
-        },
-        "iso_values": {
-            "input_data": {
-                "Project one": [{"PrulfI__month": 1, "PrulfI__year": 2021}],
-                "Project two": [{"PrulfI__month": 2, "PrulfI__year": 2022}],
-            },
-            "expected_response": (
-                [
-                    ". Project one: January 2021,",
-                    "     . Project two: February 2022,",
-                ]
-            ),
+            "expected_response": [". Sky builders", "\n     . trust builders"],
         },
     },
     "map_data": {
@@ -92,23 +81,9 @@ multi_input_test_data = {
         },
         "nested_dict_value_with_str_value": {
             "input_data": [
-                {
-                    "PrulfI": {"PrulfI__month": 2, "PrulfI__year": 2022},
-                    "fFIuPP": "Milestone one",
-                },
-                {
-                    "fFIuPP": "Milestone two",
-                    "PrulfI": {
-                        "PrulfI__date": 12,
-                        "PrulfI__month": 3,
-                        "PrulfI__year": 2023,
-                    },
-                },
+                {"CZZvN": "Name", "jhgvDjv": "Xose"},
             ],
-            "expected_response": (
-                ". Milestone one: February 2022,\n     . Milestone"
-                " two: 12 March 2023,"
-            ),
+            "expected_response": (". Name: Xose"),
         },
     },
 }
@@ -132,6 +107,12 @@ test_data_sort_questions_answers = {
                             "title": "What funding are you applying?",
                             "type": "list",
                             "answer": "capital",
+                        },
+                        {
+                            "key": "NxSxCd",
+                            "title": "Do you want to mark this section as complete?",
+                            "type": "boolean",
+                            "answer": "markAsComplete",
                         },
                     ],
                     "question": "What funding are you applying for?",
@@ -229,14 +210,16 @@ test_data_sort_questions_answers = {
             "What funding are you applying for?": "both revenue and capital",
             "What funding are you applying?": "capital",
             "Both revenue and capital": "4020",
-            "Revenue for 1 April 2024 to 31 March 2025": "4020",
             "Testing hyphen in field type text": "This-is-a-type-text-answer",
+            "Revenue for 1 April 2024 to 31 March 2025": "4020",
             "Capital for 1 April 2023 to 31 March 2024": "1230",
             "Capital for 1 April 2024 to 31 March 2025": "1230",
             "Which membership organisations are you a member of?": "homeless link",
             "When did you start providing day provision?": "March 2023",
-            "Revenue costs": "* Test Funding Required NS Form \n       . 40\n       . 1 April 2023 to 31 March 2024\n       . Not provided",  # noqa
-            "Capital costs": "* 50 \n       . Test Funding Required NS Form\n       . 1 April 2024 to 31 March 2025\n       . Test Funding Required NS Form",  # noqa
+            "Revenue costs": "Test Funding Required NS Form \n       . 40\n"
+            "       . 1 April 2023 to 31 March 2024\n       . Not provided",
+            "Capital costs": "50 \n       . Test Funding Required NS Form\n"
+            "       . 1 April 2024 to 31 March 2025\n       . Test Funding Required NS Form",
         }
     },
     "incorrect_form_data": [

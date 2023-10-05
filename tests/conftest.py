@@ -1,6 +1,8 @@
 """
 Contains test configuration.
 """
+import unittest.mock as mock
+import uuid
 from pathlib import Path
 
 import pytest
@@ -249,3 +251,11 @@ def mock_login_requested_return_app_route():
     :return: the Flask g variable serialised as a dict/json
     """
     return vars(g)
+
+
+@pytest.fixture(scope="function")
+def mock_uuid4():
+    with mock.patch(
+        "uuid.uuid4", return_value=uuid.UUID("6ba7b810-9dad-11d1-80b4-00c04fd430c8")
+    ):
+        yield

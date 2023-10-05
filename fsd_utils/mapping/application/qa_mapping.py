@@ -67,12 +67,23 @@ def extract_questions_and_answers(forms) -> dict:
                             questions_answers[form_name][
                                 field["title"]
                             ] = format_month_year(answer)
+
                         elif field["type"] == "date":
                             questions_answers[form_name][
                                 field["title"]
                             ] = format_date_month_year(answer)
+
                         else:
-                            questions_answers[form_name][field["title"]] = answer
+                            # we dont want to display boolean question
+                            # (Do you want to mark this section as complete?)
+                            if (
+                                field.get("type") == "boolean"
+                                and field.get("title").strip().lower()
+                                == "do you want to mark this section as complete?"
+                            ):
+                                continue
+                            else:
+                                questions_answers[form_name][field["title"]] = answer
     except Exception as e:
         current_app.logger.error(f"Error occurred while processing form data: {e}")
         current_app.logger.error(f"Could not map the data for form: {form_name}")

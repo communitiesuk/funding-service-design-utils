@@ -44,7 +44,7 @@ def format_answer(answer):
 
         return answer
     except Exception:
-        current_app.logger.error(f"No formatting required for an answer: {answer}")
+        current_app.logger.info(f"No formatting required for an answer: {answer}")
 
 
 def simplify_title(section_name, remove_text: list):
@@ -62,7 +62,7 @@ def simplify_title(section_name, remove_text: list):
 
         return simplified_title
     except Exception as e:
-        current_app.logger.error(f"Could not simplify the section title, {e}")
+        current_app.logger.warning(f"Could not simplify the section title, {e}")
 
 
 def format_checkbox(answer):
@@ -109,8 +109,8 @@ def generate_text_of_application(q_and_a: dict, fund_name: str):
     output.write(f"********* {fund_name} **********\n")
 
     for section_name, values in q_and_a.items():
-        title = simplify_title(section_name, remove_text=["cof", "ns"])
-        output.write(f"\n** {' '.join(title).capitalize()} **\n\n")
+        title = simplify_title(section_name, remove_text=["cof", "ns", "cyp"])
+        output.write(f"\n* {' '.join(title).capitalize()}\n\n")
         for questions, answers in values.items():
             output.write(f"  Q) {questions}\n")
             output.write(f"  A) {format_answer(answers)}\n\n")
