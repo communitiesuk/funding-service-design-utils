@@ -273,10 +273,19 @@ class TestMultiInput:
 
     @pytest.mark.parametrize(
         "input_data, expected_response",
-        [({"key1": "Value One", "key2": "Value Two"}, ["Value One", "Value Two"])],
+        [
+            ({"key1": "Value One", "key2": "Value Two"}, ["Value One", "Value Two"]),
+            (
+                {
+                    "HpLJDu": "Milestone one",
+                    "LZbOBu": {"LZbOBu__month": 6, "LZbOBu__year": 2024},
+                },
+                ["Milestone one", "June 2024"],
+            ),
+        ],
     )
-    def test_value_str_len_two(self, app_context, input_data, expected_response):
-        response = ProcessTypes.value_str_len_two(input_data)
+    def test_value_len_two(self, app_context, input_data, expected_response):
+        response = ProcessTypes.value_len_two(input_data)
         assert response == expected_response
 
     @pytest.mark.parametrize(
@@ -297,10 +306,8 @@ class TestMultiInput:
             ),
         ],
     )
-    def test_value_str_len_greater_two(
-        self, app_context, input_data, expected_response
-    ):
-        response = ProcessTypes.value_str_len_greater_two(input_data)
+    def test_value_len_greater_two(self, app_context, input_data, expected_response):
+        response = ProcessTypes.value_len_greater_two(input_data)
         assert response == expected_response
 
     @pytest.mark.parametrize(

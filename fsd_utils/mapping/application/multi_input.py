@@ -34,6 +34,15 @@ class MultiInput(ProcessTypes):
 
     @classmethod
     def process_data(cls, sorted_data: dict) -> list:
+        """
+        Process a dictionary of sorted data, generating a list of formatted values.
+
+        Args:
+            sorted_data (dict): A dictionary of sorted data to process.
+
+        Returns:
+            list: A list of formatted values extracted from the input data.
+        """
 
         output = []
         for index, (key, value) in enumerate(sorted_data.items(), start=1):
@@ -59,6 +68,18 @@ class MultiInput(ProcessTypes):
 
     @classmethod
     def map_multi_input_data(cls, multi_input_data: list[dict]):
+        """
+        Maps and processes a list of input data, generating a formatted output.
+
+        Args:
+            multi_input_data (list[dict]): A list of dictionaries representing input data.
+
+        Returns:
+            str: A formatted output string containing processed data.
+
+        Raises:
+            Exception: If an error occurs during the mapping and processing.
+        """
 
         try:
             sorted_data = {}
