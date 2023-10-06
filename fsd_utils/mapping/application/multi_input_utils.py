@@ -107,7 +107,7 @@ class ProcessTypes:
         _values = []
         if len(item) == 2:
             for value in item.values():
-                if isinstance(value, str):
+                if isinstance(value, (str, int)):
                     _values.append(value)
                 if isinstance(value, dict):
                     date = cls.validated_iso_value(value)

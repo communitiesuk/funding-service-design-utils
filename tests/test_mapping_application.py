@@ -204,10 +204,14 @@ class TestMultiInput:
         "input_data, expected_response",
         [
             (
-                multi_input_test_data["map_data"]["nested_dict_value_with_str_value"][
-                    "input_data"
+                multi_input_test_data["map_data"]["dict_two_str_values"]["input_data"],
+                multi_input_test_data["map_data"]["dict_two_str_values"][
+                    "expected_response"
                 ],
-                multi_input_test_data["map_data"]["nested_dict_value_with_str_value"][
+            ),
+            (
+                multi_input_test_data["map_data"]["dict_two_int_values"]["input_data"],
+                multi_input_test_data["map_data"]["dict_two_int_values"][
                     "expected_response"
                 ],
             ),
