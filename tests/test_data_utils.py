@@ -79,11 +79,17 @@ multi_input_test_data = {
             ],
             "expected_response": "* cost one \n       . 4444\n\n     * cost two \n       . 4455",
         },
-        "nested_dict_value_with_str_value": {
+        "dict_two_str_values": {
             "input_data": [
                 {"CZZvN": "Name", "jhgvDjv": "Xose"},
             ],
             "expected_response": (". Name: Xose"),
+        },
+        "dict_two_int_values": {
+            "input_data": [
+                {"hGsUaZ": "Revenue Costs", "UyaAHw": 817},
+            ],
+            "expected_response": (". Revenue Costs: 817"),
         },
     },
 }
