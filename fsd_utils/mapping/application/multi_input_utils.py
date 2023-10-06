@@ -61,13 +61,13 @@ class ProcessTypes:
         """
         address = cls.validate_address(item)
         if address:
-            sorted_data[f"address_{str(uuid.uuid4())}"] = ", ".join(address)
+            sorted_data[f"address_{str(uuid.uuid4())}"] = address
 
-        value_str_len_two = cls.value_len_two(item)
-        if value_str_len_two:
-            sorted_data[value_str_len_two[0]] = value_str_len_two[1]
+        value_len_two = cls.value_len_two(item)
+        if value_len_two:
+            sorted_data[value_len_two[0]] = value_len_two[1]
 
-        if not address and not value_str_len_two:
+        if not address and not value_len_two:
             cls.sort_dict_items(item, sorted_data)
 
     @classmethod
@@ -110,7 +110,12 @@ class ProcessTypes:
                 if isinstance(value, str):
                     _values.append(value)
                 if isinstance(value, dict):
-                    _values.append(cls.validated_iso_value(value))
+                    date = cls.validated_iso_value(value)
+                    if date:
+                        _values.append(date)
+                    address = cls.validate_address(value)
+                    if address:
+                        _values.append(address)
         if _values:
             return _values
 
@@ -136,8 +141,15 @@ class ProcessTypes:
                     date = cls.validated_iso_value(value)
                     if date:
                         combined_values.append(date)
-                    elif not date:
-                        dict_values = [val for val in value.values()]
+                    address = cls.validate_address(value)
+                    if address:
+                        combined_values.append(address)
+                    elif not date and not address:
+                        dict_values = [
+                            val
+                            for val in value.values()
+                            if val is not None and val != ""
+                        ]
                         combined_values.append(", ".join(map(str, dict_values)))
                 if isinstance(value, (str, int)):
                     _str_key = [
@@ -203,7 +215,7 @@ class ProcessTypes:
             if key in address_keys and value is not None and value != "":
                 address.append(value)
         if address:
-            return address
+            return ", ".join(str(item) for item in address if item is not None)
 
     @classmethod
     def is_valid_uuid(cls, uuid_str: str) -> bool:

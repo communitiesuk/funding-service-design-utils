@@ -32,9 +32,9 @@ multi_input_test_data = {
                 ],
             },
             "expected_response": [
-                "trusts one \n       . 125\n       . 1 April 2023 to 31 March 2024\n       . Capital\n       . Yes",
-                "\n     trust two \n       . 456\n       . 1 April 2024 to 31 March 2025\n       . Revenue\n"
-                "       . No",
+                "trusts one \n      . 125\n      . 1 April 2023 to 31 March 2024\n      . Capital\n      . Yes",
+                "\n     trust two \n      . 456\n      . 1 April 2024 to 31 March 2025\n      . Revenue\n"
+                "      . No",
             ],
         },
         "single_value": {
@@ -107,6 +107,43 @@ test_data_sort_questions_answers = {
                             "title": "What funding are you applying?",
                             "type": "list",
                             "answer": "capital",
+                        },
+                        {
+                            "key": "tZoOKx",
+                            "title": "Partner organisation details",
+                            "type": "multiInput",
+                            "answer": [
+                                {
+                                    "GpLJDu": "version1",
+                                    "IXjMWp": {
+                                        "addressLine1": "La la land",
+                                        "addressLine2": "",
+                                        "town": "Mars",
+                                        "county": "",
+                                        "postcode": "XA15 1AX",
+                                    },
+                                    "MKbOlA": "https://www.wikipedia.org/",
+                                    "OghGGr": None,
+                                    "RphKTp": None,
+                                }
+                            ],
+                        },
+                        {
+                            "key": "tZoOKL",
+                            "title": "Partner's Job",
+                            "type": "multiInput",
+                            "answer": [
+                                {
+                                    "GpLJDu": "version2",
+                                    "IXjMWp": {
+                                        "addressLine1": "La la la land",
+                                        "addressLine2": "",
+                                        "town": "Moon",
+                                        "county": "",
+                                        "postcode": "XA15 1AL",
+                                    },
+                                }
+                            ],
                         },
                         {
                             "key": "NxSxCd",
@@ -209,6 +246,9 @@ test_data_sort_questions_answers = {
         "funding-required-ns": {
             "What funding are you applying for?": "both revenue and capital",
             "What funding are you applying?": "capital",
+            "Partner organisation details": "version1 \n      . La la land, Mars, XA15 1AX\n"
+            "      . https://www.wikipedia.org/\n      . Not provided\n      . Not provided",
+            "Partner's Job": ". version2: La la la land, Moon, XA15 1AL",
             "Both revenue and capital": "4020",
             "Testing hyphen in field type text": "This-is-a-type-text-answer",
             "Revenue for 1 April 2024 to 31 March 2025": "4020",
@@ -216,10 +256,10 @@ test_data_sort_questions_answers = {
             "Capital for 1 April 2024 to 31 March 2025": "1230",
             "Which membership organisations are you a member of?": "homeless link",
             "When did you start providing day provision?": "March 2023",
-            "Revenue costs": "Test Funding Required NS Form \n       . 40\n"
-            "       . 1 April 2023 to 31 March 2024\n       . Not provided",
-            "Capital costs": "50 \n       . Test Funding Required NS Form\n"
-            "       . 1 April 2024 to 31 March 2025\n       . Test Funding Required NS Form",
+            "Revenue costs": "Test Funding Required NS Form \n      . 40\n"
+            "      . 1 April 2023 to 31 March 2024\n      . Not provided",
+            "Capital costs": "50 \n      . Test Funding Required NS Form\n"
+            "      . 1 April 2024 to 31 March 2025\n      . Test Funding Required NS Form",
         }
     },
     "incorrect_form_data": [

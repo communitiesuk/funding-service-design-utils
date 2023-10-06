@@ -261,7 +261,7 @@ class TestMultiInput:
                     "town": "Sample Town",
                     "extra_field": "This should be ignored",
                 },
-                ["123 Main St", "Apt 4B", "Example County", "12345", "Sample Town"],
+                "123 Main St, Apt 4B, Example County, 12345, Sample Town",
             )
         ],
     )

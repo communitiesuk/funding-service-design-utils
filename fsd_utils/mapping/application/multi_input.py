@@ -23,7 +23,7 @@ class MultiInput(ProcessTypes):
         sanitised_values = convert_bool_value(value)
         values = "\n".join(
             [
-                f"{cls.indent(6) if i == 1 else cls.indent(7)}. {str(item).strip()}"
+                f"{cls.indent(5) if i == 1 else cls.indent(6)}. {str(item).strip()}"
                 for i, item in enumerate(sanitised_values, start=1)
             ]
         )
