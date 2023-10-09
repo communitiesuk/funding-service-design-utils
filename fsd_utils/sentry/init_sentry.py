@@ -15,7 +15,7 @@ def _traces_sampler(sampling_context):
         return 0
     else:
         # Default sample rate for all others (replaces traces_sample_rate)
-        return float(getenv("SENTRY_TRACES_SAMPLE_RATE", "0.1"))
+        return float(getenv("SENTRY_TRACES_SAMPLE_RATE", "0.02"))
 
 
 def init_sentry():
