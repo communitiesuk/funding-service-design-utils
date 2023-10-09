@@ -64,6 +64,16 @@ def test_format_answer(input_data, expected_response):
             ["cof", "ns"],
             ["organisation", "name"],
         ),
+        (
+            "organisation-name-dpi-round",
+            ["cof", "dpi"],
+            ["organisation", "name"],
+        ),
+        (
+            "organisation-name-cyp",
+            ["cof", "cyp"],
+            ["organisation", "name"],
+        ),
         ("organisation-address", ["cof", "ns"], ["organisation", "address"]),
     ],
 )
@@ -118,11 +128,15 @@ def test_extract_questions_and_answers_fail(app_context):
                 "health-interventions",
                 "employment-support",
             ],
-            ". health interventions\n     . employment support",
+            ". Health interventions\n     . Employment support",
         ),
         (
             ["Survivors of domestic abuse", "ethnic minorities"],
-            ". Survivors of domestic abuse\n     . ethnic minorities",
+            ". Survivors of domestic abuse\n     . Ethnic minorities",
+        ),
+        (
+            ["gis (geographical-information-system)"],
+            ". Gis (geographical information system)",
         ),
     ],
 )
@@ -135,11 +149,16 @@ def test_format_checkbox(input_value, expected_response):
 @pytest.mark.parametrize(
     "input_value, expected_response",
     [
-        ("health-interventions", "health interventions"),
+        ("health-interventions", "Health interventions"),
         ("https://my-website.com", "https://my-website.com"),
         (None, None),
         (True, True),
         (["test-list-answer"], ["test-list-answer"]),
+        (
+            "gis (geographical-information-system)",
+            "Gis (geographical information system)",
+        ),
+        ("capital", "Capital"),
     ],
 )
 def test_format_radio_field(input_value, expected_response):
