@@ -47,7 +47,23 @@ def format_answer(answer):
         current_app.logger.info(f"No formatting required for an answer: {answer}")
 
 
-def simplify_title(section_name, remove_text: list):
+def simplify_title(section_name: str, remove_text: list) -> list:
+    """
+    Simplify a section title by removing specified text elements.
+
+    This function takes a section title as input and removes specific text elements
+    based on the provided 'remove_text' list. It splits the section title by hyphens
+    and removes elements from the beginning until it encounters the first match in
+    'remove_text'. If no match is found, the original section title is returned.
+
+    Parameters:
+    - section_name (str): The original section title to be simplified.
+    - remove_text (list): A list of text elements to be removed from the title.
+
+    Returns:
+    - simplified_title (list): A list containing the simplified section title
+      after removing the specified elements.
+    """
     try:
         section = section_name.split("-")
         simplified_title = []
@@ -65,22 +81,50 @@ def simplify_title(section_name, remove_text: list):
         current_app.logger.warning(f"Could not simplify the section title, {e}")
 
 
-def format_checkbox(answer):
+def format_checkbox(answer: list) -> str:
+    """
+    Format a list of elements into a checkbox-style list.
+
+    This function takes a list of elements as input and formats them into a
+    checkbox-style list with proper indentation and capitalization. It processes
+    each element, splitting hyphenated elements if present, and returns the formatted
+    checkbox-style list as a string.
+
+    Parameters:
+    - answer (list): The list of elements to be formatted.
+
+    Returns:
+    - formatted_list (str): The formatted checkbox-style list as a string.
+    """
     formatted_elements = []
     indent = " " * 5
     for index, element in enumerate(answer, start=1):
         separator = f"{indent}." if index > 1 else "."
         if "-" in element:
             sub_elements = element.split("-")
-            formatted_sub_elements = " ".join(sub_elements).strip()
+            formatted_sub_elements = " ".join(sub_elements).strip().capitalize()
             formatted_elements.append(f"{separator} {formatted_sub_elements}")
         else:
-            formatted_elements.append(f"{separator} {element}")
+            formatted_elements.append(f"{separator} {element.capitalize()}")
 
     return "\n".join(formatted_elements)
 
 
-def format_radio_field(answer):
+def format_radio_field(answer: str) -> str:
+    """
+    Format a radio field answer for better readability.
+
+    This function takes an answer from a radio field and applies formatting to
+    enhance its readability. It handles cases where the answer is a URL, a boolean,
+    a list, or a string with hyphens. It capitalizes the first letter of each word
+    and joins them with spaces.
+
+    Parameters:
+    - answer: The radio field answer to be formatted.
+
+    Returns:
+    - formatted_answer: The formatted answer for improved readability.
+    """
     try:
         if answer is None or isinstance(answer, (bool, list)):
             return answer
@@ -91,10 +135,10 @@ def format_radio_field(answer):
 
         if "-" in answer:
             answer = answer.split("-")
-            formatted_answer = " ".join(answer).strip()
+            formatted_answer = " ".join(answer).strip().capitalize()
             return formatted_answer
         else:
-            return answer
+            return answer.capitalize()
 
     except Exception:  # noqa
         current_app.logger.info(
@@ -103,13 +147,30 @@ def format_radio_field(answer):
         return answer
 
 
-def generate_text_of_application(q_and_a: dict, fund_name: str):
+def generate_text_of_application(q_and_a: dict, fund_name: str) -> str:
+    """
+    Generate a formatted text document for an application with questions and answers.
+
+    This function takes a dictionary of questions and answers ('q_and_a') and the name
+    of a fund ('fund_name'). It creates a formatted text document containing the fund
+    name, section titles derived from 'q_and_a' keys, and corresponding questions and
+    answers. Text is formatted with section titles, question and answer numbering, and
+    specific text elements are simplified as specified. The resulting output is
+    returned as a string.
+
+    Parameters:
+    - q_and_a (dict): A dictionary of questions and answers.
+    - fund_name (str): The name of the fund.
+
+    Returns:
+    - application_text (str): A formatted text output for the application.
+    """
     output = StringIO()
 
     output.write(f"********* {fund_name} **********\n")
 
     for section_name, values in q_and_a.items():
-        title = simplify_title(section_name, remove_text=["cof", "ns", "cyp"])
+        title = simplify_title(section_name, remove_text=["cof", "ns", "cyp", "dpi"])
         output.write(f"\n* {' '.join(title).capitalize()}\n\n")
         for questions, answers in values.items():
             output.write(f"  Q) {questions}\n")

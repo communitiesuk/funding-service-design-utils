@@ -250,8 +250,8 @@ test_data_sort_questions_answers = {
     ],
     "questions_answers": {
         "funding-required-ns": {
-            "What funding are you applying for?": "both revenue and capital",
-            "What funding are you applying?": "capital",
+            "What funding are you applying for?": "Both revenue and capital",
+            "What funding are you applying?": "Capital",
             "Partner organisation details": "version1 \n      . La la land, Mars, XA15 1AX\n"
             "      . https://www.wikipedia.org/\n      . Not provided\n      . Not provided",
             "Partner's Job": ". version2: La la la land, Moon, XA15 1AL",
@@ -260,7 +260,7 @@ test_data_sort_questions_answers = {
             "Revenue for 1 April 2024 to 31 March 2025": "4020",
             "Capital for 1 April 2023 to 31 March 2024": "1230",
             "Capital for 1 April 2024 to 31 March 2025": "1230",
-            "Which membership organisations are you a member of?": "homeless link",
+            "Which membership organisations are you a member of?": "Homeless link",
             "When did you start providing day provision?": "March 2023",
             "Revenue costs": "Test Funding Required NS Form \n      . 40\n"
             "      . 1 April 2023 to 31 March 2024\n      . Not provided",
