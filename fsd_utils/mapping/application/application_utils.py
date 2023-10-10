@@ -47,7 +47,7 @@ def format_answer(answer):
         current_app.logger.info(f"No formatting required for an answer: {answer}")
 
 
-def simplify_title(section_name: str, remove_text: list):
+def simplify_title(section_name: str, remove_text: list) -> list:
     """
     Simplify a section title by removing specified text elements.
 
