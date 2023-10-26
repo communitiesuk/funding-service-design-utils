@@ -6,19 +6,21 @@ from botocore.exceptions import ClientError
 
 
 class SQSClient:
-    def __init__(self,
-                 aws_access_key_id,
-                 aws_secret_access_key,
-                 region_name="us-west-1",
-                 endpoint_url=None,
-                 **kwargs):
+    def __init__(
+        self,
+        aws_access_key_id,
+        aws_secret_access_key,
+        region_name="us-west-1",
+        endpoint_url=None,
+        **kwargs,
+    ):
         self.client = boto3.client(
             "sqs",
             aws_access_key_id=aws_access_key_id,
             aws_secret_access_key=aws_secret_access_key,
             region_name=region_name,
             endpoint_url=endpoint_url,
-            **kwargs
+            **kwargs,
         )
 
     def get_queues(self, prefix=None):
@@ -62,11 +64,14 @@ class SQSClient:
         )
         return response["QueueUrl"]
 
-    def submit_single_message(self, queue_url,
-                              message,
-                              extra_attributes: dict = None,
-                              message_group_id=None,
-                              message_deduplication_id=None):
+    def submit_single_message(
+        self,
+        queue_url,
+        message,
+        extra_attributes: dict = None,
+        message_group_id=None,
+        message_deduplication_id=None,
+    ):
         try:
             SQS_CUSTOM_ATTRIBUTES = {
                 "message_created_at": {
@@ -84,7 +89,9 @@ class SQSClient:
             # TODO: Revisit this part after AWS migration
             # 'MessageGroupId' & 'MessageDeduplicationId' are mandatary parameters to be provide on PAAS,
             # while they are not  acceptable parameters on localstack queue
-            if "docker" in queue_url or "local" in queue_url:  # if running on localstack
+            if (
+                "docker" in queue_url or "local" in queue_url
+            ):  # if running on localstack
                 response = self.client.send_message(
                     QueueUrl=queue_url,
                     MessageBody=json.dumps(message),
@@ -192,9 +199,7 @@ class SQSClient:
                     f"Received message ID: {msg['MessageId']}, Attributes: {msg['MessageAttributes']}"
                 )
         except Exception as error:
-            print(
-                f"Couldn't receive messages from queue: {queue_url} Error: {error}"
-            )
+            print(f"Couldn't receive messages from queue: {queue_url} Error: {error}")
             raise error
         else:
             return messages
@@ -219,9 +224,7 @@ class SQSClient:
 
             if "Successful" in response:
                 for msg_meta in response["Successful"]:
-                    print(
-                        f"Deleted {message_receipt_handles[int(msg_meta['Id'])]}"
-                    )
+                    print(f"Deleted {message_receipt_handles[int(msg_meta['Id'])]}")
             if "Failed" in response:
                 for msg_meta in response["Failed"]:
                     print(
@@ -232,7 +235,9 @@ class SQSClient:
         else:
             return response
 
-    def create_sqs_queue(self, queue_name, has_dlq=False, dlq_queue_name=None, max_recieve_count=3):
+    def create_sqs_queue(
+        self, queue_name, has_dlq=False, dlq_queue_name=None, max_recieve_count=3
+    ):
         """
         Creates an Amazon SQS & DLQ queue.
 
@@ -267,7 +272,9 @@ class SQSClient:
                 )["Attributes"]["QueueArn"]
             else:
                 print(f"DLQ '{dlq_queue_name}' already exists!")
-                dlq_queue_url = self.client.get_queue_url(QueueName=dlq_queue_name)["QueueUrl"]
+                dlq_queue_url = self.client.get_queue_url(QueueName=dlq_queue_name)[
+                    "QueueUrl"
+                ]
                 dlq_queue_arn = self.client.get_queue_attributes(
                     QueueUrl=dlq_queue_url, AttributeNames=["QueueArn"]
                 )["Attributes"]["QueueArn"]
@@ -284,23 +291,23 @@ class SQSClient:
 
         return sqs_queue_url
 
-    def set_queue_attributes(self, queue_name: str = None,
-                             queue_url: str = None,
-                             attributes: dict = {}):
+    def set_queue_attributes(
+        self, queue_name: str = None, queue_url: str = None, attributes: dict = {}
+    ):
         if not queue_url:
             queue_url = self.client.get_queue_url(QueueName=queue_name)["QueueUrl"]
 
         self.client.set_queue_attributes(
-                QueueUrl=queue_url,
-                Attributes=attributes,
-            )
+            QueueUrl=queue_url,
+            Attributes=attributes,
+        )
 
 
 if __name__ == "__main__":
 
     sqs_client = SQSClient(
-        aws_access_key_id="FSDIOSFODNN7EXAMPLE",
-        aws_secret_access_key="fsdlrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+        aws_access_key_id="FSDIOSFODNN7EXAMPLE",  # pragma: allowlist secret
+        aws_secret_access_key="fsdlrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",  # pragma: allowlist secret
         region_name="eu-west-2",
         endpoint_url="http://localhost:4566",
     )
@@ -319,7 +326,9 @@ if __name__ == "__main__":
     print(sqs_client.remove_queue(my_queue_url))
 
     # create my_queue & my_queue_dlq
-    my_queue_url = sqs_client.create_sqs_queue(queue_name="my_queue", has_dlq=True, dlq_queue_name="my_queue_dlq")
+    my_queue_url = sqs_client.create_sqs_queue(
+        queue_name="my_queue", has_dlq=True, dlq_queue_name="my_queue_dlq"
+    )
     print(sqs_client.get_queues())
 
     # delete my_queue & my_queue_dlq

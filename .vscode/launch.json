@@ -17,5 +17,20 @@
             "envFile": "${workspaceFolder}/.env.development",
             "justMyCode": false,
         },
+        {
+            "name": "Run Tests: Current File (debug)",
+            "type": "python",
+            "request": "launch",
+            "module": "pytest",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "envFile": "${workspaceFolder}/.env.development",
+            "args": [
+                "-c",
+                "pytest.ini",
+                "${file}"
+            ],
+            "justMyCode": false
+        }
     ]
 }
