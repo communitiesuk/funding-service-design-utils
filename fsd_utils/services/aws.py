@@ -86,7 +86,7 @@ class SQSClient:
 
             print(f"Attempting to place message on queue '{queue_url}'.")
 
-            # TODO: Revisit this part after AWS migration
+            # TODO: (FS-3703) Revisit this part after AWS migration
             # 'MessageGroupId' & 'MessageDeduplicationId' are mandatary parameters to be provide on PAAS,
             # while they are not  acceptable parameters on localstack queue
             if (
