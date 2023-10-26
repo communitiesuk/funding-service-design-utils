@@ -3,6 +3,7 @@ from fsd_utils import gunicorn  # noqa
 from fsd_utils import healthchecks
 from fsd_utils import logging  # noqa
 from fsd_utils import toggles
+from fsd_utils import services
 from fsd_utils.config.commonconfig import CommonConfig  # noqa
 from fsd_utils.config.configclass import configclass  # noqa
 from fsd_utils.config.notify_constants import NotifyConstants  # noqa
@@ -29,6 +30,7 @@ __all__ = [
     clear_sentry,
     date_utils,
     toggles,
+    services,
     generate_text_of_application,
     extract_questions_and_answers,
 ]
