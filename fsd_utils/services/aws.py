@@ -69,6 +69,7 @@ class SQSClient:
             raise error
 
     def get_queue_url(self, queue_name):
+        """Return queue url for the given queue name."""
         response = self.client.get_queue_url(
             QueueName=queue_name,
         )
@@ -97,8 +98,8 @@ class SQSClient:
             print(f"Attempting to place message on queue '{queue_url}'.")
 
             # TODO: (FS-3703) Revisit this part after AWS migration
-            # 'MessageGroupId' & 'MessageDeduplicationId' are mandatary parameters to be provide on PAAS,
-            # while they are not  acceptable parameters on localstack queue
+            # 'MessageGroupId' & 'MessageDeduplicationId' are mandatary parameters to be provided on PAAS,
+            # while they are not acceptable parameters on localstack queue
             if (
                 "docker" in queue_url or "local" in queue_url
             ):  # if running on localstack
