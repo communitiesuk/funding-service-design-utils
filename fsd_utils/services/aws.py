@@ -14,7 +14,7 @@ class SQSClient:
         endpoint_url=None,
         **kwargs,
     ):
-        if aws_access_key_id and aws_access_key_id:
+        if aws_access_key_id and aws_secret_access_key:
             self.client = boto3.client(
                 "sqs",
                 aws_access_key_id=aws_access_key_id,
@@ -313,35 +313,36 @@ class SQSClient:
         )
 
 
-if __name__ == "__main__":
+# Uncomment the below code to test the SQS client usage
+# if __name__ == "__main__":
 
-    sqs_client = SQSClient(
-        aws_access_key_id="FSDIOSFODNN7EXAMPLE",  # pragma: allowlist secret
-        aws_secret_access_key="fsdlrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",  # pragma: allowlist secret
-        region_name="eu-west-2",
-        endpoint_url="http://localhost:4566",
-    )
+#     sqs_client = SQSClient(
+#         aws_access_key_id="FSDIOSFODNN7EXAMPLE",  # pragma: allowlist secret
+#         aws_secret_access_key="fsdlrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",  # pragma: allowlist secret
+#         region_name="eu-west-2",
+#         endpoint_url="http://localhost:4566",
+#     )
 
-    # display all queues
-    print(sqs_client.get_queues())
+#     # display all queues
+#     print(sqs_client.get_queues())
 
-    # create my_queue
-    my_queue_url = sqs_client.create_sqs_queue(queue_name="my_queue")
-    print(sqs_client.get_queues())
+#     # create my_queue
+#     my_queue_url = sqs_client.create_sqs_queue(queue_name="my_queue")
+#     print(sqs_client.get_queues())
 
-    # get queue url
-    print(sqs_client.get_queue_url("my_queue"))
+#     # get queue url
+#     print(sqs_client.get_queue_url("my_queue"))
 
-    # delete my_queue
-    print(sqs_client.remove_queue(my_queue_url))
+#     # delete my_queue
+#     print(sqs_client.remove_queue(my_queue_url))
 
-    # create my_queue & my_queue_dlq
-    my_queue_url = sqs_client.create_sqs_queue(
-        queue_name="my_queue", has_dlq=True, dlq_queue_name="my_queue_dlq"
-    )
-    print(sqs_client.get_queues())
+#     # create my_queue & my_queue_dlq
+#     my_queue_url = sqs_client.create_sqs_queue(
+#         queue_name="my_queue", has_dlq=True, dlq_queue_name="my_queue_dlq"
+#     )
+#     print(sqs_client.get_queues())
 
-    # delete my_queue & my_queue_dlq
-    print(sqs_client.remove_queue(my_queue_url))
-    print(sqs_client.remove_queue(sqs_client.get_queue_url("my_queue_dlq")))
-    print(sqs_client.get_queues())
+#     # delete my_queue & my_queue_dlq
+#     print(sqs_client.remove_queue(my_queue_url))
+#     print(sqs_client.remove_queue(sqs_client.get_queue_url("my_queue_dlq")))
+#     print(sqs_client.get_queues())
