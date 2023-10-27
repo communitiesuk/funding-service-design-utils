@@ -2,6 +2,7 @@ from fsd_utils import authentication
 from fsd_utils import gunicorn  # noqa
 from fsd_utils import healthchecks
 from fsd_utils import logging  # noqa
+from fsd_utils import services
 from fsd_utils import toggles
 from fsd_utils.config.commonconfig import CommonConfig  # noqa
 from fsd_utils.config.configclass import configclass  # noqa
@@ -31,4 +32,5 @@ __all__ = [
     toggles,
     generate_text_of_application,
     extract_questions_and_answers,
+    services,
 ]
