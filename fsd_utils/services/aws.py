@@ -8,20 +8,30 @@ from botocore.exceptions import ClientError
 class SQSClient:
     def __init__(
         self,
-        aws_access_key_id,
-        aws_secret_access_key,
+        aws_access_key_id=None,
+        aws_secret_access_key=None,
         region_name="us-west-1",
         endpoint_url=None,
         **kwargs,
     ):
-        self.client = boto3.client(
-            "sqs",
-            aws_access_key_id=aws_access_key_id,
-            aws_secret_access_key=aws_secret_access_key,
-            region_name=region_name,
-            endpoint_url=endpoint_url,
-            **kwargs,
-        )
+        if aws_access_key_id and aws_access_key_id:
+            self.client = boto3.client(
+                "sqs",
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key,
+                region_name=region_name,
+                endpoint_url=endpoint_url,
+                **kwargs,
+            )
+        else:
+            # if 'aws_access_key_id' and 'aws_access_key_id' are not provided make sure to provide
+            # 'AWS_ACCESS_KEY_ID' and 'AWS_SECRET_ACCESS_KEY' with environment variables
+            self.client = boto3.client(
+                "sqs",
+                region_name=region_name,
+                endpoint_url=endpoint_url,
+                **kwargs,
+            )
 
     def get_queues(self, prefix=None):
         """
