@@ -156,7 +156,14 @@ class ProcessTypes:
                         val for val in item.values() if isinstance(val, (str, int))
                     ]
                     if _str_key:
-                        key = _str_key[0]
+                        key = next(
+                            (
+                                item
+                                for item in _str_key
+                                if not isinstance(item, int) and item is not None
+                            ),
+                            _str_key[0],
+                        )
 
         _values = [
             val for val in item.values() if val != key if not isinstance(val, dict)
