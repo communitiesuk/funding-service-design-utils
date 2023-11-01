@@ -229,8 +229,14 @@ class TestMultiInput:
                 ],
             ),
             (
-                multi_input_test_data["map_data"]["dict_two_int_values"]["input_data"],
-                multi_input_test_data["map_data"]["dict_two_int_values"][
+                multi_input_test_data["map_data"]["dict_int_value"]["input_data"],
+                multi_input_test_data["map_data"]["dict_int_value"][
+                    "expected_response"
+                ],
+            ),
+            (
+                multi_input_test_data["map_data"]["dict_none_values"]["input_data"],
+                multi_input_test_data["map_data"]["dict_none_values"][
                     "expected_response"
                 ],
             ),
