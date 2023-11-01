@@ -13,6 +13,7 @@ from jwt import PyJWTError
 
 from .config import config_var_auth_host
 from .config import config_var_user_token_cookie_name
+from .config import config_var_logout_url_override
 from .config import signout_route
 from .config import SupportedApp
 from .config import user_route
@@ -65,6 +66,9 @@ def _check_access_token(return_app: SupportedApp | None = None, auto_redirect=Tr
 
 
 def _build_logout_url(return_app: SupportedApp | None):
+    if override:=current_app.config.get(config_var_logout_url_override):
+        return override
+
     authenticator_host = current_app.config[config_var_auth_host]
     if return_app:
         return (
