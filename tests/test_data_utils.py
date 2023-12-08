@@ -15,7 +15,7 @@ class TestDataUtils:
 
 
 multi_input_test_data = {
-    "process_data": {
+    "format_data": {
         "multiple_values": {
             "input_data": {
                 "trusts one": [
@@ -32,8 +32,9 @@ multi_input_test_data = {
                 ],
             },
             "expected_response": [
-                "* trusts one \n       . 125\n       . 1 April 2023 to 31 March 2024\n       . Capital\n       . Yes",  # noqa
-                "\n     * trust two \n       . 456\n       . 1 April 2024 to 31 March 2025\n       . Revenue\n       . No",  # noqa
+                "trusts one \n      . 125\n      . 1 April 2023 to 31 March 2024\n      . Capital\n      . Yes",
+                "\n     trust two \n      . 456\n      . 1 April 2024 to 31 March 2025\n      . Revenue\n"
+                "      . No",
             ],
         },
         "single_value": {
@@ -41,19 +42,7 @@ multi_input_test_data = {
                 "bbd0ec2a-972f-4d06-bf93-bf24786c3859": "Sky builders",
                 "ac8bbdfe-6a39-45b8-8c0a-6558148388d1": "trust builders",
             },
-            "expected_response": [". Sky builders", "     . trust builders"],
-        },
-        "iso_values": {
-            "input_data": {
-                "Project one": [{"PrulfI__month": 1, "PrulfI__year": 2021}],
-                "Project two": [{"PrulfI__month": 2, "PrulfI__year": 2022}],
-            },
-            "expected_response": (
-                [
-                    ". Project one: January 2021",
-                    "     . Project two: February 2022",
-                ]
-            ),
+            "expected_response": [". Sky builders", "\n     . trust builders"],
         },
     },
     "map_data": {
@@ -90,24 +79,27 @@ multi_input_test_data = {
             ],
             "expected_response": "* cost one \n       . 4444\n\n     * cost two \n       . 4455",
         },
-        "nested_dict_value_with_str_value": {
+        "dict_two_str_values": {
+            "input_data": [
+                {"CZZvN": "Name", "jhgvDjv": "Xose"},
+            ],
+            "expected_response": (". Name: Xose"),
+        },
+        "dict_int_value": {
+            "input_data": [
+                {"hGsUaZ": "Revenue Costs", "UyaAHw": 817},
+            ],
+            "expected_response": (". Revenue Costs: 817"),
+        },
+        "dict_none_values": {
             "input_data": [
                 {
-                    "PrulfI": {"PrulfI__month": 2, "PrulfI__year": 2022},
-                    "fFIuPP": "Milestone one",
-                },
-                {
-                    "fFIuPP": "Milestone two",
-                    "PrulfI": {
-                        "PrulfI__date": 12,
-                        "PrulfI__month": 3,
-                        "PrulfI__year": 2023,
-                    },
-                },
+                    "JizgZP": 0,
+                    "gLQlyJ": "This contribute £30000",
+                    "kjuHtl": "1 April 2024 to 31 March 2025",
+                }
             ],
-            "expected_response": (
-                ". Milestone one: February 2022\n     . Milestone" " two: 12 March 2023"
-            ),
+            "expected_response": "This contribute £30000 \n      . 0\n      . 1 April 2024 to 31 March 2025",
         },
     },
 }
@@ -131,6 +123,49 @@ test_data_sort_questions_answers = {
                             "title": "What funding are you applying?",
                             "type": "list",
                             "answer": "capital",
+                        },
+                        {
+                            "key": "tZoOKx",
+                            "title": "Partner organisation details",
+                            "type": "multiInput",
+                            "answer": [
+                                {
+                                    "GpLJDu": "version1",
+                                    "IXjMWp": {
+                                        "addressLine1": "La la land",
+                                        "addressLine2": "",
+                                        "town": "Mars",
+                                        "county": "",
+                                        "postcode": "XA15 1AX",
+                                    },
+                                    "MKbOlA": "https://www.wikipedia.org/",
+                                    "OghGGr": None,
+                                    "RphKTp": None,
+                                }
+                            ],
+                        },
+                        {
+                            "key": "tZoOKL",
+                            "title": "Partner's Job",
+                            "type": "multiInput",
+                            "answer": [
+                                {
+                                    "GpLJDu": "version2",
+                                    "IXjMWp": {
+                                        "addressLine1": "La la la land",
+                                        "addressLine2": "",
+                                        "town": "Moon",
+                                        "county": "",
+                                        "postcode": "XA15 1AL",
+                                    },
+                                }
+                            ],
+                        },
+                        {
+                            "key": "NxSxCd",
+                            "title": "Do you want to mark this section as complete?",
+                            "type": "boolean",
+                            "answer": "markAsComplete",
                         },
                     ],
                     "question": "What funding are you applying for?",
@@ -225,17 +260,19 @@ test_data_sort_questions_answers = {
     ],
     "questions_answers": {
         "funding-required-ns": {
-            "What funding are you applying for?": "both revenue and capital",
-            "What funding are you applying?": "capital",
+            "What funding are you applying for?": "Both revenue and capital",
+            "What funding are you applying?": "Capital",
+            "Partner organisation details": "version1 \n      . La la land, Mars, XA15 1AX\n      . https://www.wikipedia.org/\n      . Not provided\n      . Not provided",  # noqa
+            "Partner's Job": ". version2: La la la land, Moon, XA15 1AL",
             "Both revenue and capital": "4020",
-            "Revenue for 1 April 2024 to 31 March 2025": "4020",
             "Testing hyphen in field type text": "This-is-a-type-text-answer",
+            "Revenue for 1 April 2024 to 31 March 2025": "4020",
             "Capital for 1 April 2023 to 31 March 2024": "1230",
             "Capital for 1 April 2024 to 31 March 2025": "1230",
-            "Which membership organisations are you a member of?": "homeless link",
+            "Which membership organisations are you a member of?": "Homeless link",
             "When did you start providing day provision?": "March 2023",
-            "Revenue costs": "* Test Funding Required NS Form \n       . 40\n       . 1 April 2023 to 31 March 2024\n       . Not provided",  # noqa
-            "Capital costs": "* 50 \n       . Test Funding Required NS Form\n       . 1 April 2024 to 31 March 2025\n       . Test Funding Required NS Form",  # noqa
+            "Revenue costs": "Test Funding Required NS Form \n      . 40\n      . 1 April 2023 to 31 March 2024\n      . Not provided",  # noqa
+            "Capital costs": "Test Funding Required NS Form \n      . 50\n      . 1 April 2024 to 31 March 2025",
         }
     },
     "incorrect_form_data": [
@@ -257,4 +294,22 @@ test_data_sort_questions_answers = {
         },
     ],
     "exception_message": ("Could not map the data for form: applicant-information-ns"),
+}
+
+
+iso_and_nested_data = {
+    "input_data": [
+        {"HpLJyL__month": 3, "HpLJyL__year": 2022},
+        {
+            "addressLine1": "test",
+            "addressLine2": "",
+            "county": "",
+            "postcode": "te3 2nr",
+            "town": "test",
+        },
+        "wwww.example.com",
+        None,
+        None,
+    ],
+    "expected_response": "March 2022, test te3 2nr test, wwww.example.com",
 }

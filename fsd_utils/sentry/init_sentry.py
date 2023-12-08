@@ -15,7 +15,7 @@ def _traces_sampler(sampling_context):
         return 0
     else:
         # Default sample rate for all others (replaces traces_sample_rate)
-        return 0.1
+        return float(getenv("SENTRY_TRACES_SAMPLE_RATE", "0.02"))
 
 
 def init_sentry():
@@ -26,6 +26,7 @@ def init_sentry():
                 FlaskIntegration(),
             ],
             traces_sampler=_traces_sampler,
+            profiles_sampler=_traces_sampler,
             release=getenv("GITHUB_SHA"),
         )
 
