@@ -109,9 +109,17 @@ class CommonConfig:
             "'sha256-l1eTVSK8DTnK8+yloud7wZUqFrI0atVo6VlC6PJvYaQ='",
             "'sha256-864+qKuyx4sP6oZXnPPGzxGuBEHMZ132TQ4RPp+zn44='",
             "'sha256-Z4Ew9hvNfnmh80vfWPHh13YzZdj0gTwoY6COVqIdaV0='",
+            "'sha256-z+p4q2n8BOpGMK2/OMOXrTYmjbeEhWQQHC3SF/uMOyg='",
+            "'sha256-RgdCrr7A9yqYVstE6QiM/9RNRj4bYipcUa2C2ywQT1A='",
+            "https://tagmanager.google.com",
+            "https://www.googletagmanager.com",
+            "https://*.google-analytics.com",
         ],
-        "connect-src": "",  # APPLICATION_STORE_API_HOST_PUBLIC,
-        "img-src": ["data:", "'self'"],
+        "connect-src": [
+            "'self'",
+            "https://*.google-analytics.com",
+        ],  # APPLICATION_STORE_API_HOST_PUBLIC,
+        "img-src": ["data:", "'self'", "https://ssl.gstatic.com"],
     }
 
     # Security headers and other policies
