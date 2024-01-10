@@ -97,25 +97,13 @@ class SQSClient:
 
             print(f"Attempting to place message on queue '{queue_url}'.")
 
-            # TODO: (FS-3703) Revisit this part after AWS migration
-            # 'MessageGroupId' & 'MessageDeduplicationId' are mandatary parameters to be provided on PAAS,
-            # while they are not acceptable parameters on localstack queue
-            if (
-                "docker" in queue_url or "local" in queue_url
-            ):  # if running on localstack
-                response = self.client.send_message(
-                    QueueUrl=queue_url,
-                    MessageBody=json.dumps(message),
-                    MessageAttributes=SQS_CUSTOM_ATTRIBUTES,
-                )
-            else:
-                response = self.client.send_message(
-                    QueueUrl=queue_url,
-                    MessageBody=json.dumps(message),
-                    MessageAttributes=SQS_CUSTOM_ATTRIBUTES,
-                    MessageGroupId=message_group_id,
-                    MessageDeduplicationId=message_deduplication_id,
-                )
+            response = self.client.send_message(
+                QueueUrl=queue_url,
+                MessageBody=json.dumps(message),
+                MessageAttributes=SQS_CUSTOM_ATTRIBUTES,
+                MessageGroupId=message_group_id,
+                MessageDeduplicationId=message_deduplication_id,
+            )
             message_id = response["MessageId"]
             print(f"Message (id: {message_id}) submitted to queue: {queue_url}.")
             return message_id
