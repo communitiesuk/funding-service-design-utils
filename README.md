@@ -1,13 +1,14 @@
 # funding-service-design-utils
-Shared library for funding service design apps.
+Utils serves as a shared library for funding service design applications.These utilities are meant to be reused across the project, streamlining our coding process and ensuring the reliability of our funding service design applications.
 
 This library can be installed into other python repos and the packages used by those repos.
 
+This service depends on:
+- No other microservices
+
 # Dev setup
 In order to run the unit tests, setup a virtual env and install requirements
-1. Checkout the code
-1. Setup a venv and activate: `python3 -m venv .venv && source .venv/bin/activate`
-1. Install dev requirements: `pip install --upgrade pip && pip install -r requirements-dev.txt`
+1. [Developer setup guide](https://github.com/communitiesuk/funding-service-design-workflows/blob/main/readmes/python-repos-setup.md)
 1. Install pre-commit hook: `pre-commit install`
 1. Run tests with `pytest`
 1. If you add any packages needed by services that consume `fsd_utils`, add them into `pyproject.yaml`.
@@ -65,6 +66,8 @@ Build docker with following commands
     docker compose build <service_name> --no-cache
     or
     docker compose build --no-cache
+
+#######################################-Continue from here
 
 ## Local changes
 When working and testing locally, you can also install the `fsd_utils` package from your local filesystem:
