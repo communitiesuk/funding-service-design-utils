@@ -67,8 +67,6 @@ Build docker with following commands
     or
     docker compose build --no-cache
 
-#######################################-Continue from here
-
 ## Local changes
 When working and testing locally, you can also install the `fsd_utils` package from your local filesystem:
 
