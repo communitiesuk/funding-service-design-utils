@@ -8,10 +8,14 @@ This service depends on:
 
 # Dev setup
 In order to run the unit tests, setup a virtual env and install requirements
-1. [Developer setup guide](https://github.com/communitiesuk/funding-service-design-workflows/blob/main/readmes/python-repos-setup.md)
-1. Install pre-commit hook: https://github.com/communitiesuk/funding-service-design-workflows/blob/main/readmes/python-repos-ide-setup.md
-1. Run tests with `pytest`
-1. If you add any packages needed by services that consume `fsd_utils`, add them into `pyproject.yaml`.
+[Developer setup guide](https://github.com/communitiesuk/funding-service-design-workflows/blob/main/readmes/python-repos-setup.md)
+
+Install pre-commit hook: https://github.com/communitiesuk/funding-service-design-workflows/blob/main/readmes/python-repos-ide-setup.md
+
+If you add any packages needed by services that consume `fsd_utils`, add them into `pyproject.yaml`.
+
+# Testing
+[Testing in Python repos](https://github.com/communitiesuk/funding-service-design-workflows/blob/main/readmes/python-repos-testing.md)
 
 # Releasing
 To create a new release of funding-service-design-utils (note no longer need to manually update the version):
