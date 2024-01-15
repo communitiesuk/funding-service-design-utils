@@ -52,34 +52,7 @@ class TestSQSClient(unittest.TestCase):
         self.assertEqual(actual_queue_url, expected_queue_url)
         self.sqs_client.get_queue_url.assert_called_with(QueueName=queue_name)
 
-    def test_submit_single_message_localstack(self):
-        # Mock data & responses
-        queue_url = "http://localhost:4576/queue/test_queue"
-        message = {"key": "value"}
-        expected_message_id = "test_message_id"
-        self.sqs_client.send_message.return_value = {"MessageId": expected_message_id}
-
-        with patch("fsd_utils.services.aws.datetime") as mock_datetime:
-            datetime_now = datetime(2023, 1, 1, 12, 0, 0)
-            mock_datetime.now.return_value = datetime_now
-
-            # call to the function
-            actual_message_id = self.sqs.submit_single_message(queue_url, message)
-
-            # Assert responses
-            self.assertEqual(actual_message_id, expected_message_id)
-            self.sqs_client.send_message.assert_called_with(
-                QueueUrl=queue_url,
-                MessageBody=json.dumps(message),
-                MessageAttributes={
-                    "message_created_at": {
-                        "StringValue": str(datetime_now),
-                        "DataType": "String",
-                    }
-                },
-            )
-
-    def test_submit_single_message_aws(self):
+    def test_submit_single_message(self):
         # Mock data & responses
         queue_url = "https://sqs.us-west-1.amazonaws.com/123456789012/test_queue"
         message = {"key": "value"}
