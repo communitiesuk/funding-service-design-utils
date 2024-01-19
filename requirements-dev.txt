@@ -11,3 +11,4 @@ Flask-Migrate
 Flask-SQLAlchemy>=3.0.3
 sqlalchemy-utils==0.38.3
 beautifulsoup4==4.12.2
+funding-service-design-digital-form-builder-tools==0.0.1

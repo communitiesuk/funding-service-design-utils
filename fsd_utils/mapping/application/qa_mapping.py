@@ -9,8 +9,17 @@ from fsd_utils.mapping.application.application_utils import format_radio_field
 from fsd_utils.mapping.application.free_text import FreeText
 from fsd_utils.mapping.application.multi_input import MultiInput
 
+from answer_displayers.CheckboxesField import CheckboxesFieldDisplayer
+from answer_displayers.ClientSideFileUploadField import ClientSideFileUploadFieldDisplayer
+from answer_displayers.RadiosField import RadiosFieldDisplayer
+from answer_displayers.TextField import TextFieldDisplayer
+from answer_displayers.YesNoField import YesNoFieldDisplayer
+from answer_displayers.MultiInputField import MultiInputFieldDisplayer
+from answer_displayers.DatePartsField import DatePartsFieldDisplayer
+from answer_displayers.MonthYearField import MonthYearFieldDisplayer
+from answer_displayers.FreeTextField import FreeTextFieldDisplayer
 
-def extract_questions_and_answers(forms) -> dict:
+def extract_questions_and_answers(forms):
     """function takes the form data and returns
     dict of questions & answers.
     """
@@ -25,53 +34,44 @@ def extract_questions_and_answers(forms) -> dict:
                         answer = field.get("answer")
 
                         if field["type"] == "file":
-                            # we check if the question type is "file"
-                            # then we remove the aws
-                            # key attached to the answer
-                            if isinstance(answer, str):
-                                questions_answers[form_name][
-                                    field["title"]
-                                ] = answer.split("/")[-1]
-                            else:
-                                questions_answers[form_name][field["title"]] = answer
+                            questions_answers[form_name][
+                                field["title"]
+                            ]=ClientSideFileUploadFieldDisplayer(answer).as_txt
 
                         elif isinstance(answer, bool) and field["type"] == "list":
-
-                            questions_answers[form_name][field["title"]] = (
-                                "Yes" if answer else "No"
-                            )
+                            questions_answers[form_name][
+                                field["title"]
+                            ]=YesNoFieldDisplayer(answer).as_txt
 
                         elif isinstance(answer, list) and field["type"] == "multiInput":
                             questions_answers[form_name][
                                 field["title"]
-                            ] = MultiInput.map_multi_input_data(answer)
+                            ]=MultiInputFieldDisplayer(answer).as_txt
 
                         elif field["type"] == "freeText":
-                            clean_html_answer = FreeText.remove_html_tags(answer)
-
                             questions_answers[form_name][
                                 field["title"]
-                            ] = clean_html_answer
+                            ]=FreeTextFieldDisplayer(answer).as_txt
 
                         elif isinstance(answer, list) and field["type"] == "list":
                             questions_answers[form_name][
                                 field["title"]
-                            ] = format_checkbox(answer)
+                            ]=CheckboxesFieldDisplayer(answer).as_txt
 
                         elif isinstance(answer, str) and field["type"] == "list":
                             questions_answers[form_name][
                                 field["title"]
-                            ] = format_radio_field(answer)
+                            ]=RadiosFieldDisplayer(answer).as_txt
 
                         elif field["type"] == "monthYear":
                             questions_answers[form_name][
                                 field["title"]
-                            ] = format_month_year(answer)
+                            ]=MonthYearFieldDisplayer(answer).as_txt
 
                         elif field["type"] == "date":
                             questions_answers[form_name][
                                 field["title"]
-                            ] = format_date_month_year(answer)
+                            ]=DatePartsFieldDisplayer(answer).as_txt
 
                         else:
                             # we dont want to display boolean question
@@ -83,7 +83,8 @@ def extract_questions_and_answers(forms) -> dict:
                             ):
                                 continue
                             else:
-                                questions_answers[form_name][field["title"]] = answer
+                                # We only end up here if dont have a class to support this type?
+                                questions_answers[form_name][field["title"]] = TextFieldDisplayer(answer).as_txt
     except Exception as e:
         current_app.logger.error(f"Error occurred while processing form data: {e}")
         current_app.logger.error(f"Could not map the data for form: {form_name}")
