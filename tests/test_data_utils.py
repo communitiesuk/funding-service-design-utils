@@ -262,8 +262,8 @@ test_data_sort_questions_answers = {
         "funding-required-ns": {
             "What funding are you applying for?": "Both revenue and capital",
             "What funding are you applying?": "Capital",
-            "Partner organisation details": "version1 \n      . La la land, Mars, XA15 1AX\n      . https://www.wikipedia.org/\n      . Not provided\n      . Not provided",  # noqa
-            "Partner's Job": ". version2: La la la land, Moon, XA15 1AL",
+            "Partner organisation details": "Multi-input item 1\nversion1\nLa la land, Mars, XA15 1AX\nhttps://www.wikipedia.org/\nNone\nNone\n\n" ,  # noqa
+            "Partner's Job": 'Multi-input item 1\nversion2\nLa la la land, Moon, XA15 1AL\n\n',
             "Both revenue and capital": "4020",
             "Testing hyphen in field type text": "This-is-a-type-text-answer",
             "Revenue for 1 April 2024 to 31 March 2025": "4020",
@@ -271,8 +271,8 @@ test_data_sort_questions_answers = {
             "Capital for 1 April 2024 to 31 March 2025": "1230",
             "Which membership organisations are you a member of?": "Homeless link",
             "When did you start providing day provision?": "March 2023",
-            "Revenue costs": "Test Funding Required NS Form \n      . 40\n      . 1 April 2023 to 31 March 2024\n      . Not provided",  # noqa
-            "Capital costs": "Test Funding Required NS Form \n      . 50\n      . 1 April 2024 to 31 March 2025",
+            "Revenue costs": "Multi-input item 1\nTest Funding Required NS Form\n£40.00\n1 april 2023 to 31 march 2024\nNone\n\n",  # noqa
+            "Capital costs": "Multi-input item 1\n£50.00\nTest Funding Required NS Form\n1 april 2024 to 31 march 2025\nTest Funding Required NS Form\n\n"
         }
     },
     "incorrect_form_data": [
