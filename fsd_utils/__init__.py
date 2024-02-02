@@ -9,6 +9,7 @@ from fsd_utils.config.configclass import configclass  # noqa
 from fsd_utils.config.notify_constants import NotifyConstants  # noqa
 from fsd_utils.locale_selector.set_lang import LanguageSelector
 from fsd_utils.mapping.application.application_utils import generate_text_of_application
+from fsd_utils.eoi.evaluate_eoi_response import evaluate_eoi_response, Eoi_Decision
 from fsd_utils.mapping.application.qa_mapping import (
     extract_questions_and_answers,
 )
@@ -32,5 +33,7 @@ __all__ = [
     toggles,
     generate_text_of_application,
     extract_questions_and_answers,
+    evaluate_eoi_response,
+    Eoi_Decision,
     services,
 ]
