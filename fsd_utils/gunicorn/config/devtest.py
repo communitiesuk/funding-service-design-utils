@@ -163,7 +163,7 @@ logger_class = CustomLogger
 errorlog = "-"
 loglevel = "info"
 accesslog = "-"
-access_log_format = '{"logType": "gunicorn-access", "remote_ip":"%(h)s","request_id":"%({X-Vcap-Request-ID}i)s","response_code":"%(s)s","request_method":"%(m)s","request_path":"%(U)s","request_querystring":"%(q)s","request_timetaken":"%(D)s","response_length":"%(B)s"}'  # noqa
+access_log_format = '{"logType": "gunicorn-access", "remote_ip":"%(h)s","request_id":"%({X-Amzn-Trace-Id}i)s","response_code":"%(s)s","request_method":"%(m)s","request_path":"%(U)s","request_querystring":"%(q)s","request_timetaken":"%(D)s","response_length":"%(B)s"}'  # noqa
 
 #
 # Process naming
