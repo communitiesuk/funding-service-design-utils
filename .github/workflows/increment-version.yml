@@ -41,6 +41,7 @@ jobs:
         echo Updating version from ${{ steps.package_version.outputs.app_version}} to ${{ steps.bump_version.outputs.next-version }}
         sed -i 's/version = "${{ steps.package_version.outputs.app_version}}"/version = "${{ steps.bump_version.outputs.next-version }}"/' pyproject.toml
         git config user.name 'FSD Github Actions'
+        git config user.email "fsd@levellingup.gov.uk"
         git add pyproject.toml
         git commit -m "Update version to ${{ steps.bump_version.outputs.next-version }}"
         git push origin $GITHUB_HEAD_REF
