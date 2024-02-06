@@ -63,11 +63,16 @@ def evaluate_eoi_response(schema: dict, forms: dict) -> dict:
     """
     result = {"decision": Eoi_Decision.PASS, "caveats": []}
 
+    # Loop through every form, then every response in that form
     for form in forms:
         for question in form["questions"]:
             for response in question["fields"]:
                 questionId = response["key"]
+
+                # Find out if there are any conditions that apply to this question
                 if conditions := schema.get(questionId, None):
+
+                    # Find out if there are any value-based conditions that match the response given for this question
                     if applicable_condition := next(
                         (
                             c
@@ -81,13 +86,20 @@ def evaluate_eoi_response(schema: dict, forms: dict) -> dict:
                         )
                         if applicable_condition["caveat"]:
                             result["caveats"].append(applicable_condition["caveat"])
+
+                    # Gather any operator-based conditions that apply to this question
                     if eval_conditions := [c for c in conditions if "operator" in c]:
+
+                        # Got and get a decision based on this operator condition
                         decision, caveats = _evaluate_with_supplied_operators(
                             eval_conditions, response["answer"]
                         )
+
+                        # Update result object with result of evaluating the operator-condition
                         result["decision"] = max(result["decision"], decision)
                         result["caveats"] += caveats
                     
+                    # If we failed on this question, we don't need to evaluate any further, just return a fail
                     if result["decision"] == Eoi_Decision.FAIL:
                         return {"decision": Eoi_Decision.FAIL, "caveats": []}
 
