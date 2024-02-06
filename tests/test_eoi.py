@@ -298,30 +298,44 @@ def test_evaluate_operators(answer, exp_decision, exp_caveats):
 
 
 @pytest.mark.parametrize(
-    "operator,exp_exception",
+    "operator",
     [
-        ("<", False),
-        (">", False),
-        ("<=", False),
-        (">=", False),
-        ("==", False),
-        ("<X", True),
-        ("", True),
-        ("randomsomethingelse", True),
-        ("*", True),
-        ("and", True),
-        (None, True),
+        ("<"),
+        (">"),
+        ("<="),
+        (">="),
+        ("=="),
+
     ],
 )
-def test_operator_validation(operator, exp_exception):
+def test_operator_validation_success(operator):
     condition = {
         "operator": operator,
         "compareValue": 4,
         "result": Eoi_Decision.PASS,
         "caveat": None,
     }
-    if exp_exception:
-        with pytest.raises(ValueError):
-            result = _evaluate_with_supplied_operators([condition], 1)
-    else:
-        _evaluate_with_supplied_operators([condition], 1)
+    _evaluate_with_supplied_operators([condition], 1)
+    # Should be no exception - will fail if one is thrown
+
+@pytest.mark.parametrize(
+    "operator",
+    [
+        ("<X"),
+        (""),
+        ("randomsomethingelse"),
+        ("*"),
+        ("and"),
+        (None),
+    ],
+)
+def test_operator_validation_failures(operator):
+    condition = {
+        "operator": operator,
+        "compareValue": 4,
+        "result": Eoi_Decision.PASS,
+        "caveat": None,
+    }
+   
+    with pytest.raises(ValueError):
+        result = _evaluate_with_supplied_operators([condition], 1)
