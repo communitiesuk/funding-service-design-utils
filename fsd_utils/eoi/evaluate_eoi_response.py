@@ -29,7 +29,7 @@ def _evaluate_with_supplied_operators(
     caveats = []
     for ec in conditions_to_evaluate:
         # validate supplied operator
-        if not ec["operator"] in VALID_OPERATORS:
+        if ec["operator"] not in VALID_OPERATORS:
             raise ValueError(f"Operator {ec['operator']} is not supported")
 
         # construct evaluation expression
