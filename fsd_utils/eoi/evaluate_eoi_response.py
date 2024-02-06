@@ -87,5 +87,9 @@ def evaluate_eoi_response(schema: dict, forms: dict) -> dict:
                         )
                         result["decision"] = max(result["decision"], decision)
                         result["caveats"] += caveats
+                    
+                    if result["decision"] == Eoi_Decision.FAIL:
+                        return {"decision": Eoi_Decision.FAIL, "caveats": []}
+
 
     return result

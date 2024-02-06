@@ -84,6 +84,8 @@ TEST_SCHEMA_1 = {
 }
 
 
+
+# Test forms that will pass all the conditions in TEST_SCHEMA_1
 TEST_EOI_FORMS_1 = [
     {
         "name": "test-form-1",
@@ -164,25 +166,31 @@ TEST_EOI_FORMS_1 = [
 @pytest.mark.parametrize(
     "answers,schema,exp_result,exp_caveats",
     [
-        (
-            {"aaa111": "charity", "bbb222": True, "ccc333": 10},
+        (   # All pass (no changes)
+            {},
             TEST_SCHEMA_1,
             Eoi_Decision.PASS,
             [],
         ),
-        (
-            {"aaa111": "charity", "bbb222": False, "ccc333": 10},
+        (   # All pass but one fail
+            {"bbb222": False},
             TEST_SCHEMA_1,
             Eoi_Decision.FAIL,
             [],
         ),
-        (
-            {"aaa111": "charity", "bbb222": True, "ccc333": 15},
+        (   # One pass with caveats, one fail
+            {"ccc333": 15, "bbb222": False},
+            TEST_SCHEMA_1,
+            Eoi_Decision.FAIL,
+            [],
+        ),
+        (   # All pass but one pass with caveats
+            {"ccc333": 15},
             TEST_SCHEMA_1,
             Eoi_Decision.PASS_WITH_CAVEATS,
             ["Try not to cut down trees: This is a bit high"],
         ),
-        (
+        (   # Most pass but 2 pass with caveats - one number, one string, both value based
             {"eee555": "b", "ccc333": 15},
             TEST_SCHEMA_1,
             Eoi_Decision.PASS_WITH_CAVEATS,
@@ -191,7 +199,7 @@ TEST_EOI_FORMS_1 = [
                 "Caveat heading: some caveat text",
             ],
         ),
-        (
+        (   # Most pass but 2 pass with caveats - one number - operator based, one string
             {"fff666": 6, "eee555": "b"},
             TEST_SCHEMA_1,
             Eoi_Decision.PASS_WITH_CAVEATS,
@@ -200,7 +208,7 @@ TEST_EOI_FORMS_1 = [
                 "A caveat: Try and reduce this",
             ],
         ),
-        (
+        (   # Most pass, one pass with caveats based on operator with contradicting value condition
             {"ggg777": 7},
             TEST_SCHEMA_1,
             Eoi_Decision.PASS_WITH_CAVEATS,
@@ -208,7 +216,7 @@ TEST_EOI_FORMS_1 = [
                 "A caveat",
             ],
         ),
-        (
+        (   # Most pass, one pass with caveats based on operator
             {"ggg777": 3},
             TEST_SCHEMA_1,
             Eoi_Decision.PASS_WITH_CAVEATS,
@@ -217,6 +225,7 @@ TEST_EOI_FORMS_1 = [
             ],
         ),
         (
+            # most pass, one fails based on operator
             {"ggg777": 12},
             TEST_SCHEMA_1,
             Eoi_Decision.FAIL,
@@ -339,3 +348,15 @@ def test_operator_validation_failures(operator):
    
     with pytest.raises(ValueError):
         result = _evaluate_with_supplied_operators([condition], 1)
+
+
+def test_no_questions_hit_conditions():
+    TEST_SCHEMA = {
+    "does_not_exist": [
+        {"answerValue": True, "result": Eoi_Decision.PASS, "caveat": None},
+        {"answerValue": False, "result": Eoi_Decision.FAIL, "caveat": None},
+    ],
+    }
+    result = evaluate_eoi_response(TEST_SCHEMA, TEST_EOI_FORMS_1)
+    assert result["decision"] == Eoi_Decision.PASS
+    assert result["caveats"] == []
