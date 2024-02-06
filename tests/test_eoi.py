@@ -1,6 +1,4 @@
 from copy import deepcopy
-from enum import Enum
-from unittest.mock import MagicMock
 
 import pytest
 from fsd_utils import Eoi_Decision
@@ -346,7 +344,7 @@ def test_operator_validation_failures(operator):
     }
 
     with pytest.raises(ValueError):
-        result = _evaluate_with_supplied_operators([condition], 1)
+        _evaluate_with_supplied_operators([condition], 1)
 
 
 def test_no_questions_hit_conditions():

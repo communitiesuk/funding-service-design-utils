@@ -13,7 +13,8 @@ VALID_OPERATORS = ["<", "<=", "==", ">=", ">"]
 def _evaluate_with_supplied_operators(
     conditions_to_evaluate: list, supplied_answer: any
 ) -> tuple[Eoi_Decision, list]:
-    """Evaluates an expression built from the operator in the schmea, the value to compare, and the supplied answer. Uses the result of the evaluation to return a decision and applicable caveats
+    """Evaluates an expression built from the operator in the schmea, the value to compare, and the supplied answer.
+    Uses the result of the evaluation to return a decision and applicable caveats
 
     Args:
         conditions_to_evaluate (list): List of conditions from schema
