@@ -1,8 +1,10 @@
-from enum import Enum
-import pytest
 from copy import deepcopy
-from fsd_utils import evaluate_eoi_response, Eoi_Decision
+from enum import Enum
 from unittest.mock import MagicMock
+
+import pytest
+from fsd_utils import Eoi_Decision
+from fsd_utils import evaluate_eoi_response
 from fsd_utils.eoi.evaluate_eoi_response import _evaluate_with_supplied_operators
 
 
@@ -78,7 +80,7 @@ TEST_SCHEMA_1 = {
             "result": Eoi_Decision.FAIL,
             "caveat": None,
         },
-    ]
+    ],
 }
 
 
