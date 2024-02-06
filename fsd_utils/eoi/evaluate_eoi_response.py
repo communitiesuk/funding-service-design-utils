@@ -98,10 +98,9 @@ def evaluate_eoi_response(schema: dict, forms: dict) -> dict:
                         # Update result object with result of evaluating the operator-condition
                         result["decision"] = max(result["decision"], decision)
                         result["caveats"] += caveats
-                    
+
                     # If we failed on this question, we don't need to evaluate any further, just return a fail
                     if result["decision"] == Eoi_Decision.FAIL:
                         return {"decision": Eoi_Decision.FAIL, "caveats": []}
-
 
     return result
