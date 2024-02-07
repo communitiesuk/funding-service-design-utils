@@ -2,7 +2,6 @@ from __future__ import absolute_import
 
 import datetime
 import logging
-import os.path
 import re
 import sys
 import time
@@ -130,24 +129,12 @@ def configure_handler(handler, app, formatter):
     handler.setLevel(logging.getLevelName(app.config["FSD_LOG_LEVEL"]))
     handler.setFormatter(formatter)
     handler.addFilter(RequestExtraContextFilter())
-    if os.environ.get("CF_INSTANCE_INDEX"):
-        handler.addFilter(AppInstanceFilter())
 
     return handler
 
 
 def get_json_log_format():
     return LOG_FORMAT + "".join(f" %({key})s" for key in LOG_FORMAT_EXTRA_JSON_KEYS)
-
-
-class AppInstanceFilter(logging.Filter):
-    def __init__(self):
-        self.instance_index = os.environ["CF_INSTANCE_INDEX"]
-
-    def filter(self, record):
-        record.instance_index = self.instance_index
-
-        return record
 
 
 class BaseExtraStackLocationFilter(logging.Filter):
