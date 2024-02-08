@@ -25,13 +25,13 @@ TEST_SCHEMA_1 = {
         {"answerValue": False, "result": Eoi_Decision.FAIL, "caveat": None},
     ],
     "ccc333": [
-        {"answerValue": 10, "result": Eoi_Decision.PASS, "caveat": None},
+        {"answerValue": "10", "result": Eoi_Decision.PASS, "caveat": None},
         {
-            "answerValue": 15,
+            "answerValue": "15",
             "result": Eoi_Decision.PASS_WITH_CAVEATS,
             "caveat": "Try not to cut down trees: This is a bit high",
         },
-        {"answerValue": 20, "result": Eoi_Decision.FAIL, "caveat": None},
+        {"answerValue": "20", "result": Eoi_Decision.FAIL, "caveat": None},
     ],
     "eee555": [
         {"answerValue": "a", "result": Eoi_Decision.PASS, "caveat": None},
@@ -64,8 +64,8 @@ TEST_SCHEMA_1 = {
     ],
     # add a deliberatly weird set of conditions
     "ggg777": [
-        {"answerValue": 10, "result": Eoi_Decision.PASS, "caveat": None},
-        {"answerValue": 7, "result": Eoi_Decision.PASS, "caveat": None},
+        {"answerValue": "10", "result": Eoi_Decision.PASS, "caveat": None},
+        {"answerValue": "7", "result": Eoi_Decision.PASS, "caveat": None},
         {
             "operator": "<",
             "compareValue": 10,
@@ -122,7 +122,7 @@ TEST_EOI_FORMS_1 = [
                         "type": "list",
                     },
                     {
-                        "answer": 10,
+                        "answer": "10",
                         "key": "ccc333",
                         "title": "How many trees will you have to cut down?",
                         "type": "list",
@@ -141,13 +141,13 @@ TEST_EOI_FORMS_1 = [
                         "type": "list",
                     },
                     {
-                        "answer": 3,
+                        "answer": "3",
                         "key": "fff666",
                         "title": "Pass or fail based on number",
                         "type": "NumberField",
                     },
                     {
-                        "answer": 10,
+                        "answer": "10",
                         "key": "ggg777",
                         "title": "Pass or fail based on number",
                         "type": "NumberField",
@@ -176,19 +176,19 @@ TEST_EOI_FORMS_1 = [
             [],
         ),
         (  # One pass with caveats, one fail
-            {"ccc333": 15, "bbb222": False},
+            {"ccc333": "15", "bbb222": False},
             TEST_SCHEMA_1,
             Eoi_Decision.FAIL,
             [],
         ),
         (  # All pass but one pass with caveats
-            {"ccc333": 15},
+            {"ccc333": "15"},
             TEST_SCHEMA_1,
             Eoi_Decision.PASS_WITH_CAVEATS,
             ["Try not to cut down trees: This is a bit high"],
         ),
         (  # Most pass but 2 pass with caveats - one number, one string, both value based
-            {"eee555": "b", "ccc333": 15},
+            {"eee555": "b", "ccc333": "15"},
             TEST_SCHEMA_1,
             Eoi_Decision.PASS_WITH_CAVEATS,
             [
@@ -197,7 +197,7 @@ TEST_EOI_FORMS_1 = [
             ],
         ),
         (  # Most pass but 2 pass with caveats - one number - operator based, one string
-            {"fff666": 6, "eee555": "b"},
+            {"fff666": "6", "eee555": "b"},
             TEST_SCHEMA_1,
             Eoi_Decision.PASS_WITH_CAVEATS,
             [
@@ -206,7 +206,7 @@ TEST_EOI_FORMS_1 = [
             ],
         ),
         (  # Most pass, one pass with caveats based on operator with contradicting value condition
-            {"ggg777": 7},
+            {"ggg777": "7"},
             TEST_SCHEMA_1,
             Eoi_Decision.PASS_WITH_CAVEATS,
             [
@@ -214,7 +214,7 @@ TEST_EOI_FORMS_1 = [
             ],
         ),
         (  # Most pass, one pass with caveats based on operator
-            {"ggg777": 3},
+            {"ggg777": "3"},
             TEST_SCHEMA_1,
             Eoi_Decision.PASS_WITH_CAVEATS,
             [
@@ -223,7 +223,7 @@ TEST_EOI_FORMS_1 = [
         ),
         (
             # most pass, one fails based on operator
-            {"ggg777": 12},
+            {"ggg777": "12"},
             TEST_SCHEMA_1,
             Eoi_Decision.FAIL,
             [],
@@ -287,14 +287,23 @@ TEST_OPERATOR_CONDITIONS = [
     "answer,exp_decision,exp_caveats",
     [
         (2, Eoi_Decision.PASS, []),
+        ("2", Eoi_Decision.PASS, []),
         (-1, Eoi_Decision.PASS, []),
+        ("-1", Eoi_Decision.PASS, []),
         (5, Eoi_Decision.PASS_WITH_CAVEATS, ["A caveat: more than 5"]),
+        ("5", Eoi_Decision.PASS_WITH_CAVEATS, ["A caveat: more than 5"]),
         (
             7,
             Eoi_Decision.PASS_WITH_CAVEATS,
             ["A caveat: more than 5", "A caveat: equals 7"],
         ),
+        (
+            "7",
+            Eoi_Decision.PASS_WITH_CAVEATS,
+            ["A caveat: more than 5", "A caveat: equals 7"],
+        ),
         (12, Eoi_Decision.FAIL, []),
+        ("12", Eoi_Decision.FAIL, []),
     ],
 )
 def test_evaluate_operators(answer, exp_decision, exp_caveats):
@@ -357,3 +366,25 @@ def test_no_questions_hit_conditions():
     result = evaluate_eoi_response(TEST_SCHEMA, TEST_EOI_FORMS_1)
     assert result["decision"] == Eoi_Decision.PASS
     assert result["caveats"] == []
+
+
+@pytest.mark.parametrize("supplied_answer", ["a1", "--2", "-a3.356345", "400099.asdf", "£234", "£234234.00", "hello there", "45,6", "123£$%^&*()''`\""])
+def test_answer_validation_failure(supplied_answer):
+    condition = {
+        "operator": "<",
+        "compareValue": 4,
+        "result": Eoi_Decision.PASS,
+        "caveat": None,
+    }
+    with pytest.raises(ValueError):
+        _evaluate_with_supplied_operators([condition], supplied_answer)
+
+@pytest.mark.parametrize("supplied_answer", ["1", 1, "-2", "-3.356345", "400099.234234", 3434.5656, 0, "00000", 0000])
+def test_answer_validation_success(supplied_answer):
+    condition = {
+        "operator": "<",
+        "compareValue": 4,
+        "result": Eoi_Decision.PASS,
+        "caveat": None,
+    }
+    _evaluate_with_supplied_operators([condition], supplied_answer)
