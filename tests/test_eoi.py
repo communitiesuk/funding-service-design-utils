@@ -368,7 +368,20 @@ def test_no_questions_hit_conditions():
     assert result["caveats"] == []
 
 
-@pytest.mark.parametrize("supplied_answer", ["a1", "--2", "-a3.356345", "400099.asdf", "£234", "£234234.00", "hello there", "45,6", "123£$%^&*()''`\""])
+@pytest.mark.parametrize(
+    "supplied_answer",
+    [
+        "a1",
+        "--2",
+        "-a3.356345",
+        "400099.asdf",
+        "£234",
+        "£234234.00",
+        "hello there",
+        "45,6",
+        "123£$%^&*()''`\"",
+    ],
+)
 def test_answer_validation_failure(supplied_answer):
     condition = {
         "operator": "<",
@@ -379,7 +392,11 @@ def test_answer_validation_failure(supplied_answer):
     with pytest.raises(ValueError):
         _evaluate_with_supplied_operators([condition], supplied_answer)
 
-@pytest.mark.parametrize("supplied_answer", ["1", 1, "-2", "-3.356345", "400099.234234", 3434.5656, 0, "00000", 0000])
+
+@pytest.mark.parametrize(
+    "supplied_answer",
+    ["1", 1, "-2", "-3.356345", "400099.234234", 3434.5656, 0, "00000", 0000],
+)
 def test_answer_validation_success(supplied_answer):
     condition = {
         "operator": "<",

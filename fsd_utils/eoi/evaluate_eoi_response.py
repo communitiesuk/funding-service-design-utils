@@ -22,7 +22,8 @@ def _evaluate_with_supplied_operators(
         supplied_answer (any): Answer supplied to this question
 
     Raises:
-        ValueError: If the operator from the schema is not supported, or if the supplied answer cannot be converted to a float
+        ValueError: If the operator from the schema is not supported, or if the supplied answer
+        cannot be converted to a float
 
     Returns:
         tuple[Eoi_Decision, list]: Tuple of the decision and the caveats (if there are any)
@@ -39,7 +40,8 @@ def _evaluate_with_supplied_operators(
             answer_as_number = float(supplied_answer)
         except ValueError:
             raise ValueError(
-                f"Answer {supplied_answer} is not numeric so cannot be used with this condition: [{ec['operator']} {ec['compareValue']}]"
+                f"Answer {supplied_answer} is not numeric so cannot be used with this condition: "
+                f"[{ec['operator']} {ec['compareValue']}]"
             )
 
         # construct evaluation expression
