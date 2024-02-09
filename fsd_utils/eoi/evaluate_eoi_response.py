@@ -15,13 +15,15 @@ def _evaluate_with_supplied_operators(
 ) -> tuple[Eoi_Decision, list]:
     """Evaluates an expression built from the operator in the schmea, the value to compare, and the supplied answer.
     Uses the result of the evaluation to return a decision and applicable caveats
+    Casts the value to an integer for comparison
 
     Args:
         conditions_to_evaluate (list): List of conditions from schema
         supplied_answer (any): Answer supplied to this question
 
     Raises:
-        ValueError: If the operator from the schema is not supported
+        ValueError: If the operator from the schema is not supported, or if the supplied answer
+        cannot be converted to a float
 
     Returns:
         tuple[Eoi_Decision, list]: Tuple of the decision and the caveats (if there are any)
@@ -33,11 +35,20 @@ def _evaluate_with_supplied_operators(
         if ec["operator"] not in VALID_OPERATORS:
             raise ValueError(f"Operator {ec['operator']} is not supported")
 
+        # validate that answer is numeric
+        try:
+            answer_as_number = float(supplied_answer)
+        except ValueError:
+            raise ValueError(
+                f"Answer {supplied_answer} is not numeric so cannot be used with this condition: "
+                f"[{ec['operator']} {ec['compareValue']}]"
+            )
+
         # construct evaluation expression
         expression = f"answer {ec['operator']} value"
 
         # evaluation using supplied operator
-        if eval(expression, {"answer": supplied_answer, "value": ec["compareValue"]}):
+        if eval(expression, {"answer": answer_as_number, "value": ec["compareValue"]}):
             # We met this condition
             decision = max(decision, ec["result"])
             if ec["caveat"]:
