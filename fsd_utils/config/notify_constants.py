@@ -9,6 +9,7 @@ class NotifyConstants:
     FIELD_TYPE = "type"  # for TEMPLATE_TYPE.
     FIELD_CONTENT = "content"  # for contents to be shared.
     FIELD_TO = "to"  # for contact_info (do not set in common config)
+    FIELD_FULL_NAME = "full_name"  # for contact_name (do not set in common config)
 
     # ---- Template types constants (DO NOT CHANGE) ---#
 
@@ -16,6 +17,8 @@ class NotifyConstants:
     TEMPLATE_TYPE_APPLICATION = "APPLICATION_RECORD_OF_SUBMISSION"
     TEMPLATE_TYPE_INCOMPLETE_APPLICATION = "INCOMPLETE_APPLICATION_RECORDS"
     TEMPLATE_TYPE_REMINDER = "APPLICATION_DEADLINE_REMINDER"
+    TEMPLATE_TYPE_EOI_PASS = "Full pass"
+    TEMPLATE_TYPE_EOI_PASS_W_CAVEATS = "Pass with caveats"
 
     # ---- Magic_Link Fields for FIELD_CONTENT ----#
 
@@ -30,6 +33,7 @@ class NotifyConstants:
     APPLICATION_FORMS_FIELD = "forms"
     APPLICATION_NAME_FIELD = "name"
     APPLICATION_QUESTIONS_FIELD = "questions"
+    APPLICATION_CAVEATS = "caveats"
 
     # To be discussed with Gio/Jack/Adam
 
