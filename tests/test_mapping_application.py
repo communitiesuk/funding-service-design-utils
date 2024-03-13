@@ -15,19 +15,40 @@ from tests.test_data_utils import test_data_sort_questions_answers
 
 
 @pytest.mark.parametrize(
-    "input_data, expected_response",
+    "input_data, language, expected_response",
     [
-        (True, "Yes"),
-        (False, "No"),
-        (["address", True], ["address", "Yes"]),
-        ((["address", False], ["address", "No"])),
-        (None, "Not provided"),
-        ([["name", True], ["name", "Yes"]]),
-        ([["name", False], ["name", "No"]]),
+        (True, "en", "Yes"),
+        (True, None, "Yes"),
+        (True, "", "Yes"),
+        (True, "cy", "Ydw"),
+        (False, "en", "No"),
+        (False, None, "No"),
+        (False, "", "No"),
+        (False, "cy", "Nac ydw"),
+        (["address", True], "en", ["address", "Yes"]),
+        (["address", True], None, ["address", "Yes"]),
+        (["address", True], "", ["address", "Yes"]),
+        (["address", True], "cy", ["address", "Ydw"]),
+        ((["address", False], "en", ["address", "No"])),
+        ((["address", False], None, ["address", "No"])),
+        ((["address", False], "", ["address", "No"])),
+        ((["address", False], "cy", ["address", "Nac ydw"])),
+        (None, "en", "Not provided"),
+        (None, None, "Not provided"),
+        (None, "", "Not provided"),
+        (None, "cy", "Heb ei ddarparu"),
+        ([["name", True], "en", ["name", "Yes"]]),
+        ([["name", True], None, ["name", "Yes"]]),
+        ([["name", True], "", ["name", "Yes"]]),
+        ([["name", True], "cy", ["name", "Ydw"]]),
+        ([["name", False], "en", ["name", "No"]]),
+        ([["name", False], None, ["name", "No"]]),
+        ([["name", False], "", ["name", "No"]]),
+        ([["name", False], "cy", ["name", "Nac ydw"]]),
     ],
 )
-def test_convert_bool_values(input_data, expected_response):
-    response = convert_bool_value(input_data)
+def test_convert_bool_values(input_data, expected_response, language):
+    response = convert_bool_value(input_data, language)
     assert response == expected_response
 
 

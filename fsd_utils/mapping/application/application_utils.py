@@ -4,15 +4,36 @@ from io import StringIO
 
 from flask import current_app
 
+EN, CY = "en", "cy"
+SUPPORTED_LANGUAGES = {EN, CY}
 
-def convert_bool_value(data):
+NOT_PROVIDED = {
+    EN: "Not provided",
+    CY: "Heb ei ddarparu",
+}
+
+YES = {
+    EN: "Yes",
+    CY: "Ydw",
+}
+
+NO = {
+    EN: "No",
+    CY: "Nac ydw",
+}
+
+
+def convert_bool_value(data, language=EN):
+    if not language and language not in SUPPORTED_LANGUAGES:
+        language = EN
+
     try:
 
         def convert_values(value):
             if value is None or value == "None":
-                return "Not provided"
+                return NOT_PROVIDED[language]
             if isinstance(value, bool):
-                return "Yes" if value else "No"
+                return YES[language] if value else NO[language]
             else:
                 return value
 
@@ -31,10 +52,13 @@ def convert_bool_value(data):
         current_app.logger.error(f"Could not convert boolean values, {e}")
 
 
-def format_answer(answer):
+def format_answer(answer, language=EN):
+    if not language and language not in SUPPORTED_LANGUAGES:
+        language = EN
+
     try:
         if answer is None or answer == "None":
-            return "Not provided"
+            return NOT_PROVIDED[language]
 
         if "null" in answer:
             return re.sub(r"\s*null\s*,?", "", answer)
@@ -214,7 +238,7 @@ def format_date_month_year(answer):
         month_name = calendar.month_name[int(month)]
         if month_name:
             date = answer_text[2] if len(answer_text[2]) <= 2 else answer_text[0]
-            date = f"{'0'+date if len(date)==1 else date}"
+            date = f"{'0' + date if len(date) == 1 else date}"
             year = answer_text[0] if len(answer_text[0]) == 4 else answer_text[2]
             return f"{date} {month_name} {year}"
     except Exception as e:
