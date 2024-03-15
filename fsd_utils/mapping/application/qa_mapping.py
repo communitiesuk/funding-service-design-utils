@@ -36,9 +36,9 @@ def extract_questions_and_answers(forms, language) -> dict:
                                 questions_answers[form_name][field["title"]] = answer
 
                         elif isinstance(answer, bool) and field["type"] == "list":
-                            
+
                             yes = "Yes" if language == "en" else "Oes"
-                            no = "No" if language == "en" else "Nac Oes"                            
+                            no = "No" if language == "en" else "Nac Oes"
                             questions_answers[form_name][field["title"]] = (
                                 yes if answer else no
                             )
