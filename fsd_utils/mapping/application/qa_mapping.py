@@ -10,7 +10,7 @@ from fsd_utils.mapping.application.free_text import FreeText
 from fsd_utils.mapping.application.multi_input import MultiInput
 
 
-def extract_questions_and_answers(forms, language) -> dict:
+def extract_questions_and_answers(forms, language="en") -> dict:
     """function takes the form data and returns
     dict of questions & answers.
     """
