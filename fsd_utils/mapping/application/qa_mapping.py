@@ -6,11 +6,18 @@ from fsd_utils.mapping.application.application_utils import format_checkbox
 from fsd_utils.mapping.application.application_utils import format_date_month_year
 from fsd_utils.mapping.application.application_utils import format_month_year
 from fsd_utils.mapping.application.application_utils import format_radio_field
+from fsd_utils.mapping.application.application_utils import NO
+from fsd_utils.mapping.application.application_utils import YES
 from fsd_utils.mapping.application.free_text import FreeText
+from fsd_utils.mapping.application.languages import EN
+from fsd_utils.mapping.application.languages import SUPPORTED_LANGUAGES
 from fsd_utils.mapping.application.multi_input import MultiInput
 
 
-def extract_questions_and_answers(forms, language="en") -> dict:
+def extract_questions_and_answers(forms, language=EN) -> dict:
+    if not language and language not in SUPPORTED_LANGUAGES:
+        language = EN
+
     """function takes the form data and returns
     dict of questions & answers.
     """
@@ -36,17 +43,14 @@ def extract_questions_and_answers(forms, language="en") -> dict:
                                 questions_answers[form_name][field["title"]] = answer
 
                         elif isinstance(answer, bool) and field["type"] == "list":
-
-                            yes = "Yes" if language == "en" else "Oes"
-                            no = "No" if language == "en" else "Nac Oes"
                             questions_answers[form_name][field["title"]] = (
-                                yes if answer else no
+                                YES[language] if answer else NO[language]
                             )
 
                         elif isinstance(answer, list) and field["type"] == "multiInput":
                             questions_answers[form_name][
                                 field["title"]
-                            ] = MultiInput.map_multi_input_data(answer)
+                            ] = MultiInput.map_multi_input_data(answer, language)
 
                         elif field["type"] == "freeText":
                             clean_html_answer = FreeText.remove_html_tags(answer)

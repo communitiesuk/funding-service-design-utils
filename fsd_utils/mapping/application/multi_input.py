@@ -19,8 +19,8 @@ class MultiInput(ProcessTypes):
         )
 
     @classmethod
-    def format_keys_and_values(cls, key: str, value: list, index: enumerate):
-        sanitised_values = convert_bool_value(value)
+    def format_keys_and_values(cls, key: str, value: list, index: int, language):
+        sanitised_values = convert_bool_value(value, language)
         values = "\n".join(
             [
                 f"{cls.indent(5) if i == 1 else cls.indent(6)}. {str(item).strip()}"
@@ -35,12 +35,13 @@ class MultiInput(ProcessTypes):
         )
 
     @classmethod
-    def format_data(cls, sorted_data: dict) -> list:
+    def format_data(cls, sorted_data: dict, language) -> list:
         """
         Process a dictionary of sorted data, generating a list of formatted values.
 
         Args:
             sorted_data (dict): A dictionary of sorted data to process.
+            language (str): "en" or "cy", the language to use.
 
         Returns:
             list: A list of formatted values extracted from the input data.
@@ -57,7 +58,9 @@ class MultiInput(ProcessTypes):
                     output.append(cls.format_values(value, index))
 
                 if isinstance(value, list):
-                    output.append(cls.format_keys_and_values(key, value, index))
+                    output.append(
+                        cls.format_keys_and_values(key, value, index, language)
+                    )
                 if not uuid and not isinstance(value, list):
                     output.append(cls.format_value_pair(key, value, index))
 
@@ -69,12 +72,13 @@ class MultiInput(ProcessTypes):
         return output
 
     @classmethod
-    def map_multi_input_data(cls, multi_input_data: list[dict]):
+    def map_multi_input_data(cls, multi_input_data: list[dict], language):
         """
         Maps and processes a list of input data, generating a formatted output.
 
         Args:
             multi_input_data (list[dict]): A list of dictionaries representing input data.
+            language (str):
 
         Returns:
             str: A formatted output string containing processed data.
@@ -95,7 +99,7 @@ class MultiInput(ProcessTypes):
                     if isinstance(item, dict):
                         cls._dict_items(item, sorted_data)
 
-            output = cls.format_data(sorted_data)
+            output = cls.format_data(sorted_data, language)
             output = "\n".join(output)
             return output
 

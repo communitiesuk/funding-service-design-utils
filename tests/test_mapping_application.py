@@ -7,6 +7,8 @@ from fsd_utils.mapping.application.application_utils import format_month_year
 from fsd_utils.mapping.application.application_utils import format_radio_field
 from fsd_utils.mapping.application.application_utils import simplify_title
 from fsd_utils.mapping.application.free_text import FreeText
+from fsd_utils.mapping.application.languages import CY
+from fsd_utils.mapping.application.languages import EN
 from fsd_utils.mapping.application.multi_input import MultiInput
 from fsd_utils.mapping.application.multi_input_utils import ProcessTypes
 from fsd_utils.mapping.application.qa_mapping import extract_questions_and_answers
@@ -21,19 +23,19 @@ from tests.test_data_utils import test_data_sort_questions_answers_welsh
         (True, "en", "Yes"),
         (True, None, "Yes"),
         (True, "", "Yes"),
-        (True, "cy", "Ydw"),
+        (True, "cy", "Oes"),
         (False, "en", "No"),
         (False, None, "No"),
         (False, "", "No"),
-        (False, "cy", "Nac ydw"),
+        (False, "cy", "Nac Oes"),
         (["address", True], "en", ["address", "Yes"]),
         (["address", True], None, ["address", "Yes"]),
         (["address", True], "", ["address", "Yes"]),
-        (["address", True], "cy", ["address", "Ydw"]),
-        ((["address", False], "en", ["address", "No"])),
-        ((["address", False], None, ["address", "No"])),
-        ((["address", False], "", ["address", "No"])),
-        ((["address", False], "cy", ["address", "Nac ydw"])),
+        (["address", True], "cy", ["address", "Oes"]),
+        (["address", False], "en", ["address", "No"]),
+        (["address", False], None, ["address", "No"]),
+        (["address", False], "", ["address", "No"]),
+        (["address", False], "cy", ["address", "Nac Oes"]),
         (None, "en", "Not provided"),
         (None, None, "Not provided"),
         (None, "", "Not provided"),
@@ -41,11 +43,11 @@ from tests.test_data_utils import test_data_sort_questions_answers_welsh
         ([["name", True], "en", ["name", "Yes"]]),
         ([["name", True], None, ["name", "Yes"]]),
         ([["name", True], "", ["name", "Yes"]]),
-        ([["name", True], "cy", ["name", "Ydw"]]),
+        ([["name", True], "cy", ["name", "Oes"]]),
         ([["name", False], "en", ["name", "No"]]),
         ([["name", False], None, ["name", "No"]]),
         ([["name", False], "", ["name", "No"]]),
-        ([["name", False], "cy", ["name", "Nac ydw"]]),
+        ([["name", False], "cy", ["name", "Nac Oes"]]),
     ],
 )
 def test_convert_bool_values(input_data, expected_response, language):
@@ -69,7 +71,7 @@ def test_convert_bool_values(input_data, expected_response, language):
     ],
 )
 def test_format_answer(input_data, expected_response):
-    response = format_answer(input_data)
+    response = format_answer(input_data, EN)
     assert response == expected_response
 
 
@@ -136,7 +138,7 @@ def test_extract_questions_and_answers(app_context):
 def test_extract_questions_and_answers_welsh(app_context):
     forms = test_data_sort_questions_answers_welsh["forms"]
 
-    response = extract_questions_and_answers(forms, "cy")
+    response = extract_questions_and_answers(forms, CY)
     assert response == test_data_sort_questions_answers_welsh["questions_answers"]
 
 
@@ -245,7 +247,7 @@ class TestMultiInput:
         ],
     )
     def test_format_data(self, app_context, input_data, expected_response):
-        response = MultiInput.format_data(input_data)
+        response = MultiInput.format_data(input_data, EN)
         assert response == expected_response
 
     @pytest.mark.parametrize(
@@ -272,7 +274,7 @@ class TestMultiInput:
         ],
     )
     def test_map_multi_input_data(self, app_context, input_data, expected_response):
-        response = MultiInput.map_multi_input_data(input_data)
+        response = MultiInput.map_multi_input_data(input_data, EN)
         assert response == expected_response
 
     @pytest.mark.parametrize(
