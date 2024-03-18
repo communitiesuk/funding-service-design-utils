@@ -10,7 +10,10 @@ from fsd_utils.mapping.application.languages import SUPPORTED_LANGUAGES
 from fsd_utils.mapping.application.languages import YES
 
 
-def convert_bool_value(data, language):
+def convert_bool_value(data, language=EN):
+    if not language and language not in SUPPORTED_LANGUAGES:
+        language = EN
+
     try:
 
         def convert_values(value):
