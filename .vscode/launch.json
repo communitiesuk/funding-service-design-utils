@@ -31,6 +31,22 @@
                 "${file}"
             ],
             "justMyCode": false
-        }
+        },
+        {
+            "name": "Run Tests: Current Function (debug)",
+            "type": "python",
+            "request": "launch",
+            "module": "pytest",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "envFile": "${workspaceFolder}/.env.development",
+            "args": [
+              "-c",
+              "pytest.ini",
+              "-k",
+              "test_extract_questions_and_answers_welsh" // modify this accordingly
+            ],
+            "justMyCode": false
+          }
     ]
 }

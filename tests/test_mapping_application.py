@@ -12,6 +12,7 @@ from fsd_utils.mapping.application.multi_input_utils import ProcessTypes
 from fsd_utils.mapping.application.qa_mapping import extract_questions_and_answers
 from tests.test_data_utils import multi_input_test_data
 from tests.test_data_utils import test_data_sort_questions_answers
+from tests.test_data_utils import test_data_sort_questions_answers_welsh
 
 
 @pytest.mark.parametrize(
@@ -130,6 +131,13 @@ def test_extract_questions_and_answers(app_context):
 
     response = extract_questions_and_answers(forms)
     assert response == test_data_sort_questions_answers["questions_answers"]
+
+  
+def test_extract_questions_and_answers_welsh(app_context):
+    forms = test_data_sort_questions_answers_welsh["forms"]
+
+    response = extract_questions_and_answers(forms, "cy")
+    assert response == test_data_sort_questions_answers_welsh["questions_answers"]
 
 
 def test_extract_questions_and_answers_fail(app_context):

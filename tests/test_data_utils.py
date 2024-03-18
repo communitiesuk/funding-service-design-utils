@@ -248,6 +248,12 @@ test_data_sort_questions_answers = {
                             "key": "XsAoTv",
                             "title": "Capital costs",
                             "type": "multiInput",
+                        },
+                        {
+                            "key": "SxkwhF",
+                            "type": "list",
+                            "title": "Does your organisation have any alternative names?",
+                            "answer": True
                         }
                     ],
                     "question": "Capital funding",
@@ -273,6 +279,7 @@ test_data_sort_questions_answers = {
             "When did you start providing day provision?": "March 2023",
             "Revenue costs": "Test Funding Required NS Form \n      . 40\n      . 1 April 2023 to 31 March 2024\n      . Not provided",  # noqa
             "Capital costs": "Test Funding Required NS Form \n      . 50\n      . 1 April 2024 to 31 March 2025",
+            "Does your organisation have any alternative names?": "Yes",
         }
     },
     "incorrect_form_data": [
@@ -294,6 +301,39 @@ test_data_sort_questions_answers = {
         },
     ],
     "exception_message": ("Could not map the data for form: applicant-information-ns"),
+}
+
+test_data_sort_questions_answers_welsh = {
+    "forms": [
+        {
+            "name": "test_form",
+            "questions": [
+                {
+                    "fields": [                        
+                        {
+                            "key": "SxkwhF",
+                            "type": "list",
+                            "title": "Os ydych yn llwyddiannus, a wnewch chi ddefnyddio eich cyllid o fewn y 12 mis nesaf?",
+                            "answer": True
+                        },
+                        {
+                            "key": "SxkwhF",
+                            "type": "list",
+                            "title": "A ydych wedi sicrhau unrhyw gyllid cydweddu eto?",
+                            "answer": False
+                        }
+                    ],
+                    "question": "Capital funding",
+                },
+            ],
+        }
+    ],
+    "questions_answers": {
+        "test_form": {            
+            "Os ydych yn llwyddiannus, a wnewch chi ddefnyddio eich cyllid o fewn y 12 mis nesaf?": "Oes",
+            "A ydych wedi sicrhau unrhyw gyllid cydweddu eto?": "Nac Oes",
+        }
+    }
 }
 
 
