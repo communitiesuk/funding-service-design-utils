@@ -132,7 +132,7 @@ def test_extract_questions_and_answers(app_context):
     response = extract_questions_and_answers(forms)
     assert response == test_data_sort_questions_answers["questions_answers"]
 
-  
+
 def test_extract_questions_and_answers_welsh(app_context):
     forms = test_data_sort_questions_answers_welsh["forms"]
 

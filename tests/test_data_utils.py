@@ -253,8 +253,8 @@ test_data_sort_questions_answers = {
                             "key": "SxkwhF",
                             "type": "list",
                             "title": "Does your organisation have any alternative names?",
-                            "answer": True
-                        }
+                            "answer": True,
+                        },
                     ],
                     "question": "Capital funding",
                 },
@@ -309,19 +309,19 @@ test_data_sort_questions_answers_welsh = {
             "name": "test_form",
             "questions": [
                 {
-                    "fields": [                        
+                    "fields": [
                         {
                             "key": "SxkwhF",
                             "type": "list",
                             "title": "Os ydych yn llwyddiannus, a wnewch chi ddefnyddio eich cyllid o fewn y 12 mis nesaf?",
-                            "answer": True
+                            "answer": True,
                         },
                         {
                             "key": "SxkwhF",
                             "type": "list",
                             "title": "A ydych wedi sicrhau unrhyw gyllid cydweddu eto?",
-                            "answer": False
-                        }
+                            "answer": False,
+                        },
                     ],
                     "question": "Capital funding",
                 },
@@ -329,11 +329,11 @@ test_data_sort_questions_answers_welsh = {
         }
     ],
     "questions_answers": {
-        "test_form": {            
+        "test_form": {
             "Os ydych yn llwyddiannus, a wnewch chi ddefnyddio eich cyllid o fewn y 12 mis nesaf?": "Oes",
             "A ydych wedi sicrhau unrhyw gyllid cydweddu eto?": "Nac Oes",
         }
-    }
+    },
 }
 
 
