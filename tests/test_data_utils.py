@@ -1,3 +1,4 @@
+# flake8: noqa: E501
 import pytest
 from fsd_utils.simple_utils.data_utils import get_remote_data_as_json
 from requests.exceptions import HTTPError
