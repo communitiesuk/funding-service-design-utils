@@ -3,24 +3,11 @@ import re
 from io import StringIO
 
 from flask import current_app
-
-EN, CY = "en", "cy"
-SUPPORTED_LANGUAGES = {EN, CY}
-
-NOT_PROVIDED = {
-    EN: "Not provided",
-    CY: "Heb ei ddarparu",
-}
-
-YES = {
-    EN: "Yes",
-    CY: "Ydw",
-}
-
-NO = {
-    EN: "No",
-    CY: "Nac ydw",
-}
+from fsd_utils.mapping.application.languages import EN
+from fsd_utils.mapping.application.languages import NO
+from fsd_utils.mapping.application.languages import NOT_PROVIDED
+from fsd_utils.mapping.application.languages import SUPPORTED_LANGUAGES
+from fsd_utils.mapping.application.languages import YES
 
 
 def convert_bool_value(data, language=EN):
@@ -52,10 +39,7 @@ def convert_bool_value(data, language=EN):
         current_app.logger.error(f"Could not convert boolean values, {e}")
 
 
-def format_answer(answer, language=EN):
-    if not language and language not in SUPPORTED_LANGUAGES:
-        language = EN
-
+def format_answer(answer, language):
     try:
         if answer is None or answer == "None":
             return NOT_PROVIDED[language]
@@ -171,7 +155,7 @@ def format_radio_field(answer: str) -> str:
         return answer
 
 
-def generate_text_of_application(q_and_a: dict, fund_name: str) -> str:
+def generate_text_of_application(q_and_a: dict, fund_name: str, language=EN) -> str:
     """
     Generate a formatted text document for an application with questions and answers.
 
@@ -185,10 +169,14 @@ def generate_text_of_application(q_and_a: dict, fund_name: str) -> str:
     Parameters:
     - q_and_a (dict): A dictionary of questions and answers.
     - fund_name (str): The name of the fund.
+    - language (str): "en" or "cy", the language to use.
 
     Returns:
     - application_text (str): A formatted text output for the application.
     """
+    if not language and language not in SUPPORTED_LANGUAGES:
+        language = EN
+
     output = StringIO()
 
     output.write(f"********* {fund_name} **********\n")
@@ -198,7 +186,7 @@ def generate_text_of_application(q_and_a: dict, fund_name: str) -> str:
         output.write(f"\n* {' '.join(title).capitalize()}\n\n")
         for questions, answers in values.items():
             output.write(f"  Q) {questions}\n")
-            output.write(f"  A) {format_answer(answers)}\n\n")
+            output.write(f"  A) {format_answer(answers, language)}\n\n")
     return output.getvalue()
 
 
