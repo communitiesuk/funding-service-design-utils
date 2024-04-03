@@ -20,6 +20,9 @@ def convert_bool_value(data, language=EN):
             if value is None or value == "None":
                 return NOT_PROVIDED[language]
             if isinstance(value, bool):
+                print(
+                    f"CONVERT BOOL VALUE function :::::::::::::::===>>> {value} and LANGUAGAE===>>> {language}"
+                )
                 return YES[language] if value else NO[language]
             else:
                 return value

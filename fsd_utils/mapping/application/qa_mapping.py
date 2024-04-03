@@ -48,6 +48,10 @@ def extract_questions_and_answers(forms, language=EN) -> dict:
                             )
 
                         elif isinstance(answer, list) and field["type"] == "multiInput":
+
+                            print(
+                                f"EXTRACT QUESTIONS ANSWERS FUNCTION t===>>> {answer} nad LANGUAGE {language}"
+                            )
                             questions_answers[form_name][
                                 field["title"]
                             ] = MultiInput.map_multi_input_data(answer, language)
