@@ -49,7 +49,7 @@ def extract_questions_and_answers(forms, language=EN) -> dict:
 
                         elif isinstance(answer, list) and field["type"] == "multiInput":
 
-                            print(
+                            current_app.logger.info(
                                 f"EXTRACT QUESTIONS ANSWERS FUNCTION t===>>> {answer} nad LANGUAGE {language}"
                             )
                             questions_answers[form_name][

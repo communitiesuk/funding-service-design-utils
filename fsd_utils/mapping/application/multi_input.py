@@ -21,7 +21,7 @@ class MultiInput(ProcessTypes):
     @classmethod
     def format_keys_and_values(cls, key: str, value: list, index: int, language):
 
-        print(
+        current_app.logger.info(
             f"FORMAT KEYS AND VALUES FUNCTION ===========>>>>> {value} and language {language}"
         )
         sanitised_values = convert_bool_value(value, language)
@@ -51,7 +51,7 @@ class MultiInput(ProcessTypes):
             list: A list of formatted values extracted from the input data.
         """
 
-        print(f"FORMAT DATA FUNCTION====>>> {language}")
+        current_app.logger.error(f"FORMAT DATA FUNCTION====>>> {language}")
 
         output = []
         for index, (key, value) in enumerate(sorted_data.items(), start=1):
@@ -105,7 +105,7 @@ class MultiInput(ProcessTypes):
                     if isinstance(item, dict):
                         cls._dict_items(item, sorted_data)
 
-            print(
+            current_app.logger.info(
                 f"MAP MULTI INPUT DATA FUNCTION ====>>> {item} and LANGUAGE ===>> {language}"
             )
 
