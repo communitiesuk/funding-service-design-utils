@@ -84,6 +84,9 @@ def evaluate_eoi_response(schema: dict, forms: dict) -> dict:
                 # Find out if there are any conditions that apply to this question
                 if conditions := schema.get(questionId, None):
 
+                    if "answer" not in response:
+                        continue
+
                     # Find out if there are any value-based conditions that match the response given for this question
                     if applicable_condition := next(
                         (
