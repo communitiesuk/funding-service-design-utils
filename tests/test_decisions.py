@@ -1,81 +1,83 @@
 from copy import deepcopy
 
 import pytest
-from fsd_utils import Eoi_Decision
-from fsd_utils import evaluate_eoi_response
-from fsd_utils.eoi.evaluate_eoi_response import _evaluate_with_supplied_operators
+from fsd_utils import Decision
+from fsd_utils import evaluate_response
+from fsd_utils.decision.evaluate_response_against_schema import (
+    _evaluate_with_supplied_operators,
+)
 
 
 TEST_SCHEMA_1 = {
     "aaa111": [
-        {"answerValue": "charity", "result": Eoi_Decision.PASS, "caveat": None},
+        {"answerValue": "charity", "result": Decision.PASS, "caveat": None},
         {
             "answerValue": "parish_council",
-            "result": Eoi_Decision.PASS,
+            "result": Decision.PASS,
             "caveat": None,
         },
         {
             "answerValue": "plc",
-            "result": Eoi_Decision.FAIL,
+            "result": Decision.FAIL,
             "caveat": None,
         },
     ],
     "bbb222": [
-        {"answerValue": True, "result": Eoi_Decision.PASS, "caveat": None},
-        {"answerValue": False, "result": Eoi_Decision.FAIL, "caveat": None},
+        {"answerValue": True, "result": Decision.PASS, "caveat": None},
+        {"answerValue": False, "result": Decision.FAIL, "caveat": None},
     ],
     "ccc333": [
-        {"answerValue": "10", "result": Eoi_Decision.PASS, "caveat": None},
+        {"answerValue": "10", "result": Decision.PASS, "caveat": None},
         {
             "answerValue": "15",
-            "result": Eoi_Decision.PASS_WITH_CAVEATS,
+            "result": Decision.PASS_WITH_CAVEATS,
             "caveat": "Try not to cut down trees: This is a bit high",
         },
-        {"answerValue": "20", "result": Eoi_Decision.FAIL, "caveat": None},
+        {"answerValue": "20", "result": Decision.FAIL, "caveat": None},
     ],
     "eee555": [
-        {"answerValue": "a", "result": Eoi_Decision.PASS, "caveat": None},
+        {"answerValue": "a", "result": Decision.PASS, "caveat": None},
         {
             "answerValue": "b",
-            "result": Eoi_Decision.PASS_WITH_CAVEATS,
+            "result": Decision.PASS_WITH_CAVEATS,
             "caveat": "Caveat heading: some caveat text",
         },
-        {"answerValue": "c", "result": Eoi_Decision.FAIL, "caveat": None},
+        {"answerValue": "c", "result": Decision.FAIL, "caveat": None},
     ],
     "fff666": [
         {
             "operator": "<=",
             "compareValue": 4,
-            "result": Eoi_Decision.PASS,
+            "result": Decision.PASS,
             "caveat": None,
         },
         {
             "operator": ">=",
             "compareValue": 5,
-            "result": Eoi_Decision.PASS_WITH_CAVEATS,
+            "result": Decision.PASS_WITH_CAVEATS,
             "caveat": "A caveat: Try and reduce this",
         },
         {
             "operator": ">=",
             "compareValue": 10,
-            "result": Eoi_Decision.FAIL,
+            "result": Decision.FAIL,
             "caveat": None,
         },
     ],
     # add a deliberatly weird set of conditions
     "ggg777": [
-        {"answerValue": "10", "result": Eoi_Decision.PASS, "caveat": None},
-        {"answerValue": "7", "result": Eoi_Decision.PASS, "caveat": None},
+        {"answerValue": "10", "result": Decision.PASS, "caveat": None},
+        {"answerValue": "7", "result": Decision.PASS, "caveat": None},
         {
             "operator": "<",
             "compareValue": 10,
-            "result": Eoi_Decision.PASS_WITH_CAVEATS,
+            "result": Decision.PASS_WITH_CAVEATS,
             "caveat": "A caveat",
         },
         {
             "operator": ">",
             "compareValue": 10,
-            "result": Eoi_Decision.FAIL,
+            "result": Decision.FAIL,
             "caveat": None,
         },
     ],
@@ -166,31 +168,31 @@ TEST_EOI_FORMS_1 = [
         (  # All pass (no changes)
             {},
             TEST_SCHEMA_1,
-            Eoi_Decision.PASS,
+            Decision.PASS,
             [],
         ),
         (  # All pass but one fail
             {"bbb222": False},
             TEST_SCHEMA_1,
-            Eoi_Decision.FAIL,
+            Decision.FAIL,
             [],
         ),
         (  # One pass with caveats, one fail
             {"ccc333": "15", "bbb222": False},
             TEST_SCHEMA_1,
-            Eoi_Decision.FAIL,
+            Decision.FAIL,
             [],
         ),
         (  # All pass but one pass with caveats
             {"ccc333": "15"},
             TEST_SCHEMA_1,
-            Eoi_Decision.PASS_WITH_CAVEATS,
+            Decision.PASS_WITH_CAVEATS,
             ["Try not to cut down trees: This is a bit high"],
         ),
         (  # Most pass but 2 pass with caveats - one number, one string, both value based
             {"eee555": "b", "ccc333": "15"},
             TEST_SCHEMA_1,
-            Eoi_Decision.PASS_WITH_CAVEATS,
+            Decision.PASS_WITH_CAVEATS,
             [
                 "Try not to cut down trees: This is a bit high",
                 "Caveat heading: some caveat text",
@@ -199,7 +201,7 @@ TEST_EOI_FORMS_1 = [
         (  # Most pass but 2 pass with caveats - one number - operator based, one string
             {"fff666": "6", "eee555": "b"},
             TEST_SCHEMA_1,
-            Eoi_Decision.PASS_WITH_CAVEATS,
+            Decision.PASS_WITH_CAVEATS,
             [
                 "Caveat heading: some caveat text",
                 "A caveat: Try and reduce this",
@@ -208,7 +210,7 @@ TEST_EOI_FORMS_1 = [
         (  # Most pass, one pass with caveats based on operator with contradicting value condition
             {"ggg777": "7"},
             TEST_SCHEMA_1,
-            Eoi_Decision.PASS_WITH_CAVEATS,
+            Decision.PASS_WITH_CAVEATS,
             [
                 "A caveat",
             ],
@@ -216,7 +218,7 @@ TEST_EOI_FORMS_1 = [
         (  # Most pass, one pass with caveats based on operator
             {"ggg777": "3"},
             TEST_SCHEMA_1,
-            Eoi_Decision.PASS_WITH_CAVEATS,
+            Decision.PASS_WITH_CAVEATS,
             [
                 "A caveat",
             ],
@@ -225,7 +227,7 @@ TEST_EOI_FORMS_1 = [
             # most pass, one fails based on operator
             {"ggg777": "12"},
             TEST_SCHEMA_1,
-            Eoi_Decision.FAIL,
+            Decision.FAIL,
             [],
         ),
     ],
@@ -242,7 +244,7 @@ def test_schema_parsing(answers: dict, schema, exp_result, exp_caveats):
                     x["answer"] = answer[1]
 
     # get a result
-    result = evaluate_eoi_response(schema, input_forms)
+    result = evaluate_response(schema, input_forms)
 
     # confirm result is as expected
     assert result["decision"] == exp_result
@@ -253,31 +255,31 @@ TEST_OPERATOR_CONDITIONS = [
     {
         "operator": "<=",
         "compareValue": 4,
-        "result": Eoi_Decision.PASS,
+        "result": Decision.PASS,
         "caveat": None,
     },
     {
         "operator": ">=",
         "compareValue": 5,
-        "result": Eoi_Decision.PASS_WITH_CAVEATS,
+        "result": Decision.PASS_WITH_CAVEATS,
         "caveat": "A caveat: more than 5",
     },
     {
         "operator": "==",
         "compareValue": 7,
-        "result": Eoi_Decision.PASS_WITH_CAVEATS,
+        "result": Decision.PASS_WITH_CAVEATS,
         "caveat": "A caveat: equals 7",
     },
     {
         "operator": ">",
         "compareValue": 10,
-        "result": Eoi_Decision.FAIL,
+        "result": Decision.FAIL,
         "caveat": None,
     },
     {
         "operator": "<",
         "compareValue": 0,
-        "result": Eoi_Decision.PASS,
+        "result": Decision.PASS,
         "caveat": None,
     },
 ]
@@ -286,24 +288,24 @@ TEST_OPERATOR_CONDITIONS = [
 @pytest.mark.parametrize(
     "answer,exp_decision,exp_caveats",
     [
-        (2, Eoi_Decision.PASS, []),
-        ("2", Eoi_Decision.PASS, []),
-        (-1, Eoi_Decision.PASS, []),
-        ("-1", Eoi_Decision.PASS, []),
-        (5, Eoi_Decision.PASS_WITH_CAVEATS, ["A caveat: more than 5"]),
-        ("5", Eoi_Decision.PASS_WITH_CAVEATS, ["A caveat: more than 5"]),
+        (2, Decision.PASS, []),
+        ("2", Decision.PASS, []),
+        (-1, Decision.PASS, []),
+        ("-1", Decision.PASS, []),
+        (5, Decision.PASS_WITH_CAVEATS, ["A caveat: more than 5"]),
+        ("5", Decision.PASS_WITH_CAVEATS, ["A caveat: more than 5"]),
         (
             7,
-            Eoi_Decision.PASS_WITH_CAVEATS,
+            Decision.PASS_WITH_CAVEATS,
             ["A caveat: more than 5", "A caveat: equals 7"],
         ),
         (
             "7",
-            Eoi_Decision.PASS_WITH_CAVEATS,
+            Decision.PASS_WITH_CAVEATS,
             ["A caveat: more than 5", "A caveat: equals 7"],
         ),
-        (12, Eoi_Decision.FAIL, []),
-        ("12", Eoi_Decision.FAIL, []),
+        (12, Decision.FAIL, []),
+        ("12", Decision.FAIL, []),
     ],
 )
 def test_evaluate_operators(answer, exp_decision, exp_caveats):
@@ -326,7 +328,7 @@ def test_operator_validation_success(operator):
     condition = {
         "operator": operator,
         "compareValue": 4,
-        "result": Eoi_Decision.PASS,
+        "result": Decision.PASS,
         "caveat": None,
     }
     _evaluate_with_supplied_operators([condition], 1)
@@ -348,7 +350,7 @@ def test_operator_validation_failures(operator):
     condition = {
         "operator": operator,
         "compareValue": 4,
-        "result": Eoi_Decision.PASS,
+        "result": Decision.PASS,
         "caveat": None,
     }
 
@@ -359,12 +361,12 @@ def test_operator_validation_failures(operator):
 def test_no_questions_hit_conditions():
     TEST_SCHEMA = {
         "does_not_exist": [
-            {"answerValue": True, "result": Eoi_Decision.PASS, "caveat": None},
-            {"answerValue": False, "result": Eoi_Decision.FAIL, "caveat": None},
+            {"answerValue": True, "result": Decision.PASS, "caveat": None},
+            {"answerValue": False, "result": Decision.FAIL, "caveat": None},
         ],
     }
-    result = evaluate_eoi_response(TEST_SCHEMA, TEST_EOI_FORMS_1)
-    assert result["decision"] == Eoi_Decision.PASS
+    result = evaluate_response(TEST_SCHEMA, TEST_EOI_FORMS_1)
+    assert result["decision"] == Decision.PASS
     assert result["caveats"] == []
 
 
@@ -386,7 +388,7 @@ def test_answer_validation_failure(supplied_answer):
     condition = {
         "operator": "<",
         "compareValue": 4,
-        "result": Eoi_Decision.PASS,
+        "result": Decision.PASS,
         "caveat": None,
     }
     with pytest.raises(ValueError):
@@ -401,7 +403,7 @@ def test_answer_validation_success(supplied_answer):
     condition = {
         "operator": "<",
         "compareValue": 4,
-        "result": Eoi_Decision.PASS,
+        "result": Decision.PASS,
         "caveat": None,
     }
     _evaluate_with_supplied_operators([condition], supplied_answer)
