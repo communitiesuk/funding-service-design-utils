@@ -98,6 +98,11 @@ def test_format_answer(input_data, expected_response):
             ["cof", "cyp"],
             ["organisation", "name"],
         ),
+        (
+            "total-expected-cost-hsra",
+            ["cof", "cyp", "hsra"],
+            ["total", "expected", "cost"],
+        ),
         ("organisation-address", ["cof", "ns"], ["organisation", "address"]),
     ],
 )
