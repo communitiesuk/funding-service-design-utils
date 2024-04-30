@@ -99,9 +99,9 @@ def test_format_answer(input_data, expected_response):
             ["organisation", "name"],
         ),
         (
-            "total-expected-hsra",
+            "total-expected-cost-hsra",
             ["cof", "cyp", "hsra"],
-            ["total", "expected"],
+            ["total", "expected", "cost"],
         ),
         ("organisation-address", ["cof", "ns"], ["organisation", "address"]),
     ],
