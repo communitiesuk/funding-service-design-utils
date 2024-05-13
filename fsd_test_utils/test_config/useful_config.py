@@ -7,3 +7,7 @@ class UsefulConfig:
 
     NSTF_FUND_ID = "13b95669-ed98-4840-8652-d6b7a19964db"
     NSTF_ROUND_2_ID = "fc7aa604-989e-4364-98a7-d1234271435a"
+
+    HSRA_FUND_ID = "1e4bd8b0-b399-466d-bbd1-572171bbc7bd"
+    HSRA_ROUND_1_ID = "50062ff6-e696-474d-a560-4d9af784e6e5"
+    
