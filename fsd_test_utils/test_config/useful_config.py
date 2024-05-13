@@ -10,4 +10,3 @@ class UsefulConfig:
 
     HSRA_FUND_ID = "1e4bd8b0-b399-466d-bbd1-572171bbc7bd"
     HSRA_ROUND_1_ID = "50062ff6-e696-474d-a560-4d9af784e6e5"
-    
