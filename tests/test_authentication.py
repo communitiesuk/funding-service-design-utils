@@ -115,7 +115,7 @@ class TestAuthentication:
         assert mock_request.status_code == 302
         assert (
             mock_request.location
-            == "https://authenticator/service/user?roles_required=COF_ADMIN|COF_TEST"
+            == "https://authenticator/service/user?roles_required=COF_ADMIN%7CCOF_TEST"
         )
 
     def test_login_required_roles_sets_user_attributes_if_user_has_roles(
