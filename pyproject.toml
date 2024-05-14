@@ -39,6 +39,6 @@ dependencies = [
     "sqlalchemy-utils>=0.38.3",
     "beautifulsoup4==4.12.2"
 ]
- 
+
 [project.urls]
 "Homepage" = "https://github.com/communitiesuk/funding-service-design-utils"
