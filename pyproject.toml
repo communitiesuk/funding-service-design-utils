@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "funding-service-design-utils"
 
-version = "2.0.47"
+version = "2.0.46"
 
 authors = [
   { name="DLUHC", email="FundingServiceDesignTeam@levellingup.gov.uk" },
@@ -39,6 +39,6 @@ dependencies = [
     "sqlalchemy-utils>=0.38.3",
     "beautifulsoup4==4.12.2"
 ]
-
+ 
 [project.urls]
 "Homepage" = "https://github.com/communitiesuk/funding-service-design-utils"
