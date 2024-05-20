@@ -1,4 +1,5 @@
 from babel import negotiate_locale
+from flask import current_app
 from flask import request
 from fsd_utils import CommonConfig
 
@@ -9,9 +10,10 @@ def get_lang():
     language_from_query_args = request.args.get("lang")
     if language_from_query_args:
         if language_from_query_args not in ["cy", "en"]:
-            raise ValueError(
-                "Invalid language code. Supported codes are 'cy' and 'en'."
+            current_app.logger.warning(
+                f"Invalid language code {language_from_query_args}. Supported codes are 'cy' and 'en'."
             )
+            return "en"
         else:
             return language_from_query_args
 
