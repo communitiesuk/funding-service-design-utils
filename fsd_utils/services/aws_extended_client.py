@@ -170,61 +170,69 @@ class SQSExtendedClient:
         validate_messages(messages)
         reciept_handles_to_delete = []
         if self.large_payload_support and self.always_through_s3:
-            self._delete_message_from_s3(messages, reciept_handles_to_delete)
+            return self._delete_msg_from_sqs_and_s3(
+                messages, queue_url, reciept_handles_to_delete
+            )
+        return self._delete_msg_from_sqs(messages, queue_url, reciept_handles_to_delete)
 
-            entries = [
-                {"Id": str(ind), "ReceiptHandle": receipt_handle}
-                for ind, receipt_handle in enumerate(reciept_handles_to_delete)
-            ]
-            response = self.sqs_client.delete_message_batch(
-                QueueUrl=queue_url, Entries=entries
+    def _delete_msg_from_sqs_and_s3(
+        self, messages, queue_url, reciept_handles_to_delete
+    ):
+        self._delete_message_from_s3(messages, reciept_handles_to_delete)
+        entries = [
+            {"Id": str(ind), "ReceiptHandle": receipt_handle}
+            for ind, receipt_handle in enumerate(reciept_handles_to_delete)
+        ]
+        response = self.sqs_client.delete_message_batch(
+            QueueUrl=queue_url, Entries=entries
+        )
+        # Check if the delete operation succeeded, if not raise an error?
+        status_code = response["ResponseMetadata"]["HTTPStatusCode"]
+        if status_code != 200:
+            raise SQSExtendedClientException(
+                ExceptionMessages.FAILED_DELETE_MESSAGE.format(status_code)
             )
-            # Check if the delete operation succeeded, if not raise an error?
-            status_code = response["ResponseMetadata"]["HTTPStatusCode"]
-            if status_code != 200:
-                raise SQSExtendedClientException(
-                    ExceptionMessages.FAILED_DELETE_MESSAGE.format(status_code)
+        self.logger.info("Called SQS and deleted the message")
+        if "Successful" in response:
+            for msg_meta in response["Successful"]:
+                self.logger.info(
+                    f"Deleted {reciept_handles_to_delete[int(msg_meta['Id'])]}"
                 )
-            self.logger.info("Called SQS and deleted the message")
-            if "Successful" in response:
-                for msg_meta in response["Successful"]:
-                    self.logger.info(
-                        f"Deleted {reciept_handles_to_delete[int(msg_meta['Id'])]}"
-                    )
-            if "Failed" in response:
-                for msg_meta in response["Failed"]:
-                    self.logger.info(
-                        f"Could not delete {reciept_handles_to_delete[int(msg_meta['Id'])]}"
-                    )
-            return response
-        else:
-            for message in messages:
-                reciept_handles_to_delete.append(message["ReceiptHandle"])
-            entries = [
-                {"Id": str(ind), "ReceiptHandle": receipt_handle}
-                for ind, receipt_handle in enumerate(reciept_handles_to_delete)
-            ]
-            response = self.sqs_client.delete_message_batch(
-                QueueUrl=queue_url, Entries=entries
+        if "Failed" in response:
+            for msg_meta in response["Failed"]:
+                self.logger.info(
+                    f"Could not delete {reciept_handles_to_delete[int(msg_meta['Id'])]}"
+                )
+        return response
+
+    def _delete_msg_from_sqs(self, messages, queue_url, reciept_handles_to_delete):
+        for message in messages:
+            reciept_handles_to_delete.append(message["ReceiptHandle"])
+        entries = [
+            {"Id": str(ind), "ReceiptHandle": receipt_handle}
+            for ind, receipt_handle in enumerate(reciept_handles_to_delete)
+        ]
+        response = self.sqs_client.delete_message_batch(
+            QueueUrl=queue_url, Entries=entries
+        )
+        # Check if the delete operation succeeded, if not raise an error?
+        status_code = response["ResponseMetadata"]["HTTPStatusCode"]
+        if status_code != 200:
+            raise SQSExtendedClientException(
+                ExceptionMessages.FAILED_DELETE_MESSAGE.format(status_code)
             )
-            # Check if the delete operation succeeded, if not raise an error?
-            status_code = response["ResponseMetadata"]["HTTPStatusCode"]
-            if status_code != 200:
-                raise SQSExtendedClientException(
-                    ExceptionMessages.FAILED_DELETE_MESSAGE.format(status_code)
+        self.logger.info("Called SQS and deleted the message")
+        if "Successful" in response:
+            for msg_meta in response["Successful"]:
+                self.logger.info(
+                    f"Deleted {reciept_handles_to_delete[int(msg_meta['Id'])]}"
                 )
-            self.logger.info("Called SQS and deleted the message")
-            if "Successful" in response:
-                for msg_meta in response["Successful"]:
-                    self.logger.info(
-                        f"Deleted {reciept_handles_to_delete[int(msg_meta['Id'])]}"
-                    )
-            if "Failed" in response:
-                for msg_meta in response["Failed"]:
-                    self.logger.info(
-                        f"Could not delete {reciept_handles_to_delete[int(msg_meta['Id'])]}"
-                    )
-            return response
+        if "Failed" in response:
+            for msg_meta in response["Failed"]:
+                self.logger.info(
+                    f"Could not delete {reciept_handles_to_delete[int(msg_meta['Id'])]}"
+                )
+        return response
 
     def _delete_message_from_s3(self, messages, reciept_handles_to_delete):
         for msg in messages:
