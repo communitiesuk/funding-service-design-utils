@@ -12,7 +12,7 @@ from fsd_utils.services.aws_sqs_extended_client_exception import (
 )
 
 
-class TestSQSClient(unittest.TestCase):
+class TestSQSExtendedClient(unittest.TestCase):
     def setUp(self):
         # Create a mock Boto3 SQS client for testing without extended client behaviour
         self.sqs_client = MagicMock()
