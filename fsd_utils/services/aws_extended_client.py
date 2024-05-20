@@ -73,16 +73,10 @@ class SQSExtendedClient:
         :return: A list of Queue names.
         """
         if prefix:
-            queues = self.sqs_client.list_queues(QueueNamePrefix=prefix)["QueueUrls"]
-        else:
-            queues = self.sqs_client.list_queues()["QueueUrls"]
-        if queues:
-            self.logger.info(f"Got queues: {', '.join([q for q in queues])}")
-            queue_names = [url.split("/")[-1] for url in queues]
-            return queue_names
-        else:
-            self.logger.info("No queues found.")
-            return []
+            return self._get_queue_names(
+                self.sqs_client.list_queues(QueueNamePrefix=prefix)["QueueUrls"]
+            )
+        return self._get_queue_names(self.sqs_client.list_queues()["QueueUrls"])
 
     def submit_single_message(
         self,
@@ -119,11 +113,8 @@ class SQSExtendedClient:
             raise SQSExtendedClientException(
                 ExceptionMessages.FAILED_SUBMIT_MESSAGE.format(status_code)
             )
-        else:
-            message_id = response["MessageId"]
-            self.logger.info(
-                f"Called SQS and submitted the message and id [{message_id}]"
-            )
+        message_id = response["MessageId"]
+        self.logger.info(f"Called SQS and submitted the message and id [{message_id}]")
         return message_id
 
     def receive_messages(self, queue_url, max_number, visibility_time=1, wait_time=1):
@@ -173,8 +164,7 @@ class SQSExtendedClient:
                 }
                 extended_message.append(dict_msg)
             return extended_message
-        else:
-            return messages
+        return messages
 
     def delete_messages(self, queue_url, messages):
         validate_messages(messages)
@@ -195,18 +185,17 @@ class SQSExtendedClient:
                 raise SQSExtendedClientException(
                     ExceptionMessages.FAILED_DELETE_MESSAGE.format(status_code)
                 )
-            else:
-                self.logger.info("Called SQS and deleted the message")
-                if "Successful" in response:
-                    for msg_meta in response["Successful"]:
-                        self.logger.info(
-                            f"Deleted {reciept_handles_to_delete[int(msg_meta['Id'])]}"
-                        )
-                if "Failed" in response:
-                    for msg_meta in response["Failed"]:
-                        self.logger.info(
-                            f"Could not delete {reciept_handles_to_delete[int(msg_meta['Id'])]}"
-                        )
+            self.logger.info("Called SQS and deleted the message")
+            if "Successful" in response:
+                for msg_meta in response["Successful"]:
+                    self.logger.info(
+                        f"Deleted {reciept_handles_to_delete[int(msg_meta['Id'])]}"
+                    )
+            if "Failed" in response:
+                for msg_meta in response["Failed"]:
+                    self.logger.info(
+                        f"Could not delete {reciept_handles_to_delete[int(msg_meta['Id'])]}"
+                    )
             return response
         else:
             for message in messages:
@@ -224,18 +213,17 @@ class SQSExtendedClient:
                 raise SQSExtendedClientException(
                     ExceptionMessages.FAILED_DELETE_MESSAGE.format(status_code)
                 )
-            else:
-                self.logger.info("Called SQS and deleted the message")
-                if "Successful" in response:
-                    for msg_meta in response["Successful"]:
-                        self.logger.info(
-                            f"Deleted {reciept_handles_to_delete[int(msg_meta['Id'])]}"
-                        )
-                if "Failed" in response:
-                    for msg_meta in response["Failed"]:
-                        self.logger.info(
-                            f"Could not delete {reciept_handles_to_delete[int(msg_meta['Id'])]}"
-                        )
+            self.logger.info("Called SQS and deleted the message")
+            if "Successful" in response:
+                for msg_meta in response["Successful"]:
+                    self.logger.info(
+                        f"Deleted {reciept_handles_to_delete[int(msg_meta['Id'])]}"
+                    )
+            if "Failed" in response:
+                for msg_meta in response["Failed"]:
+                    self.logger.info(
+                        f"Could not delete {reciept_handles_to_delete[int(msg_meta['Id'])]}"
+                    )
             return response
 
     def _delete_message_from_s3(self, messages, reciept_handles_to_delete):
@@ -260,8 +248,7 @@ class SQSExtendedClient:
                 raise SQSExtendedClientException(
                     ExceptionMessages.FAILED_DELETE_MESSAGE.format(status_code)
                 )
-            else:
-                self.logger.info("Called S3 and deleted the message")
+            self.logger.info("Called S3 and deleted the message")
 
     def _retrieve_message_from_s3(self, message_body: str) -> str:
         """
@@ -288,8 +275,7 @@ class SQSExtendedClient:
             raise SQSExtendedClientException(
                 ExceptionMessages.FAILED_RECEIVE_MESSAGE.format(status_code)
             )
-        else:
-            self.logger.info("Called S3 and received the message")
+        self.logger.info("Called S3 and received the message")
         streaming_body = response["Body"]
         message_body = streaming_body.read().decode()
         return message_body
@@ -335,10 +321,9 @@ class SQSExtendedClient:
                 raise SQSExtendedClientException(
                     ExceptionMessages.FAILED_SUBMIT_MESSAGE.format(status_code)
                 )
-            else:
-                self.logger.info(
-                    f"Message added to S3 bucket [{self.large_payload_support}]"
-                )
+            self.logger.info(
+                f"Message added to S3 bucket [{self.large_payload_support}]"
+            )
             # Modifying the message body for storing it in the Queue
             message_body = json.dumps(
                 [
@@ -347,3 +332,11 @@ class SQSExtendedClient:
                 ]
             )
         return message_body, message_attributes
+
+    def _get_queue_names(self, queues):
+        if queues:
+            self.logger.info(f"Got queues: {', '.join([q for q in queues])}")
+            queue_names = [url.split("/")[-1] for url in queues]
+            return queue_names
+        self.logger.info("No queues found.")
+        return []
