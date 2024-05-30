@@ -155,6 +155,76 @@ class TestSQSExtendedClient(unittest.TestCase):
                     MessageDeduplicationId=message_deduplication_id,
                 )
 
+    def test_submit_single_message_with_extended_client_behaviour_with_s3key(self):
+        # Mock data & responses
+        queue_url = "https://sqs.us-west-1.amazonaws.com/123456789012/test_queue"
+        message = "{'key': 'value'}"
+        message_group_id = "group_id"
+        message_deduplication_id = "deduplication_id"
+        expected_message_id = "test_message_id"
+
+        self.sqs_client.send_message.return_value = {
+            "MessageId": expected_message_id,
+            "ResponseMetadata": {"HTTPStatusCode": 200},
+        }
+
+        self.s3_client.put_object.return_value = {
+            "ResponseMetadata": {"HTTPStatusCode": 200}
+        }
+
+        with patch("fsd_utils.services.aws_extended_client.datetime") as mock_datetime:
+            with patch(
+                "fsd_utils.services.aws_sqs_extended_client_util.uuid4"
+            ) as mock_uuid:
+                uuid_val = uuid4()
+                datetime_now = datetime(2023, 1, 1, 12, 0, 0)
+                mock_datetime.now.return_value = datetime_now
+                mock_uuid.return_value = uuid_val
+
+                message_body = json.dumps(
+                    [
+                        "software.amazon.payloadoffloading.PayloadS3Pointer",
+                        {
+                            "s3BucketName": "fsd_sqs_extended_helper",
+                            "s3Key": "notification/" + str(uuid_val),
+                        },
+                    ]
+                )
+
+                # call to the function
+                actual_message_id = self.sqs_extended.submit_single_message(
+                    queue_url,
+                    message,
+                    message_group_id=message_group_id,
+                    message_deduplication_id=message_deduplication_id,
+                    extra_attributes={
+                        "S3Key": {
+                            "StringValue": "notification",
+                            "DataType": "String",
+                        },
+                    },
+                )
+
+                # Assert responses
+                self.assertEqual(actual_message_id, expected_message_id)
+                self.sqs_client.send_message.assert_called_with(
+                    QueueUrl=queue_url,
+                    MessageBody=message_body,
+                    MessageAttributes={
+                        "ExtendedPayloadSize": {
+                            "DataType": "Number",
+                            "StringValue": "16",
+                        },
+                        "S3Key": {"DataType": "String", "StringValue": "notification"},
+                        "message_created_at": {
+                            "StringValue": str(datetime_now),
+                            "DataType": "String",
+                        },
+                    },
+                    MessageGroupId=message_group_id,
+                    MessageDeduplicationId=message_deduplication_id,
+                )
+
     def test_submit_single_message_with_extended_client_behaviour_error_sqs(self):
         # Mock data & responses
         queue_url = "https://sqs.us-west-1.amazonaws.com/123456789012/test_queue"

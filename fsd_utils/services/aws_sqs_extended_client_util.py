@@ -15,7 +15,7 @@ MESSAGE_POINTER_CLASS = "software.amazon.payloadoffloading.PayloadS3Pointer"
 def get_message_attributes_size(message_attributes: dict) -> int:
     """
     Responsible for calculating the size, in bytes, of the message attributes
-    of a given message payload.
+    of a given message payload
     :message_attributes: A dictionary consisting of message attributes.
     Each message attribute consists of the name (key) along with a
     type and value of the message body. The following types are supported
@@ -93,11 +93,12 @@ def check_message_attributes(message_attributes: dict) -> None:
     return
 
 
-def get_s3_key(message_attributes: dict) -> str:
+def get_s3_key(message_attributes: dict, extra_attributes: dict) -> str:
     """
     Responsible for checking if the S3 Key exists in the
     message_attributes
-    :message_attributes: A dictionary consisting of message attributes.
+    :message_attributes: A dictionary consisting of message attributes
+    :extra_attributes: A dictionary consisting of message attributes
     Each message attribute consists of the name (key) along with a
     type and value of the message body. The following types are supported
     for message attributes: StringValue, BinaryValue and DataType.
@@ -105,6 +106,10 @@ def get_s3_key(message_attributes: dict) -> str:
 
     if S3_KEY_ATTRIBUTE_NAME in message_attributes:
         return message_attributes[S3_KEY_ATTRIBUTE_NAME]["StringValue"]
+    elif extra_attributes and S3_KEY_ATTRIBUTE_NAME in extra_attributes:
+        return (
+            extra_attributes[S3_KEY_ATTRIBUTE_NAME]["StringValue"] + "/" + str(uuid4())
+        )
     return str(uuid4())
 
 
