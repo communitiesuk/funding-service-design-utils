@@ -93,7 +93,7 @@ class SQSExtendedClient:
             },
         }
         message_body, message_attributes = self._store_message_in_s3(
-            message, sqs_message_attributes
+            message, sqs_message_attributes, extra_attributes
         )
         # add extra message attributes (if provided)
         if extra_attributes:
@@ -289,12 +289,13 @@ class SQSExtendedClient:
         return message_body
 
     def _store_message_in_s3(
-        self, message_body: str, message_attributes: dict
+        self, message_body: str, message_attributes: dict, extra_attributes: dict
     ) -> (str, dict):
         """
         Responsible for storing a message payload in a S3 Bucket
         :message_body: A UTF-8 encoded version of the message body
-        :message_attributes: A dictionary consisting of message attributes.
+        :message_attributes: A dictionary consisting of message attributes
+        :extra_attributes: A dictionary consisting of message attributes
         Each message attribute consists of the name (key) along with a
         type and value of the message body. The following types are supported
         for message attributes: StringValue, BinaryValue and DataType.
@@ -317,7 +318,7 @@ class SQSExtendedClient:
             message_attributes[RESERVED_ATTRIBUTE_NAME] = attribute_value
 
             # S3 Key should either be a constant or be a random uuid4 string.
-            s3_key = get_s3_key(message_attributes)
+            s3_key = get_s3_key(message_attributes, extra_attributes)
 
             # Adding the object into the bucket
             response = self.s3_client.put_object(
