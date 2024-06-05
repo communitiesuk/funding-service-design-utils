@@ -6,12 +6,11 @@ import boto3
 from fsd_utils.sqs_scheduler.context_aware_executor import ContextAwareExecutor
 from fsd_utils.sqs_scheduler.task_executer_service import TaskExecutorService
 from moto import mock_aws
-from tests.data.test_data_util import send_message_to_queue
 
 
 class TestTaskExecutorService(unittest.TestCase):
     @mock_aws
-    def test_message_in_mock_environment_processing_without_errors(self):
+    def test_message_in_mock_environment_processing(self):
         """
         This test ensure that when message is there and if no errors occurred while processing the message
         then successfully removed it from the queue
@@ -72,7 +71,7 @@ class TestTaskExecutorService(unittest.TestCase):
         for x in range(1):
             message_id = self.task_executor.sqs_extended_client.submit_single_message(
                 queue_url=self.queue_response["QueueUrl"],
-                message=send_message_to_queue,
+                message="message",
                 message_group_id="import_applications_group",
                 message_deduplication_id=str(uuid4()),  # ensures message uniqueness
             )
