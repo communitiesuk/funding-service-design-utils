@@ -11,3 +11,4 @@ Flask-Migrate
 Flask-SQLAlchemy>=3.0.3
 sqlalchemy-utils==0.38.3
 beautifulsoup4==4.12.2
+moto[s3,sqs]==5.0.7
