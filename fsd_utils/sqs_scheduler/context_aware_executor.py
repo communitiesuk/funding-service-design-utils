@@ -3,7 +3,7 @@ from contextvars import copy_context
 
 
 class ContextAwareExecutor:
-    """This Executor coppy current flask application context and then inherit the
+    """This Executor copy current flask application context and then inherit the
     flask application context for each executor thread then those threads will
     have the ability to use flask resources with its own flask context."""
 
