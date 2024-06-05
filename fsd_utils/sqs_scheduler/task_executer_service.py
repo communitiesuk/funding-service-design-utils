@@ -77,17 +77,15 @@ class TaskExecutorService:
         running_threads = []
         read_msg_ids = []
         if self.task_executor_max_thread >= self.executor.queue_size():
-            notification_messages = self.sqs_extended_client.receive_messages(
+            sqs_messages = self.sqs_extended_client.receive_messages(
                 self.sqs_primary_url,
                 self.sqs_batch_size,
                 self.visibility_time,
                 self.sqs_wait_time,
             )
-            self.logger.debug(
-                f"{thread_id} Message Count [{len(notification_messages)}]"
-            )
-            if notification_messages:
-                for message in notification_messages:
+            self.logger.debug(f"{thread_id} Message Count [{len(sqs_messages)}]")
+            if sqs_messages:
+                for message in sqs_messages:
                     message_id = message["sqs"]["MessageId"]
                     self.logger.info(f"{thread_id} Message id [{message_id}]")
                     read_msg_ids.append(message["sqs"]["MessageId"])

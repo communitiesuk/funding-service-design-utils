@@ -47,7 +47,7 @@ class TestTaskExecutorService(unittest.TestCase):
         self.queue_response = sqs_connection.create_queue(
             QueueName="notif-queue.fifo", Attributes={"FifoQueue": "true"}
         )
-        self.task_executor = TestNotificationTaskExecutorService(
+        self.task_executor = AnyTaskExecutorService(
             flask_app=MagicMock(),
             executor=self.executor,
             s3_bucket=bucket_name,
@@ -84,6 +84,6 @@ class TestTaskExecutorService(unittest.TestCase):
         assert len(response) == count
 
 
-class TestNotificationTaskExecutorService(TaskExecutorService):
+class AnyTaskExecutorService(TaskExecutorService):
     def message_executor(self, message):
         return message
