@@ -15,7 +15,12 @@ Install pre-commit hook: https://github.com/communitiesuk/funding-service-design
 If you add any packages needed by services that consume `fsd_utils`, add them into `pyproject.yaml`.
 
 # Testing
-[Testing in Python repos](https://github.com/communitiesuk/funding-service-design-workflows/blob/main/readmes/python-repos-testing.md)
+
+Tests in this repository run using `pytest`, as per our standardise [Testing in Python repos](https://github.com/communitiesuk/funding-service-design-workflows/blob/main/readmes/python-repos-testing.md) practice.
+
+However, because this is a shared utils library that can be installed under different conditions (mainly Python or Flask versions), we matrix test the combinations using [tox](https://tox.wiki/en/4.15.1/).
+
+To run tests via tox, `pip install -r requirements-test.txt` and then simply run `tox`. To run suites in parallel, run eg `tox -p 8`.
 
 # Releasing
 To create a new release of funding-service-design-utils (note no longer need to manually update the version):
