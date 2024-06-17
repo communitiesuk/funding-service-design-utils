@@ -1,0 +1,3 @@
+# This file installs the dependencies required for running tests via tox, which we use in our github workflow (CI).
+tox==4.15.1
+tox-gh-actions==3.2.0
