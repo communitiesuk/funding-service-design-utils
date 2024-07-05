@@ -3,12 +3,13 @@ from __future__ import absolute_import
 import datetime
 import logging
 import re
-import sys
 import time
+from logging.config import dictConfig
 from os import getpid
 from threading import get_ident as get_thread_ident
 
 from flask import current_app
+from flask import Flask
 from flask import request
 from flask.ctx import has_request_context
 from pythonjsonlogger.jsonlogger import JsonFormatter as BaseJSONFormatter
@@ -19,6 +20,8 @@ LOG_FORMAT = (
     "%(name)s %(levelname)s "
     "- %(message)s - from %(funcName)s in %(pathname)s:%(lineno)d"
 )
+
+_DEFAULT_FSD_LOG_LEVEL = "INFO"
 
 DEV_DEBUG_LOG_FORMAT = (
     "%(asctime)s %(levelname)s - %(message)s - from %(funcName)s() in"
@@ -55,9 +58,63 @@ def _common_request_extra_log_context():
     }
 
 
-def init_app(app):
-    app.config.setdefault("FSD_LOG_LEVEL", "INFO")
+def get_default_logging_config(app: Flask):
+    log_level = app.config.get("FSD_LOG_LEVEL", _DEFAULT_FSD_LOG_LEVEL)
+    formatter = "plaintext" if app.config.get("FLASK_ENV") == "development" else "json"
 
+    return {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "filters": {
+            "request_extra_context": {
+                "()": "fsd_utils.logging.logging.RequestExtraContextFilter",
+            },
+        },
+        "formatters": {
+            "plaintext": {
+                "()": "fsd_utils.logging.logging.CustomLogFormatter",
+                "msg": DEV_DEBUG_LOG_FORMAT,
+            },
+            "json": {
+                "()": "fsd_utils.logging.logging.JSONFormatter",
+                "fmt": get_json_log_format(),
+            },
+        },
+        "handlers": {
+            "null": {
+                "class": "logging.NullHandler",
+            },
+            "default": {
+                "filters": ["request_extra_context"],
+                "formatter": formatter,
+                "class": "logging.StreamHandler",
+                "stream": "ext://sys.stdout",
+            },
+        },
+        "loggers": {
+            "": {
+                "handlers": ["null"],
+            },
+            "werkzeug": {
+                "disabled": True,
+            },
+            app.name: {
+                "handlers": ["default"],
+                "level": log_level,
+            },
+        },
+    }
+
+
+def init_app(app, log_config: dict | None = None):
+    app.config.setdefault("FSD_LOG_LEVEL", _DEFAULT_FSD_LOG_LEVEL)
+    log_config = log_config or get_default_logging_config(app)
+    dictConfig(log_config)
+    attach_request_loggers(app)
+    app.logger.info("Logging configured")
+
+
+def attach_request_loggers(app):
     @app.before_request
     def before_request():
         # annotating these onto request instead of flask.g as they probably
@@ -93,44 +150,6 @@ def init_app(app):
                 },
             )
         return response
-
-    logging.getLogger().addHandler(logging.NullHandler())
-    # Werkzeug logging
-    werkzeug_logger = logging.getLogger("werkzeug")
-    # Disable default werkzeug logging
-    werkzeug_logger.disabled = True
-    # Set default handler to log to stdout
-    handlers = [logging.StreamHandler(sys.stdout)]
-
-    # Clear any preset logger handlers
-    del app.logger.handlers[:]
-
-    # Switch between text or json log formats
-    if app.config.get("FLASK_ENV") == "development":
-        formatter = CustomLogFormatter(DEV_DEBUG_LOG_FORMAT)
-    else:
-        formatter = JSONFormatter(get_json_log_format())
-
-    # Configure handlers
-    for handler in handlers:
-        configure_handler(handler, app, formatter)
-
-    loglevel = logging.getLevelName(app.config["FSD_LOG_LEVEL"])
-    loggers = [app.logger, werkzeug_logger]
-
-    for logger_ in loggers:
-        for handler in handlers:
-            logger_.addHandler(handler)
-        logger_.setLevel(loglevel)
-    app.logger.info("Logging configured")
-
-
-def configure_handler(handler, app, formatter):
-    handler.setLevel(logging.getLevelName(app.config["FSD_LOG_LEVEL"]))
-    handler.setFormatter(formatter)
-    handler.addFilter(RequestExtraContextFilter())
-
-    return handler
 
 
 def get_json_log_format():
@@ -243,6 +262,10 @@ class CustomLogFormatter(logging.Formatter):
         Ensure all values found in our `fmt`
         have non-None entries in `record`
         """
+        # FIXME: This method mutates the log record's `levelname` attribute, which `colour_field` does a lookup on.
+        #        This means if the log record is processed by two handlers, we get an error, because the second
+        #        handler doesn't recognise the ANSI-encoded levelname. For now, we only process logs through a single
+        #        handler - if this changes, beware, we'll be in uncharted (broken) territory.
         for field in self.FORMAT_STRING_FIELDS_PATTERN.findall(self._fmt):
             # slightly clunky - this is so we catch
             # explicitly-set Nones too and turn them into "-"
