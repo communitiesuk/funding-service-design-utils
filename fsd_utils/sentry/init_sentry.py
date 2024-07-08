@@ -1,4 +1,5 @@
 from os import getenv
+from typing import Callable, Optional
 
 import sentry_sdk
 from fsd_utils import CommonConfig
@@ -18,15 +19,18 @@ def _traces_sampler(sampling_context):
         return float(getenv("SENTRY_TRACES_SAMPLE_RATE", "0.02"))
 
 
-def init_sentry():
+def init_sentry(traces_sampler: Optional[Callable] = None):
+    if not traces_sampler:
+        traces_sampler = _traces_sampler
+
     if getenv("SENTRY_DSN"):
         sentry_sdk.init(
             environment=CommonConfig.FLASK_ENV,
             integrations=[
                 FlaskIntegration(),
             ],
-            traces_sampler=_traces_sampler,
-            profiles_sampler=_traces_sampler,
+            traces_sampler=traces_sampler,
+            profiles_sampler=traces_sampler,
             release=getenv("GITHUB_SHA"),
         )
 
