@@ -74,7 +74,7 @@ def _build_logout_url(return_app: SupportedApp | None):
         return (
             authenticator_host
             + signout_route
-            + f"?{urlencode({'return_app': return_app.value})}"
+            + f"?{urlencode({'return_app': return_app.value, 'return_path': request.path})}"
         )
     else:
         return authenticator_host + signout_route

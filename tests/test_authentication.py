@@ -223,7 +223,7 @@ class TestAuthentication:
         assert mock_request.status_code == 302
         assert (
             mock_request.location
-            == "https://authenticator/sessions/sign-out?return_app=post-award-frontend"
+            == "https://authenticator/sessions/sign-out?return_app=post-award-frontend&return_path=%2Fmock_login_requested_return_app_route"  # noqa: E501
         )
 
     def test_login_required_with_return_app_redirects_to_signed_out_with_invalid_token(
@@ -244,7 +244,7 @@ class TestAuthentication:
         assert mock_request.status_code == 302
         assert (
             mock_request.location
-            == "https://authenticator/sessions/sign-out?return_app=post-award-frontend"
+            == "https://authenticator/sessions/sign-out?return_app=post-award-frontend&return_path=%2Fmock_login_requested_return_app_route"  # noqa: E501
         )
 
     def test_login_required_with_return_app_sets_user_attributes_with_valid_token(
@@ -264,5 +264,5 @@ class TestAuthentication:
         assert mock_request.status_code == 200
         assert (
             mock_request.json["logout_url"]
-            == "https://authenticator/sessions/sign-out?return_app=post-award-frontend"
+            == "https://authenticator/sessions/sign-out?return_app=post-award-frontend&return_path=%2Fmock_login_requested_return_app_route"  # noqa: E501
         )
