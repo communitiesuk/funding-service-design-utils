@@ -6,9 +6,9 @@ sqlalchemy==1.4.39
 flask-redis==0.4.0
 pytest
 pytest-mock
-flipper-client==1.3.1
-Flask-Migrate
+flipper-client>=1.3.2
+Flask-Migrate==4.0.7
 Flask-SQLAlchemy>=3.0.3
 sqlalchemy-utils==0.38.3
-beautifulsoup4==4.12.2
+beautifulsoup4==4.12.3
 moto[s3,sqs]==5.0.7
