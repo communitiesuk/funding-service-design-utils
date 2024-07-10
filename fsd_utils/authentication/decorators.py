@@ -28,12 +28,13 @@ def _failed_redirect(return_app: SupportedApp | None):
 def _failed_roles_redirect(roles_required: List[str]):
     authenticator_host = current_app.config[config_var_auth_host]
 
+    params = {'roles_required': "|".join(roles_required)}
+
     return abort(
         redirect(
             authenticator_host
             + user_route
-            + "?roles_required="
-            + "|".join(roles_required)
+            + f"?{urlencode(params)}"
         )
     )
 

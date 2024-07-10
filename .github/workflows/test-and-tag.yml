@@ -17,22 +17,28 @@ on:
 jobs:
   run-unit-tests:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # If updating this list of python versions, you also need to update tox config in pyproject.toml
+        python-version: ['3.10', '3.11', '3.12']
     permissions:
         contents: write
     steps:
     - uses: actions/checkout@v4
 
-    - name: Setup python
-      id: setup_python
+    - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install -r requirements-test.txt
 
     - name: Run tests
       run: |
-        python -m venv .venv
-        source .venv/bin/activate && python -m pip install --upgrade pip && pip install -r requirements-dev.txt
-        pytest
+        tox
 
   create-release:
     runs-on: ubuntu-latest
