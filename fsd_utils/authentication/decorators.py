@@ -6,6 +6,7 @@ from flask import abort
 from flask import current_app
 from flask import g
 from flask import redirect
+from flask import Request
 from flask import request
 from fsd_utils.authentication.utils import validate_token_rs256
 from jwt import ExpiredSignatureError
@@ -60,6 +61,11 @@ def _check_access_token(return_app: SupportedApp | None = None, auto_redirect=Tr
         return False
 
 
+def _build_return_path(request: Request):
+    query_string = ("?" + request.query_string.decode()) if request.query_string else ""
+    return request.path + query_string
+
+
 def _build_logout_url(return_app: SupportedApp | None):
     if override := current_app.config.get(config_var_logout_url_override):
         return override
@@ -69,7 +75,7 @@ def _build_logout_url(return_app: SupportedApp | None):
         return (
             authenticator_host
             + signout_route
-            + f"?{urlencode({'return_app': return_app.value, 'return_path': request.path})}"
+            + f"?{urlencode({'return_app': return_app.value, 'return_path': _build_return_path(request)})}"
         )
     else:
         return authenticator_host + signout_route
