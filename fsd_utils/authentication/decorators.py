@@ -11,6 +11,7 @@ from flask import request
 from fsd_utils.authentication.utils import validate_token_rs256
 from jwt import ExpiredSignatureError
 from jwt import PyJWTError
+from werkzeug.exceptions import HTTPException
 
 from .config import config_var_auth_host
 from .config import config_var_logout_url_override
@@ -107,15 +108,18 @@ def login_required(
 
     @wraps(f)
     def _wrapper(*args, **kwargs):
-        if current_app.config.get(
-            "FLASK_ENV"
-        ) == "development" and current_app.config.get("DEBUG_USER_ON"):
-            g.account_id = current_app.config.get("DEBUG_USER_ACCOUNT_ID")
-            g.user = User(**current_app.config.get("DEBUG_USER"))
-        else:
+        try:
             token_payload = _check_access_token(return_app=return_app)
             g.account_id = token_payload.get("accountId")
             g.user = User.set_with_token(token_payload)
+        except HTTPException as e:
+            if current_app.config.get(
+                "FLASK_ENV"
+            ) == "development" and current_app.config.get("DEBUG_USER_ON"):
+                g.account_id = current_app.config.get("DEBUG_USER_ACCOUNT_ID")
+                g.user = User(**current_app.config.get("DEBUG_USER"))
+            else:
+                raise e
 
         g.logout_url = _build_logout_url(return_app)
         g.is_authenticated = True
