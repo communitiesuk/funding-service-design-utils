@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "funding-service-design-utils"
 
-version = "5.0.2"
+version = "5.0.3"
 
 authors = [
   { name="DLUHC", email="FundingServiceDesignTeam@levellingup.gov.uk" },
@@ -21,17 +21,17 @@ classifiers = [
 ]
 
 dependencies = [
-    "Flask-Babel>=2.0.0,<=4.0.0",
-    "PyYAML>=6.0,<7.0",
-    "python-dotenv>=1.0.1,<1.1.0",
-    "rich>=12.4.4,<13.0.0",
+    "Flask-Babel>=2.0.0",
+    "PyYAML>=6.0",
+    "python-dotenv>=1.0.1",
+    "rich>=12.4.4",
     # If adding support for a new major/minor Flask version below, remember to add a tox env to matrix test it.
     "Flask>=2.1.1,!=2.3.0",
-    "python-json-logger>=2.0.2,<3.0.0",
-    "gunicorn>=20.1.0,<=22.0.0",
+    "python-json-logger>=2.0.2",
+    "gunicorn>=20.1.0",
     "pytz>=2022.1",
     "PyJWT[crypto]>=2.4.0",
-    "sentry-sdk[flask]>=2.0.0,<3.0.0",
+    "sentry-sdk[flask]>=2.0.0",
     "requests==2.32.3",
     "flask-redis==0.4.0",
     "Flask-Migrate==4.0.7",
