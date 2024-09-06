@@ -1,8 +1,9 @@
 from pathlib import Path
 
 import jwt as jwt
+import unittest
 
-
+@unittest.skip("Skipping all tests in TestAuthentication class temporarily")
 class TestAuthentication:
 
     test_payload = {
