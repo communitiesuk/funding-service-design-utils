@@ -20,11 +20,24 @@ from .config import signout_route
 from .config import SupportedApp
 from .config import user_route
 from .models import User
+from flask import make_response
+from flask import render_template
 
 
 def _failed_redirect(return_app: SupportedApp | None):
+    """
+    Redirect to signout with POST method, passing the return_app and return_path in form data.
+    """
     logout_url = _build_logout_url(return_app)
-    return abort(redirect(logout_url))
+
+    # Instead of aborting directly to a GET request, use a POST redirect with form data
+    form_data = {
+        'return_app': return_app.value if return_app else None,
+        'return_path': request.path  # Or wherever you want to redirect after signout
+    }
+
+    response = make_response(render_template("signout_redirect_form.html", logout_url=logout_url, form_data=form_data), 307)
+    return abort(response)
 
 
 def _failed_roles_redirect(roles_required: List[str]):
@@ -68,18 +81,16 @@ def _build_return_path(request: Request):
 
 
 def _build_logout_url(return_app: SupportedApp | None):
+    """
+    Return the signout endpoint URL for the form action (POST request).
+    """
     if override := current_app.config.get(config_var_logout_url_override):
         return override
 
     authenticator_host = current_app.config[config_var_auth_host]
-    if return_app:
-        return (
-            authenticator_host
-            + signout_route
-            + f"?{urlencode({'return_app': return_app.value, 'return_path': _build_return_path(request)})}"
-        )
-    else:
-        return authenticator_host + signout_route
+
+    # Return the base signout route for use with a POST request
+    return authenticator_host + signout_route
 
 
 def login_required(
@@ -121,7 +132,9 @@ def login_required(
             else:
                 raise e
 
+        # Pass the logout URL and form data into g
         g.logout_url = _build_logout_url(return_app)
+        g.return_app = return_app.value  # This is the return_app passed via the decorator
         g.is_authenticated = True
         if roles_required:
             if not any(
