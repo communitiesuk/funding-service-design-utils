@@ -1,9 +1,9 @@
 from pathlib import Path
 
 import jwt as jwt
-import unittest
+import pytest
 
-@unittest.skip("Skipping all tests in TestAuthentication class temporarily")
+@pytest.mark.skip(reason="Needs running fund-store")
 class TestAuthentication:
 
     test_payload = {
