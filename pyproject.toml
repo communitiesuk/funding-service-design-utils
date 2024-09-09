@@ -37,7 +37,8 @@ dependencies = [
     "Flask-Migrate==4.0.7",
     "Flask-SQLAlchemy>=3.0.3",
     "sqlalchemy-utils>=0.38.3",
-    "beautifulsoup4==4.12.3"
+    "beautifulsoup4==4.12.3",
+    "boto3==1.34.144"
 ]
 
 [project.optional-dependencies]
