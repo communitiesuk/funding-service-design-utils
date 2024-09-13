@@ -8,9 +8,9 @@ name = "funding-service-design-utils"
 version = "5.0.5"
 
 authors = [
-  { name="DLUHC", email="FundingServiceDesignTeam@levellingup.gov.uk" },
+  { name="MHCLG", email="FundingService@communities.gov.uk" },
 ]
-description = "Utilities used by the DLUHC Funding Service Design Team"
+description = "Utilities used by the MHCLG Funding Service Team"
 readme = "README.md"
 license = { file="LICENSE" }
 requires-python = ">=3.10,<4.0"
