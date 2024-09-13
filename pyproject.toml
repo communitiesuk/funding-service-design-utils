@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "funding-service-design-utils"
 
-version = "5.0.4"
+version = "5.0.5"
 
 authors = [
   { name="DLUHC", email="FundingServiceDesignTeam@levellingup.gov.uk" },
@@ -37,7 +37,8 @@ dependencies = [
     "Flask-Migrate==4.0.7",
     "Flask-SQLAlchemy>=3.0.3",
     "sqlalchemy-utils>=0.38.3",
-    "beautifulsoup4==4.12.3"
+    "beautifulsoup4==4.12.3",
+    "boto3>=1.9.253"
 ]
 
 [project.optional-dependencies]
