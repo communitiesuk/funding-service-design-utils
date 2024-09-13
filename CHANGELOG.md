@@ -1,3 +1,23 @@
+### 5.0.6
+
+- Un-pinned various dependencies
+
+### 5.0.5
+
+- add boto3 dependency to fsd-utils; wasn't included correctly before
+
+### 5.0.4
+
+- add some GOV.UK Notify constants for pre-award
+
+### 5.0.3
+
+- remove some upper-bound pins on dependencies
+
+### 5.0.2
+
+- no external changes
+
 ### 5.0.1
 
 - `login_required` now always checks for a valid session cookie before falling back to a DEBUG_USER in development environments.
