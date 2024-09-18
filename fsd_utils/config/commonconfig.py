@@ -15,11 +15,13 @@ class CommonConfig:
     # ---------------
     #  General App Config
     # ---------------
-    SECRET_KEY = os.getenv("SECRET_KEY", "secret_key")
-    SESSION_COOKIE_NAME = os.getenv("SESSION_COOKIE_NAME", "session_cookie")
     FLASK_ENV = os.getenv("FLASK_ENV")
     if not FLASK_ENV:
         raise KeyError("FLASK_ENV is not present in environment")
+    SECRET_KEY = os.getenv("SECRET_KEY")
+    if not SECRET_KEY and FLASK_ENV not in ["development", "unit_test"]:
+        raise KeyError("SECRET_KEY is not present in environment")
+    SESSION_COOKIE_NAME = os.getenv("SESSION_COOKIE_NAME", "session_cookie")
     try:
         FSD_LOG_LEVEL = FSD_LOG_LEVELS["FLASK_ENV"]
     except KeyError:
