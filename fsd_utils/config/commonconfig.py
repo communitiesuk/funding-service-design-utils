@@ -15,7 +15,9 @@ class CommonConfig:
     # ---------------
     #  General App Config
     # ---------------
-    SECRET_KEY = os.getenv("SECRET_KEY", "secret_key")
+    SECRET_KEY = os.getenv("SECRET_KEY")
+    if not SECRET_KEY:
+        raise KeyError("SECRET_KEY is not present in environment")
     SESSION_COOKIE_NAME = os.getenv("SESSION_COOKIE_NAME", "session_cookie")
     FLASK_ENV = os.getenv("FLASK_ENV")
     if not FLASK_ENV:
