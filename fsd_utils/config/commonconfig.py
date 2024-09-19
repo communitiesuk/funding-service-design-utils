@@ -6,8 +6,6 @@ class CommonConfig:
     def _resolve_secret_key(flask_env: str = None) -> str:
         secret_key = os.getenv("SECRET_KEY", None)
         if not secret_key:
-            if flask_env in ["dev", "test", "uat", "production"]:
-                raise KeyError("SECRET_KEY is not present in environment")
             secret_key = "dev-secret"  # pragma: allowlist secret
         return secret_key
 
