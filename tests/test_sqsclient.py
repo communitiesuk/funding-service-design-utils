@@ -1,9 +1,7 @@
 import json
 import unittest
 from datetime import datetime
-from unittest.mock import call
-from unittest.mock import MagicMock
-from unittest.mock import patch
+from unittest.mock import MagicMock, call, patch
 
 from fsd_utils.services.aws import SQSClient
 
@@ -40,9 +38,7 @@ class TestSQSClient(unittest.TestCase):
     def test_get_queue_url(self):
         # Mock data & responses
         queue_name = "test_queue"
-        expected_queue_url = (
-            "https://sqs.us-west-1.amazonaws.com/123456789012/test_queue"
-        )
+        expected_queue_url = "https://sqs.us-west-1.amazonaws.com/123456789012/test_queue"
         self.sqs_client.get_queue_url.return_value = {"QueueUrl": expected_queue_url}
 
         # call to the function
@@ -132,9 +128,7 @@ class TestSQSClient(unittest.TestCase):
         self.sqs_client.receive_message.return_value = response
 
         # call to the function
-        received_messages = self.sqs.receive_messages(
-            queue_url, max_number, visibility_time, wait_time
-        )
+        received_messages = self.sqs.receive_messages(queue_url, max_number, visibility_time, wait_time)
 
         # Assert responses
         self.assertEqual(received_messages, messages)
@@ -171,9 +165,7 @@ class TestSQSClient(unittest.TestCase):
             {"Id": "1", "ReceiptHandle": "receipt_handle2"},
             {"Id": "2", "ReceiptHandle": "receipt_handle3"},
         ]
-        self.sqs_client.delete_message_batch.assert_called_with(
-            QueueUrl=queue_url, Entries=expected_entries
-        )
+        self.sqs_client.delete_message_batch.assert_called_with(QueueUrl=queue_url, Entries=expected_entries)
 
     def test_create_sqs_queue(self):
         # Mock data & responses
@@ -190,14 +182,10 @@ class TestSQSClient(unittest.TestCase):
             {"QueueUrl": dlq_queue_url},
         ]
         self.sqs_client.get_queue_url.return_value = {"QueueUrl": queue_url}
-        self.sqs_client.get_queue_attributes.return_value = {
-            "Attributes": {"QueueArn": dlq_arn}
-        }
+        self.sqs_client.get_queue_attributes.return_value = {"Attributes": {"QueueArn": dlq_arn}}
 
         # call to the function
-        sqs_queue_url = self.sqs.create_sqs_queue(
-            queue_name, has_dlq, dlq_queue_name, max_receive_count
-        )
+        sqs_queue_url = self.sqs.create_sqs_queue(queue_name, has_dlq, dlq_queue_name, max_receive_count)
 
         # Assert responses
         self.assertEqual(sqs_queue_url, queue_url)

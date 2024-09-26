@@ -24,9 +24,7 @@ class Healthcheck(object):
                     responseCode = 500
             except Exception:
                 response["checks"].append({checker.name: "Failed - check logs"})
-                current_app.logger.exception(
-                    f"Check {checker.name} failed with an exception"
-                )
+                current_app.logger.exception(f"Check {checker.name} failed with an exception")
                 responseCode = 500
         return response, responseCode
 

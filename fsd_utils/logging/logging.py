@@ -8,25 +8,17 @@ from logging.config import dictConfig
 from os import getpid
 from threading import get_ident as get_thread_ident
 
-from flask import current_app
-from flask import Flask
-from flask import request
+from flask import Flask, current_app, request
 from flask.ctx import has_request_context
 from pythonjsonlogger.jsonlogger import JsonFormatter as BaseJSONFormatter
 
 # Log formats can use any attributes available in
 # https://docs.python.org/3/library/logging.html#logrecord-attributes
-LOG_FORMAT = (
-    "%(name)s %(levelname)s "
-    "- %(message)s - from %(funcName)s in %(pathname)s:%(lineno)d"
-)
+LOG_FORMAT = "%(name)s %(levelname)s " "- %(message)s - from %(funcName)s in %(pathname)s:%(lineno)d"
 
 _DEFAULT_FSD_LOG_LEVEL = "INFO"
 
-DEV_DEBUG_LOG_FORMAT = (
-    "%(asctime)s %(levelname)s - %(message)s - from %(funcName)s() in"
-    " %(filename)s:%(lineno)d"
-)
+DEV_DEBUG_LOG_FORMAT = "%(asctime)s %(levelname)s - %(message)s - from %(funcName)s() in" " %(filename)s:%(lineno)d"
 
 
 # fields named in LOG_FORMAT and LOG_FORMAT_EXTRA_JSON_KEYS
@@ -207,6 +199,7 @@ class BaseExtraStackLocationFilter(logging.Filter):
                     "funcName",
                 ),
                 rv,
+                strict=False,
             ):
                 setattr(record, self._param_prefix + attr_name, attr_value)
 
@@ -221,9 +214,7 @@ class RequestExtraContextFilter(logging.Filter):
     """
 
     def filter(self, record):
-        if has_request_context() and callable(
-            getattr(request, "get_extra_log_context", None)
-        ):
+        if has_request_context() and callable(getattr(request, "get_extra_log_context", None)):
             for key, value in request.get_extra_log_context().items():
                 setattr(record, key, value)
 
@@ -344,27 +335,18 @@ class JSONFormatter(BaseJSONFormatter):
         missing_keys = {}
         for attempt in range(self._max_missing_key_attempts):
             try:
-                log_record["message"] = log_record["message"].format(
-                    **log_record, **missing_keys
-                )
+                log_record["message"] = log_record["message"].format(**log_record, **missing_keys)
             except KeyError as e:
                 missing_keys[e.args[0]] = f"{{{e.args[0]}: missing key}}"
             else:
                 # execution should only ever reach this point once
                 # - when the .format() succeeds
                 if missing_keys:
-                    logger.warning(
-                        "Missing keys when formatting log message: {}".format(
-                            tuple(missing_keys.keys())
-                        )
-                    )
+                    logger.warning("Missing keys when formatting log message: {}".format(tuple(missing_keys.keys())))
 
                 break
 
         else:
-            logger.exception(
-                "Too many missing keys when attempting to format log message:"
-                " gave up"
-            )
+            logger.exception("Too many missing keys when attempting to format log message:" " gave up")
 
         return log_record

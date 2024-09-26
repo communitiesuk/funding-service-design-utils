@@ -2,15 +2,18 @@ import json
 from datetime import datetime
 
 import boto3
-from fsd_utils.services.aws_sqs_extended_client_exception import ExceptionMessages
+
 from fsd_utils.services.aws_sqs_extended_client_exception import (
+    ExceptionMessages,
     SQSExtendedClientException,
 )
-from fsd_utils.services.aws_sqs_extended_client_util import check_message_attributes
-from fsd_utils.services.aws_sqs_extended_client_util import get_s3_key
-from fsd_utils.services.aws_sqs_extended_client_util import MESSAGE_POINTER_CLASS
-from fsd_utils.services.aws_sqs_extended_client_util import RESERVED_ATTRIBUTE_NAME
-from fsd_utils.services.aws_sqs_extended_client_util import validate_messages
+from fsd_utils.services.aws_sqs_extended_client_util import (
+    MESSAGE_POINTER_CLASS,
+    RESERVED_ATTRIBUTE_NAME,
+    check_message_attributes,
+    get_s3_key,
+    validate_messages,
+)
 
 
 class SQSExtendedClient:
@@ -73,9 +76,7 @@ class SQSExtendedClient:
         :return: A list of Queue names.
         """
         if prefix:
-            return self._get_queue_names(
-                self.sqs_client.list_queues(QueueNamePrefix=prefix)["QueueUrls"]
-            )
+            return self._get_queue_names(self.sqs_client.list_queues(QueueNamePrefix=prefix)["QueueUrls"])
         return self._get_queue_names(self.sqs_client.list_queues()["QueueUrls"])
 
     def submit_single_message(
@@ -92,9 +93,7 @@ class SQSExtendedClient:
                 "DataType": "String",
             },
         }
-        message_body, message_attributes = self._store_message_in_s3(
-            message, sqs_message_attributes, extra_attributes
-        )
+        message_body, message_attributes = self._store_message_in_s3(message, sqs_message_attributes, extra_attributes)
         # add extra message attributes (if provided)
         if extra_attributes:
             for key, value in extra_attributes.items():
@@ -110,9 +109,7 @@ class SQSExtendedClient:
         # Check if the delete operation succeeded, if not raise an error?
         status_code = response["ResponseMetadata"]["HTTPStatusCode"]
         if status_code != 200:
-            raise SQSExtendedClientException(
-                ExceptionMessages.FAILED_SUBMIT_MESSAGE.format(status_code)
-            )
+            raise SQSExtendedClientException(ExceptionMessages.FAILED_SUBMIT_MESSAGE.format(status_code))
         message_id = response["MessageId"]
         self.logger.info(f"Called SQS and submitted the message and id [{message_id}]")
         return message_id
@@ -145,9 +142,7 @@ class SQSExtendedClient:
         # Check if the delete operation succeeded, if not raise an error?
         status_code = response["ResponseMetadata"]["HTTPStatusCode"]
         if status_code != 200:
-            raise SQSExtendedClientException(
-                ExceptionMessages.FAILED_RECEIVE_MESSAGE.format(status_code)
-            )
+            raise SQSExtendedClientException(ExceptionMessages.FAILED_RECEIVE_MESSAGE.format(status_code))
         messages = []
         if "Messages" in response.keys():
             messages = response["Messages"]
@@ -170,39 +165,27 @@ class SQSExtendedClient:
         validate_messages(messages)
         reciept_handles_to_delete = []
         if self.large_payload_support and self.always_through_s3:
-            return self._delete_msg_from_sqs_and_s3(
-                messages, queue_url, reciept_handles_to_delete
-            )
+            return self._delete_msg_from_sqs_and_s3(messages, queue_url, reciept_handles_to_delete)
         return self._delete_msg_from_sqs(messages, queue_url, reciept_handles_to_delete)
 
-    def _delete_msg_from_sqs_and_s3(
-        self, messages, queue_url, reciept_handles_to_delete
-    ):
+    def _delete_msg_from_sqs_and_s3(self, messages, queue_url, reciept_handles_to_delete):
         self._delete_message_from_s3(messages, reciept_handles_to_delete)
         entries = [
             {"Id": str(ind), "ReceiptHandle": receipt_handle}
             for ind, receipt_handle in enumerate(reciept_handles_to_delete)
         ]
-        response = self.sqs_client.delete_message_batch(
-            QueueUrl=queue_url, Entries=entries
-        )
+        response = self.sqs_client.delete_message_batch(QueueUrl=queue_url, Entries=entries)
         # Check if the delete operation succeeded, if not raise an error?
         status_code = response["ResponseMetadata"]["HTTPStatusCode"]
         if status_code != 200:
-            raise SQSExtendedClientException(
-                ExceptionMessages.FAILED_DELETE_MESSAGE.format(status_code)
-            )
+            raise SQSExtendedClientException(ExceptionMessages.FAILED_DELETE_MESSAGE.format(status_code))
         self.logger.info("Called SQS and deleted the message")
         if "Successful" in response:
             for msg_meta in response["Successful"]:
-                self.logger.info(
-                    f"Deleted {reciept_handles_to_delete[int(msg_meta['Id'])]}"
-                )
+                self.logger.info(f"Deleted {reciept_handles_to_delete[int(msg_meta['Id'])]}")
         if "Failed" in response:
             for msg_meta in response["Failed"]:
-                self.logger.info(
-                    f"Could not delete {reciept_handles_to_delete[int(msg_meta['Id'])]}"
-                )
+                self.logger.info(f"Could not delete {reciept_handles_to_delete[int(msg_meta['Id'])]}")
         return response
 
     def _delete_msg_from_sqs(self, messages, queue_url, reciept_handles_to_delete):
@@ -212,40 +195,26 @@ class SQSExtendedClient:
             {"Id": str(ind), "ReceiptHandle": receipt_handle}
             for ind, receipt_handle in enumerate(reciept_handles_to_delete)
         ]
-        response = self.sqs_client.delete_message_batch(
-            QueueUrl=queue_url, Entries=entries
-        )
+        response = self.sqs_client.delete_message_batch(QueueUrl=queue_url, Entries=entries)
         # Check if the delete operation succeeded, if not raise an error?
         status_code = response["ResponseMetadata"]["HTTPStatusCode"]
         if status_code != 200:
-            raise SQSExtendedClientException(
-                ExceptionMessages.FAILED_DELETE_MESSAGE.format(status_code)
-            )
+            raise SQSExtendedClientException(ExceptionMessages.FAILED_DELETE_MESSAGE.format(status_code))
         self.logger.info("Called SQS and deleted the message")
         if "Successful" in response:
             for msg_meta in response["Successful"]:
-                self.logger.info(
-                    f"Deleted {reciept_handles_to_delete[int(msg_meta['Id'])]}"
-                )
+                self.logger.info(f"Deleted {reciept_handles_to_delete[int(msg_meta['Id'])]}")
         if "Failed" in response:
             for msg_meta in response["Failed"]:
-                self.logger.info(
-                    f"Could not delete {reciept_handles_to_delete[int(msg_meta['Id'])]}"
-                )
+                self.logger.info(f"Could not delete {reciept_handles_to_delete[int(msg_meta['Id'])]}")
         return response
 
     def _delete_message_from_s3(self, messages, reciept_handles_to_delete):
         for msg in messages:
             message_body = json.loads(msg["Body"])
             reciept_handles_to_delete.append(msg["ReceiptHandle"])
-            if not (
-                isinstance(message_body, list)
-                and len(message_body) == 2
-                and isinstance(message_body[1], dict)
-            ):
-                raise SQSExtendedClientException(
-                    ExceptionMessages.INVALID_FORMAT_WHEN_RETRIEVING_STORED_S3_MESSAGES
-                )
+            if not (isinstance(message_body, list) and len(message_body) == 2 and isinstance(message_body[1], dict)):
+                raise SQSExtendedClientException(ExceptionMessages.INVALID_FORMAT_WHEN_RETRIEVING_STORED_S3_MESSAGES)
             s3_details = message_body[1]
             s3_bucket_name, s3_key = s3_details["s3BucketName"], s3_details["s3Key"]
 
@@ -253,9 +222,7 @@ class SQSExtendedClient:
             # Check if the delete operation succeeded, if not raise an error?
             status_code = response["ResponseMetadata"]["HTTPStatusCode"]
             if status_code != 204:
-                raise SQSExtendedClientException(
-                    ExceptionMessages.FAILED_DELETE_MESSAGE.format(status_code)
-                )
+                raise SQSExtendedClientException(ExceptionMessages.FAILED_DELETE_MESSAGE.format(status_code))
             self.logger.info("Called S3 and deleted the message")
 
     def _retrieve_message_from_s3(self, message_body: str) -> str:
@@ -266,31 +233,21 @@ class SQSExtendedClient:
         the s3Key for the bucket.
         """
         message_body = json.loads(message_body)
-        if not (
-            isinstance(message_body, list)
-            and len(message_body) == 2
-            and isinstance(message_body[1], dict)
-        ):
-            raise SQSExtendedClientException(
-                ExceptionMessages.INVALID_FORMAT_WHEN_RETRIEVING_STORED_S3_MESSAGES
-            )
+        if not (isinstance(message_body, list) and len(message_body) == 2 and isinstance(message_body[1], dict)):
+            raise SQSExtendedClientException(ExceptionMessages.INVALID_FORMAT_WHEN_RETRIEVING_STORED_S3_MESSAGES)
         s3_details = message_body[1]
         s3_bucket_name, s3_key = s3_details["s3BucketName"], s3_details["s3Key"]
         response = self.s3_client.get_object(Bucket=s3_bucket_name, Key=s3_key)
         # The message body is under a wrapper class called StreamingBody
         status_code = response["ResponseMetadata"]["HTTPStatusCode"]
         if status_code != 200:
-            raise SQSExtendedClientException(
-                ExceptionMessages.FAILED_RECEIVE_MESSAGE.format(status_code)
-            )
+            raise SQSExtendedClientException(ExceptionMessages.FAILED_RECEIVE_MESSAGE.format(status_code))
         self.logger.info("Called S3 and received the message")
         streaming_body = response["Body"]
         message_body = streaming_body.read().decode()
         return message_body
 
-    def _store_message_in_s3(
-        self, message_body: str, message_attributes: dict, extra_attributes: dict
-    ) -> (str, dict):
+    def _store_message_in_s3(self, message_body: str, message_attributes: dict, extra_attributes: dict) -> (str, dict):
         """
         Responsible for storing a message payload in a S3 Bucket
         :message_body: A UTF-8 encoded version of the message body
@@ -321,18 +278,12 @@ class SQSExtendedClient:
             s3_key = get_s3_key(message_attributes, extra_attributes)
 
             # Adding the object into the bucket
-            response = self.s3_client.put_object(
-                Body=encoded_body, Bucket=self.large_payload_support, Key=s3_key
-            )
+            response = self.s3_client.put_object(Body=encoded_body, Bucket=self.large_payload_support, Key=s3_key)
             # Check if the delete operation succeeded, if not raise an error?
             status_code = response["ResponseMetadata"]["HTTPStatusCode"]
             if status_code != 200:
-                raise SQSExtendedClientException(
-                    ExceptionMessages.FAILED_SUBMIT_MESSAGE.format(status_code)
-                )
-            self.logger.info(
-                f"Message added to S3 bucket [{self.large_payload_support}]"
-            )
+                raise SQSExtendedClientException(ExceptionMessages.FAILED_SUBMIT_MESSAGE.format(status_code))
+            self.logger.info(f"Message added to S3 bucket [{self.large_payload_support}]")
             # Modifying the message body for storing it in the Queue
             message_body = json.dumps(
                 [

@@ -1,8 +1,5 @@
-from flask import current_app
-from flask import make_response
-from flask import redirect
-from flask import request
-from flask import Response
+from flask import Response, current_app, make_response, redirect, request
+
 from fsd_utils import CommonConfig
 
 
@@ -19,17 +16,13 @@ class LanguageSelector:
         response.set_cookie(
             CommonConfig.FSD_LANG_COOKIE_NAME,
             locale,
-            domain=LanguageSelector.get_cookie_domain(
-                current_app.config["COOKIE_DOMAIN"]
-            ),
+            domain=LanguageSelector.get_cookie_domain(current_app.config["COOKIE_DOMAIN"]),
             max_age=86400 * 30,  # 30 days
         )
 
     def __init__(self, app):
         self.flask_app = app
-        self.flask_app.add_url_rule(
-            "/language/<locale>", view_func=self.select_language
-        )
+        self.flask_app.add_url_rule("/language/<locale>", view_func=self.select_language)
 
     @staticmethod
     def select_language(locale):

@@ -52,7 +52,5 @@ class FreeText:
             return plain_text
 
         except Exception as e:
-            current_app.logger.error(
-                f"Error occurred while processing HTML tag: {answer}", e
-            )
+            current_app.logger.error(f"Error occurred while processing HTML tag: {answer}", e)
             return answer

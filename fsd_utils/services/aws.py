@@ -146,9 +146,7 @@ class SQSClient:
             )
             if "Successful" in response:
                 for msg_meta in response["Successful"]:
-                    print(
-                        f"Message sent to the queue {queue_url}, MessageId: {msg_meta['MessageId']}"
-                    )
+                    print(f"Message sent to the queue {queue_url}, MessageId: {msg_meta['MessageId']}")
             if "Failed" in response:
                 for msg_meta in response["Failed"]:
                     print(
@@ -194,9 +192,7 @@ class SQSClient:
                 return []
 
             for msg in messages:
-                print(
-                    f"Received message ID: {msg['MessageId']}, Attributes: {msg['MessageAttributes']}"
-                )
+                print(f"Received message ID: {msg['MessageId']}, Attributes: {msg['MessageAttributes']}")
         except Exception as error:
             print(f"Couldn't receive messages from queue: {queue_url} Error: {error}")
             raise error
@@ -217,26 +213,20 @@ class SQSClient:
                 {"Id": str(ind), "ReceiptHandle": receipt_handle}
                 for ind, receipt_handle in enumerate(message_receipt_handles)
             ]
-            response = self.client.delete_message_batch(
-                QueueUrl=queue_url, Entries=entries
-            )
+            response = self.client.delete_message_batch(QueueUrl=queue_url, Entries=entries)
 
             if "Successful" in response:
                 for msg_meta in response["Successful"]:
                     print(f"Deleted {message_receipt_handles[int(msg_meta['Id'])]}")
             if "Failed" in response:
                 for msg_meta in response["Failed"]:
-                    print(
-                        f"Could not delete {message_receipt_handles[int(msg_meta['Id'])]}"
-                    )
+                    print(f"Could not delete {message_receipt_handles[int(msg_meta['Id'])]}")
         except ClientError:
             print(f"Couldn't delete message from queue {queue_url}")
         else:
             return response
 
-    def create_sqs_queue(
-        self, queue_name, has_dlq=False, dlq_queue_name=None, max_recieve_count=3
-    ):
+    def create_sqs_queue(self, queue_name, has_dlq=False, dlq_queue_name=None, max_recieve_count=3):
         """
         Creates an Amazon SQS & DLQ queue.
 
@@ -266,17 +256,15 @@ class SQSClient:
                 dlq_queue_url = self.client.create_queue(
                     QueueName=dlq_queue_name,
                 )["QueueUrl"]
-                dlq_queue_arn = self.client.get_queue_attributes(
-                    QueueUrl=dlq_queue_url, AttributeNames=["QueueArn"]
-                )["Attributes"]["QueueArn"]
+                dlq_queue_arn = self.client.get_queue_attributes(QueueUrl=dlq_queue_url, AttributeNames=["QueueArn"])[
+                    "Attributes"
+                ]["QueueArn"]
             else:
                 print(f"DLQ '{dlq_queue_name}' already exists!")
-                dlq_queue_url = self.client.get_queue_url(QueueName=dlq_queue_name)[
-                    "QueueUrl"
-                ]
-                dlq_queue_arn = self.client.get_queue_attributes(
-                    QueueUrl=dlq_queue_url, AttributeNames=["QueueArn"]
-                )["Attributes"]["QueueArn"]
+                dlq_queue_url = self.client.get_queue_url(QueueName=dlq_queue_name)["QueueUrl"]
+                dlq_queue_arn = self.client.get_queue_attributes(QueueUrl=dlq_queue_url, AttributeNames=["QueueArn"])[
+                    "Attributes"
+                ]["QueueArn"]
 
             redrive_policy = {
                 "deadLetterTargetArn": dlq_queue_arn,
@@ -290,9 +278,7 @@ class SQSClient:
 
         return sqs_queue_url
 
-    def set_queue_attributes(
-        self, queue_name: str = None, queue_url: str = None, attributes: dict = {}
-    ):
+    def set_queue_attributes(self, queue_name: str = None, queue_url: str = None, attributes: dict = {}):
         if not queue_url:
             queue_url = self.client.get_queue_url(QueueName=queue_name)["QueueUrl"]
 

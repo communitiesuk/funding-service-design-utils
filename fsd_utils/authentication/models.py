@@ -1,10 +1,10 @@
 """
 Data models for authentication
 """
+
 from dataclasses import dataclass
 from os import getenv
-from typing import List
-from typing import Mapping
+from typing import List, Mapping
 
 from sentry_sdk import set_user
 

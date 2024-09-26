@@ -38,9 +38,7 @@ class TaskExecutorService:
             delete_payload_from_s3=True,
             logger=self.logger,
         )
-        self.logger.info(
-            "Created the thread pool executor to process messages in extended SQS queue"
-        )
+        self.logger.info("Created the thread pool executor to process messages in extended SQS queue")
 
     def process_messages(self):
         """
@@ -55,9 +53,7 @@ class TaskExecutorService:
 
         self._handle_message_delete_processing(running_threads, read_msg_ids)
 
-        self.logger.debug(
-            f"{thread_id} Message Processing completed and will start again later"
-        )
+        self.logger.debug(f"{thread_id} Message Processing completed and will start again later")
 
     @abstractmethod
     def message_executor(self, message):
@@ -92,9 +88,7 @@ class TaskExecutorService:
                     task = self.executor.submit(self.message_executor, message)
                     running_threads.append(task)
         else:
-            self.logger.info(
-                f"{thread_id} Max thread limit reached hence stop reading messages from queue"
-            )
+            self.logger.info(f"{thread_id} Max thread limit reached hence stop reading messages from queue")
 
         self.logger.debug(
             f"{thread_id} Received Message count [{len(read_msg_ids)}] "
@@ -118,18 +112,10 @@ class TaskExecutorService:
                 msg_id = msg["sqs"]["MessageId"]
                 receipt_handles_to_delete.append(msg["sqs"])
                 completed_msg_ids.append(msg_id)
-                self.logger.debug(
-                    f"{thread_id} Execution completed and deleted from queue: {msg_id}"
-                )
+                self.logger.debug(f"{thread_id} Execution completed and deleted from queue: {msg_id}")
             except Exception as e:
-                self.logger.error(
-                    f"{thread_id} An error occurred while processing the message {e}"
-                )
+                self.logger.error(f"{thread_id} An error occurred while processing the message {e}")
         dif_msg_ids = [i for i in read_msg_ids if i not in completed_msg_ids]
-        self.logger.debug(
-            f"No of messages not processed [{len(dif_msg_ids)}] and msg ids are {dif_msg_ids}"
-        )
+        self.logger.debug(f"No of messages not processed [{len(dif_msg_ids)}] and msg ids are {dif_msg_ids}")
         if receipt_handles_to_delete:
-            self.sqs_extended_client.delete_messages(
-                self.sqs_primary_url, receipt_handles_to_delete
-            )
+            self.sqs_extended_client.delete_messages(self.sqs_primary_url, receipt_handles_to_delete)
