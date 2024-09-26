@@ -31,7 +31,7 @@ def convert_bool_value(data, language=EN):
 
         return converted_data
     except Exception as e:
-        current_app.logger.error(f"Could not convert boolean values, {e}")
+        current_app.logger.error("Could not convert boolean values, %s", str(e))
 
 
 def format_answer(answer, language):
@@ -47,7 +47,7 @@ def format_answer(answer, language):
 
         return answer
     except Exception:
-        current_app.logger.info(f"No formatting required for an answer: {answer}")
+        current_app.logger.info("No formatting required for an answer: %s", answer)
 
 
 def simplify_title(section_name: str, remove_text: list) -> list:
@@ -81,7 +81,7 @@ def simplify_title(section_name: str, remove_text: list) -> list:
 
         return simplified_title
     except Exception as e:
-        current_app.logger.warning(f"Could not simplify the section title, {e}")
+        current_app.logger.warning("Could not simplify the section title, %s", e)
 
 
 def format_checkbox(answer: list) -> str:
@@ -205,7 +205,7 @@ def format_month_year(answer):
             year = answer_text[1] if len(answer_text[1]) == 4 else answer_text[0]
             return f"{month_name} {year}"
     except Exception as e:
-        current_app.logger.warning(f"Invalid month-year formatting for answer: {answer}. Error: {str(e)}")
+        current_app.logger.warning("Invalid month-year formatting for answer: %s. Error: %s", answer, str(e))
 
     return answer
 
@@ -221,5 +221,5 @@ def format_date_month_year(answer):
             year = answer_text[0] if len(answer_text[0]) == 4 else answer_text[2]
             return f"{date} {month_name} {year}"
     except Exception as e:
-        current_app.logger.warning(f"Invalid date-month-year formatting for answer: {answer}. Error: {str(e)}")
+        current_app.logger.warning("Invalid date-month-year formatting for answer: %s. Error: %s", answer, str(e))
     return answer

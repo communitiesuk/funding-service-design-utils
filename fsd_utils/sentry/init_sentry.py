@@ -1,8 +1,9 @@
 from os import getenv
 
 import sentry_sdk
-from fsd_utils import CommonConfig
 from sentry_sdk.integrations.flask import FlaskIntegration
+
+from fsd_utils import CommonConfig
 
 
 def _traces_sampler(sampling_context):

@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_redis import FlaskRedis
-from flipper import FeatureFlagClient
-from flipper import RedisFeatureFlagStore
+from flipper import FeatureFlagClient, RedisFeatureFlagStore
 
 redis_store = FlaskRedis(config_prefix="TOGGLES")
 

@@ -111,7 +111,7 @@ class SQSExtendedClient:
         if status_code != 200:
             raise SQSExtendedClientException(ExceptionMessages.FAILED_SUBMIT_MESSAGE.format(status_code))
         message_id = response["MessageId"]
-        self.logger.info(f"Called SQS and submitted the message and id [{message_id}]")
+        self.logger.info("Called SQS and submitted the message and id [%s]", message_id)
         return message_id
 
     def receive_messages(self, queue_url, max_number, visibility_time=1, wait_time=1):
@@ -146,7 +146,7 @@ class SQSExtendedClient:
         messages = []
         if "Messages" in response.keys():
             messages = response["Messages"]
-            self.logger.info(f"Called SQS and received [{len(messages)}] messages")
+            self.logger.info("Called SQS and received [%s] messages", len(messages))
         elif response["ResponseMetadata"]["HTTPStatusCode"] == 200:
             return []
 
@@ -182,10 +182,10 @@ class SQSExtendedClient:
         self.logger.info("Called SQS and deleted the message")
         if "Successful" in response:
             for msg_meta in response["Successful"]:
-                self.logger.info(f"Deleted {reciept_handles_to_delete[int(msg_meta['Id'])]}")
+                self.logger.info("Deleted %s", reciept_handles_to_delete[int(msg_meta["Id"])])
         if "Failed" in response:
             for msg_meta in response["Failed"]:
-                self.logger.info(f"Could not delete {reciept_handles_to_delete[int(msg_meta['Id'])]}")
+                self.logger.info("Could not delete %s", reciept_handles_to_delete[int(msg_meta["Id"])])
         return response
 
     def _delete_msg_from_sqs(self, messages, queue_url, reciept_handles_to_delete):
@@ -203,10 +203,10 @@ class SQSExtendedClient:
         self.logger.info("Called SQS and deleted the message")
         if "Successful" in response:
             for msg_meta in response["Successful"]:
-                self.logger.info(f"Deleted {reciept_handles_to_delete[int(msg_meta['Id'])]}")
+                self.logger.info("Deleted %s", reciept_handles_to_delete[int(msg_meta["Id"])])
         if "Failed" in response:
             for msg_meta in response["Failed"]:
-                self.logger.info(f"Could not delete {reciept_handles_to_delete[int(msg_meta['Id'])]}")
+                self.logger.info("Could not delete %s", reciept_handles_to_delete[int(msg_meta["Id"])])
         return response
 
     def _delete_message_from_s3(self, messages, reciept_handles_to_delete):
@@ -283,7 +283,7 @@ class SQSExtendedClient:
             status_code = response["ResponseMetadata"]["HTTPStatusCode"]
             if status_code != 200:
                 raise SQSExtendedClientException(ExceptionMessages.FAILED_SUBMIT_MESSAGE.format(status_code))
-            self.logger.info(f"Message added to S3 bucket [{self.large_payload_support}]")
+            self.logger.info("Message added to S3 bucket [%s]", self.large_payload_support)
             # Modifying the message body for storing it in the Queue
             message_body = json.dumps(
                 [
@@ -295,7 +295,7 @@ class SQSExtendedClient:
 
     def _get_queue_names(self, queues):
         if queues:
-            self.logger.info(f"Got queues: {', '.join([q for q in queues])}")
+            self.logger.info("Got queues: %s", ", ".join([q for q in queues]))
             queue_names = [url.split("/")[-1] for url in queues]
             return queue_names
         self.logger.info("No queues found.")

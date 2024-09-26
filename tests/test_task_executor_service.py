@@ -67,7 +67,7 @@ class TestTaskExecutorService(unittest.TestCase):
         """
         Adding test data into the queue
         """
-        for x in range(1):
+        for _ in range(1):
             message_id = self.task_executor.sqs_extended_client.submit_single_message(
                 queue_url=self.queue_response["QueueUrl"],
                 message="message",

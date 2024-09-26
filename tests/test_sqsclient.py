@@ -32,7 +32,7 @@ class TestSQSClient(unittest.TestCase):
         # Test the remove_queue method when there is an error
         queue_url = "test_queue_url"
         self.sqs_client.delete_queue.side_effect = Exception("Queue deletion failed")
-        with self.assertRaises(Exception):
+        with self.assertRaises(Exception):  # noqa: B017
             self.sqs.remove_queue(queue_url)
 
     def test_get_queue_url(self):

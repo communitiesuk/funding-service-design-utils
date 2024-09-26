@@ -47,13 +47,13 @@ class TaskExecutorService:
         """
         current_thread = threading.current_thread()
         thread_id = f"[{current_thread.name}:{current_thread.ident}]"
-        self.logger.debug(f"{thread_id} Triggered schedular to get messages")
+        self.logger.debug("%s Triggered schedular to get messages", thread_id)
 
         running_threads, read_msg_ids = self._handle_message_receiving_and_processing()
 
         self._handle_message_delete_processing(running_threads, read_msg_ids)
 
-        self.logger.debug(f"{thread_id} Message Processing completed and will start again later")
+        self.logger.debug("%s Message Processing completed and will start again later", thread_id)
 
     @abstractmethod
     def message_executor(self, message):
@@ -79,20 +79,22 @@ class TaskExecutorService:
                 self.visibility_time,
                 self.sqs_wait_time,
             )
-            self.logger.debug(f"{thread_id} Message Count [{len(sqs_messages)}]")
+            self.logger.debug("%s Message Count [%s]"), thread_id, {len(sqs_messages)}
             if sqs_messages:
                 for message in sqs_messages:
                     message_id = message["sqs"]["MessageId"]
-                    self.logger.info(f"{thread_id} Message id [{message_id}]")
+                    self.logger.info("%s Message id [%s]", thread_id, message_id)
                     read_msg_ids.append(message["sqs"]["MessageId"])
                     task = self.executor.submit(self.message_executor, message)
                     running_threads.append(task)
         else:
-            self.logger.info(f"{thread_id} Max thread limit reached hence stop reading messages from queue")
+            self.logger.info("%s Max thread limit reached hence stop reading messages from queue", thread_id)
 
         self.logger.debug(
-            f"{thread_id} Received Message count [{len(read_msg_ids)}] "
-            f"Created thread count [{len(running_threads)}]"
+            "%s Received Message count [%s] Created thread count [%s]",
+            thread_id,
+            len(read_msg_ids),
+            len(running_threads),
         )
         return running_threads, read_msg_ids
 
@@ -112,10 +114,10 @@ class TaskExecutorService:
                 msg_id = msg["sqs"]["MessageId"]
                 receipt_handles_to_delete.append(msg["sqs"])
                 completed_msg_ids.append(msg_id)
-                self.logger.debug(f"{thread_id} Execution completed and deleted from queue: {msg_id}")
+                self.logger.debug("%s Execution completed and deleted from queue: %s", thread_id, msg_id)
             except Exception as e:
-                self.logger.error(f"{thread_id} An error occurred while processing the message {e}")
+                self.logger.error("%s An error occurred while processing the message %s", thread_id, str(e))
         dif_msg_ids = [i for i in read_msg_ids if i not in completed_msg_ids]
-        self.logger.debug(f"No of messages not processed [{len(dif_msg_ids)}] and msg ids are {dif_msg_ids}")
+        self.logger.debug("No of messages not processed [%s] and msg ids are %s", len(dif_msg_ids), dif_msg_ids)
         if receipt_handles_to_delete:
             self.sqs_extended_client.delete_messages(self.sqs_primary_url, receipt_handles_to_delete)

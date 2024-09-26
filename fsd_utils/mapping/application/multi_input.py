@@ -61,8 +61,8 @@ class MultiInput(ProcessTypes):
                     output.append(cls.format_value_pair(key, value, index))
 
             except Exception as e:
-                current_app.logger.error(f"Error occurred while processing data: {e}")
-                current_app.logger.error(f"Couldn't format the muti input data for: {sorted_data}")
+                current_app.logger.error("Error occurred while processing data: %s", str(e))
+                current_app.logger.error("Couldn't format the muti input data for: %s", sorted_data)
         return output
 
     @classmethod
@@ -98,5 +98,5 @@ class MultiInput(ProcessTypes):
             return output
 
         except Exception as e:
-            current_app.logger.error(f"Error occurred while processing the multi input data: {e}")
-            current_app.logger.error(f"Couldn't map the multi input data for: {multi_input_data}")
+            current_app.logger.error("Error occurred while processing the multi input data: %s", str(e))
+            current_app.logger.error("Couldn't map the multi input data for: %s", multi_input_data)

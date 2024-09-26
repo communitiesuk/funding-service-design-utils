@@ -278,9 +278,12 @@ class SQSClient:
 
         return sqs_queue_url
 
-    def set_queue_attributes(self, queue_name: str = None, queue_url: str = None, attributes: dict = {}):
+    def set_queue_attributes(self, queue_name: str = None, queue_url: str = None, attributes: dict = None):
         if not queue_url:
             queue_url = self.client.get_queue_url(QueueName=queue_name)["QueueUrl"]
+
+        if not attributes:
+            attributes = {}
 
         self.client.set_queue_attributes(
             QueueUrl=queue_url,

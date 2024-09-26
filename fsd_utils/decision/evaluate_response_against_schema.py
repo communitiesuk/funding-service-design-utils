@@ -36,11 +36,11 @@ def _evaluate_with_supplied_operators(conditions_to_evaluate: list, supplied_ans
         # validate that answer is numeric
         try:
             answer_as_number = float(supplied_answer)
-        except ValueError:
+        except ValueError as e:
             raise ValueError(
                 f"Answer {supplied_answer} is not numeric so cannot be used with this condition: "
                 f"[{ec['operator']} {ec['compareValue']}]"
-            )
+            ) from e
 
         # construct evaluation expression
         expression = f"answer {ec['operator']} value"

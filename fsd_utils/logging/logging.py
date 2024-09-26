@@ -333,7 +333,7 @@ class JSONFormatter(BaseJSONFormatter):
         log_record["logType"] = "application"
 
         missing_keys = {}
-        for attempt in range(self._max_missing_key_attempts):
+        for _ in range(self._max_missing_key_attempts):
             try:
                 log_record["message"] = log_record["message"].format(**log_record, **missing_keys)
             except KeyError as e:
@@ -342,7 +342,7 @@ class JSONFormatter(BaseJSONFormatter):
                 # execution should only ever reach this point once
                 # - when the .format() succeeds
                 if missing_keys:
-                    logger.warning("Missing keys when formatting log message: {}".format(tuple(missing_keys.keys())))
+                    logger.warning("Missing keys when formatting log message: %s", tuple(missing_keys.keys()))
 
                 break
 
