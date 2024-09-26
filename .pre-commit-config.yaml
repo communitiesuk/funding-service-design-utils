@@ -1,27 +1,19 @@
 repos:
--   repo: https://github.com/ambv/black
-    rev: 22.3.0
-    hooks:
-    - id: black
-      language_version: python3
--   repo: https://github.com/PyCQA/flake8
-    rev: 7.0.0
-    hooks:
-    - id: flake8
-      args:
-        - --max-line-length=120
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  # Ruff version. If bumping this, please also bump requirements-dev.in
+  rev: v0.6.7
+  hooks:
+    # Run the linter.
+    - id: ruff
+      args: [ --fix ]
+    # Run the formatter.
+    - id: ruff-format
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.2.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-ast
--   repo: https://github.com/asottile/reorder_python_imports
-    rev: v3.1.0
-    hooks:
-      - id: reorder-python-imports
-        name: Reorder Python imports (src, tests)
-        args: ["--application-directories", "src"]
 - repo: https://github.com/Yelp/detect-secrets
   rev: v1.4.0
   hooks:
