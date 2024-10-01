@@ -6,7 +6,7 @@ class FreeText:
     indent = " " * 5
 
     @classmethod
-    def remove_html_tags(cls, answer):
+    def remove_html_tags(cls, answer):  # noqa: C901
         """
         Removes HTML tags from the provided answer and returns the cleaned text.
 
@@ -43,7 +43,7 @@ class FreeText:
                 ul_tags = soup.find_all("ul")
                 for ul in ul_tags:
                     li_tags = ul.find_all("li")
-                    for index, li in enumerate(li_tags, start=1):
+                    for _, li in enumerate(li_tags, start=1):
                         if li.get_text() == "\xa0":
                             continue
                         li.replace_with(f"{cls.indent}. {li.get_text()}\n")
@@ -51,8 +51,6 @@ class FreeText:
             plain_text = soup.get_text().strip()
             return plain_text
 
-        except Exception as e:
-            current_app.logger.error(
-                f"Error occurred while processing HTML tag: {answer}", e
-            )
+        except Exception:
+            current_app.logger.error("Error occurred while processing HTML tag: %s", answer)
             return answer

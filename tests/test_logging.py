@@ -2,6 +2,7 @@ import json
 
 import pytest
 from flask import Flask
+
 from fsd_utils.logging import logging as fsd_logging
 from fsd_utils.logging.logging import get_default_logging_config
 
@@ -16,9 +17,7 @@ from fsd_utils.logging.logging import get_default_logging_config
         ("CRITICAL", 1),
     ),
 )
-def test_default_logging_respect_fsd_log_level(
-    fsd_log_level, expected_num_logs, capsys
-):
+def test_default_logging_respect_fsd_log_level(fsd_log_level, expected_num_logs, capsys):
     """This test captures logging output on stdout to ensure that our standard logging config respects
     FSD_LOG_LEVEL correctly. But this means that the test will fail if pytest is called with the `-s` flag,
     which disables capturing.

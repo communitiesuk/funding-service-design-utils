@@ -1,11 +1,11 @@
 import json
 import unittest
 from datetime import datetime
-from unittest.mock import MagicMock
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 from uuid import uuid4
 
 import pytest
+
 from fsd_utils.services.aws_extended_client import SQSExtendedClient
 from fsd_utils.services.aws_sqs_extended_client_exception import (
     SQSExtendedClientException,
@@ -105,14 +105,10 @@ class TestSQSExtendedClient(unittest.TestCase):
             "ResponseMetadata": {"HTTPStatusCode": 200},
         }
 
-        self.s3_client.put_object.return_value = {
-            "ResponseMetadata": {"HTTPStatusCode": 200}
-        }
+        self.s3_client.put_object.return_value = {"ResponseMetadata": {"HTTPStatusCode": 200}}
 
         with patch("fsd_utils.services.aws_extended_client.datetime") as mock_datetime:
-            with patch(
-                "fsd_utils.services.aws_sqs_extended_client_util.uuid4"
-            ) as mock_uuid:
+            with patch("fsd_utils.services.aws_sqs_extended_client_util.uuid4") as mock_uuid:
                 uuid_val = uuid4()
                 datetime_now = datetime(2023, 1, 1, 12, 0, 0)
                 mock_datetime.now.return_value = datetime_now
@@ -168,14 +164,10 @@ class TestSQSExtendedClient(unittest.TestCase):
             "ResponseMetadata": {"HTTPStatusCode": 200},
         }
 
-        self.s3_client.put_object.return_value = {
-            "ResponseMetadata": {"HTTPStatusCode": 200}
-        }
+        self.s3_client.put_object.return_value = {"ResponseMetadata": {"HTTPStatusCode": 200}}
 
         with patch("fsd_utils.services.aws_extended_client.datetime") as mock_datetime:
-            with patch(
-                "fsd_utils.services.aws_sqs_extended_client_util.uuid4"
-            ) as mock_uuid:
+            with patch("fsd_utils.services.aws_sqs_extended_client_util.uuid4") as mock_uuid:
                 uuid_val = uuid4()
                 datetime_now = datetime(2023, 1, 1, 12, 0, 0)
                 mock_datetime.now.return_value = datetime_now
@@ -238,14 +230,10 @@ class TestSQSExtendedClient(unittest.TestCase):
             "ResponseMetadata": {"HTTPStatusCode": 500},
         }
 
-        self.s3_client.put_object.return_value = {
-            "ResponseMetadata": {"HTTPStatusCode": 200}
-        }
+        self.s3_client.put_object.return_value = {"ResponseMetadata": {"HTTPStatusCode": 200}}
 
         with patch("fsd_utils.services.aws_extended_client.datetime") as mock_datetime:
-            with patch(
-                "fsd_utils.services.aws_sqs_extended_client_util.uuid4"
-            ) as mock_uuid:
+            with patch("fsd_utils.services.aws_sqs_extended_client_util.uuid4") as mock_uuid:
                 uuid_val = uuid4()
                 datetime_now = datetime(2023, 1, 1, 12, 0, 0)
                 mock_datetime.now.return_value = datetime_now
@@ -276,9 +264,7 @@ class TestSQSExtendedClient(unittest.TestCase):
             "ResponseMetadata": {"HTTPStatusCode": 200},
         }
 
-        self.s3_client.put_object.return_value = {
-            "ResponseMetadata": {"HTTPStatusCode": 500}
-        }
+        self.s3_client.put_object.return_value = {"ResponseMetadata": {"HTTPStatusCode": 500}}
 
         with pytest.raises(
             SQSExtendedClientException,
@@ -314,9 +300,7 @@ class TestSQSExtendedClient(unittest.TestCase):
         self.sqs_client.receive_message.return_value = response
 
         # call to the function
-        received_messages = self.sqs.receive_messages(
-            queue_url, max_number, visibility_time, wait_time
-        )
+        received_messages = self.sqs.receive_messages(queue_url, max_number, visibility_time, wait_time)
 
         # Assert responses
         self.assertEqual(received_messages, messages)
@@ -358,9 +342,7 @@ class TestSQSExtendedClient(unittest.TestCase):
         self.s3_client.get_object.return_value = s3_response
 
         # call to the function
-        received_messages = self.sqs_extended.receive_messages(
-            queue_url, max_number, visibility_time, wait_time
-        )
+        received_messages = self.sqs_extended.receive_messages(queue_url, max_number, visibility_time, wait_time)
 
         # Assert responses
         self.assertEqual(received_messages[0]["sqs"], messages[0])
@@ -406,9 +388,7 @@ class TestSQSExtendedClient(unittest.TestCase):
             SQSExtendedClientException,
             match="receive_messages failed with status code 500",
         ):
-            self.sqs_extended.receive_messages(
-                queue_url, max_number, visibility_time, wait_time
-            )
+            self.sqs_extended.receive_messages(queue_url, max_number, visibility_time, wait_time)
 
     def test_receive_messages_with_extended_client_behaviour_error_s3(self):
         # Mock data & responses
@@ -440,9 +420,7 @@ class TestSQSExtendedClient(unittest.TestCase):
             SQSExtendedClientException,
             match="receive_messages failed with status code 500",
         ):
-            self.sqs_extended.receive_messages(
-                queue_url, max_number, visibility_time, wait_time
-            )
+            self.sqs_extended.receive_messages(queue_url, max_number, visibility_time, wait_time)
 
     def test_delete_messages_without_extended_client_behaviour(self):
         # Mock data & responses
@@ -481,9 +459,7 @@ class TestSQSExtendedClient(unittest.TestCase):
             {"Id": "1", "ReceiptHandle": "receipt_handle2"},
             {"Id": "2", "ReceiptHandle": "receipt_handle3"},
         ]
-        self.sqs_client.delete_message_batch.assert_called_with(
-            QueueUrl=queue_url, Entries=expected_entries
-        )
+        self.sqs_client.delete_message_batch.assert_called_with(QueueUrl=queue_url, Entries=expected_entries)
 
     def test_delete_messages_with_extended_client_behaviour(self):
         uuid_val = uuid4()
@@ -511,16 +487,12 @@ class TestSQSExtendedClient(unittest.TestCase):
         self.sqs_client.delete_message_batch.return_value = response
 
         # call to the function
-        deleted_response = self.sqs_extended.delete_messages(
-            queue_url, message_receipt_handles
-        )
+        deleted_response = self.sqs_extended.delete_messages(queue_url, message_receipt_handles)
 
         # Assert responses
         self.assertEqual(deleted_response, response)
         expected_entries = [{"Id": "0", "ReceiptHandle": "receipt_handle1"}]
-        self.sqs_client.delete_message_batch.assert_called_with(
-            QueueUrl=queue_url, Entries=expected_entries
-        )
+        self.sqs_client.delete_message_batch.assert_called_with(QueueUrl=queue_url, Entries=expected_entries)
 
     def test_delete_messages_with_extended_client_behaviour_error_sqs(self):
         uuid_val = uuid4()

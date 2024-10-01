@@ -1,9 +1,7 @@
 import pytest
 from flask_migrate import upgrade
 from sqlalchemy import text
-from sqlalchemy_utils.functions import create_database
-from sqlalchemy_utils.functions import database_exists
-from sqlalchemy_utils.functions import drop_database
+from sqlalchemy_utils.functions import create_database, database_exists, drop_database
 
 
 def prep_db(reuse_db=False):

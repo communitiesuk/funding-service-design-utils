@@ -1,7 +1,6 @@
 import os
 from unittest import mock
-from unittest.mock import ANY
-from unittest.mock import Mock
+from unittest.mock import ANY, Mock
 
 from fsd_utils.healthchecks.healthcheck import Healthcheck
 
@@ -49,7 +48,6 @@ class TestHealthcheck:
 
     @mock.patch.dict(os.environ, clear=True)
     def testWithChecksFailing_mocks(self, flask_test_client):
-
         test_app = Mock()
         health = Healthcheck(test_app)
         test_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY)
@@ -71,14 +69,11 @@ class TestHealthcheck:
 
     @mock.patch.dict(os.environ, clear=True)
     def testWithChecksException_mocks(self, flask_test_client):
-
         test_app = Mock()
         health = Healthcheck(test_app)
         test_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY)
 
-        expected_dict = {
-            "checks": [{"check_a": "fail"}, {"check_b": "Failed - check logs"}]
-        }
+        expected_dict = {"checks": [{"check_a": "fail"}, {"check_b": "Failed - check logs"}]}
 
         check_a = Mock()
         check_a.check.return_value = False, "fail"

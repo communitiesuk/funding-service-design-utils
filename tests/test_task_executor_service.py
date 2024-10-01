@@ -3,9 +3,10 @@ from unittest.mock import MagicMock
 from uuid import uuid4
 
 import boto3
+from moto import mock_aws
+
 from fsd_utils.sqs_scheduler.context_aware_executor import ContextAwareExecutor
 from fsd_utils.sqs_scheduler.task_executer_service import TaskExecutorService
-from moto import mock_aws
 
 
 class TestTaskExecutorService(unittest.TestCase):
@@ -28,9 +29,7 @@ class TestTaskExecutorService(unittest.TestCase):
         """
         bucket_name = "fsd_msg_s3_bucket"
         self.flask_app = MagicMock()
-        self.executor = ContextAwareExecutor(
-            max_workers=10, thread_name_prefix="NotifTask", flask_app=self.flask_app
-        )
+        self.executor = ContextAwareExecutor(max_workers=10, thread_name_prefix="NotifTask", flask_app=self.flask_app)
         s3_connection = boto3.client(
             "s3",
             region_name="us-east-1",
@@ -68,7 +67,7 @@ class TestTaskExecutorService(unittest.TestCase):
         """
         Adding test data into the queue
         """
-        for x in range(1):
+        for _ in range(1):
             message_id = self.task_executor.sqs_extended_client.submit_single_message(
                 queue_url=self.queue_response["QueueUrl"],
                 message="message",

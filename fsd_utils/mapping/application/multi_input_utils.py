@@ -145,29 +145,17 @@ class ProcessTypes:
                     if address:
                         combined_values.append(address)
                     elif not date and not address:
-                        dict_values = [
-                            val
-                            for val in value.values()
-                            if val is not None and val != ""
-                        ]
+                        dict_values = [val for val in value.values() if val is not None and val != ""]
                         combined_values.append(", ".join(map(str, dict_values)))
                 if isinstance(value, (str, int)):
-                    _str_key = [
-                        val for val in item.values() if isinstance(val, (str, int))
-                    ]
+                    _str_key = [val for val in item.values() if isinstance(val, (str, int))]
                     if _str_key:
                         key = next(
-                            (
-                                item
-                                for item in _str_key
-                                if not isinstance(item, int) and item is not None
-                            ),
+                            (item for item in _str_key if not isinstance(item, int) and item is not None),
                             _str_key[0],
                         )
 
-        _values = [
-            val for val in item.values() if val != key if not isinstance(val, dict)
-        ]
+        _values = [val for val in item.values() if val != key if not isinstance(val, dict)]
         combined_values.extend(_values)
 
         if combined_values and key:

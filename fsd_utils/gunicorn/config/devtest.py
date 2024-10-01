@@ -153,9 +153,7 @@ tmp_upload_dir = None
 
 class CustomLogger(Logger):
     def now(self):
-        return datetime.datetime.now(tz=pytz.timezone("Europe/London")).strftime(
-            "%d-%b-%y %H:%M:%S"
-        )
+        return datetime.datetime.now(tz=pytz.timezone("Europe/London")).strftime("%d-%b-%y %H:%M:%S")
 
 
 logger_class = CustomLogger
@@ -219,8 +217,8 @@ def worker_int(worker):
     worker.log.info("worker received INT or QUIT signal")
 
     # get traceback info
-    import threading
     import sys
+    import threading
     import traceback
 
     id2name = {th.ident: th.name for th in threading.enumerate()}

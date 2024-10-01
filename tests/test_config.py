@@ -2,6 +2,7 @@ import os
 from unittest import mock
 
 import pytest
+
 from fsd_utils.config.commonconfig import CommonConfig
 
 

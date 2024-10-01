@@ -25,8 +25,8 @@ class DbChecker(CheckerInterface):
         self.name = "check_db"
 
     def check(self):
-        from sqlalchemy.exc import SQLAlchemyError
         from sqlalchemy import text
+        from sqlalchemy.exc import SQLAlchemyError
 
         try:
             self.db.session.execute(text("SELECT 1"))
@@ -42,7 +42,6 @@ class RedisChecker(CheckerInterface):
         self.redis_client = redis_client
 
     def check(self):
-
         try:
             self.redis_client.client_list()
             return True, "OK"

@@ -1,19 +1,12 @@
 def configclass(cls):
-
     # Checks base classes for _config_info_, a dict containing
     # all infomation about config. attrs, and
     # adds them to a list.
-    config_infos = [
-        base.__dict__["_config_info_"]
-        for base in cls.__bases__
-        if "_config_info_" in base.__dict__
-    ]
+    config_infos = [base.__dict__["_config_info_"] for base in cls.__bases__ if "_config_info_" in base.__dict__]
 
     # We compile all of these _config_info_'s into a dictionary,
     #  with overwritten values.
-    settled_bases_config_info = {
-        k: v for config_dict in config_infos for k, v in config_dict.items()
-    }
+    settled_bases_config_info = {k: v for config_dict in config_infos for k, v in config_dict.items()}
 
     # We extract the values from the class and overlay
     #  the above dict with its values.
@@ -27,9 +20,8 @@ def configclass(cls):
 
     @classmethod
     def pretty_print(self):
-
-        from rich.table import Table
         from rich.console import Console
+        from rich.table import Table
 
         table = Table(title="Config Info", show_lines=True)
 

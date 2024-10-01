@@ -49,9 +49,7 @@ class CommonConfig:
     #  Account hosts, endpoints
     # ---------------
 
-    ACCOUNT_STORE_API_HOST = os.getenv(
-        "ACCOUNT_STORE_API_HOST", TEST_ACCOUNT_STORE_API_HOST
-    )
+    ACCOUNT_STORE_API_HOST = os.getenv("ACCOUNT_STORE_API_HOST", TEST_ACCOUNT_STORE_API_HOST)
     ACCOUNTS_ENDPOINT = "/accounts"
     ACCOUNT_ENDPOINT = "/accounts/{account_id}"
 
@@ -59,9 +57,7 @@ class CommonConfig:
     #  Application hosts, endpoints
     # ---------------
 
-    APPLICATION_STORE_API_HOST = os.getenv(
-        "APPLICATION_STORE_API_HOST", TEST_APPLICATION_STORE_API_HOST
-    )
+    APPLICATION_STORE_API_HOST = os.getenv("APPLICATION_STORE_API_HOST", TEST_APPLICATION_STORE_API_HOST)
     APPLICATIONS_ENDPOINT = "/applications"
     APPLICATION_ENDPOINT = "/applications/{application_id}"
     APPLICATION_STATUS_ENDPOINT = "/applications/{application_id}/status"
@@ -71,9 +67,7 @@ class CommonConfig:
     # Assessment hosts, endpoints
     # ---------------
 
-    ASSESSMENT_STORE_API_HOST = os.getenv(
-        "ASSESSMENT_STORE_API_HOST", TEST_ASSESSMENT_STORE_API_HOST
-    )
+    ASSESSMENT_STORE_API_HOST = os.getenv("ASSESSMENT_STORE_API_HOST", TEST_ASSESSMENT_STORE_API_HOST)
 
     # ---------------
     #  Fund hosts, endpoints

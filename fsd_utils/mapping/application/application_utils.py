@@ -3,11 +3,8 @@ import re
 from io import StringIO
 
 from flask import current_app
-from fsd_utils.mapping.application.languages import EN
-from fsd_utils.mapping.application.languages import NO
-from fsd_utils.mapping.application.languages import NOT_PROVIDED
-from fsd_utils.mapping.application.languages import SUPPORTED_LANGUAGES
-from fsd_utils.mapping.application.languages import YES
+
+from fsd_utils.mapping.application.languages import EN, NO, NOT_PROVIDED, SUPPORTED_LANGUAGES, YES
 
 
 def convert_bool_value(data, language=EN):
@@ -26,9 +23,7 @@ def convert_bool_value(data, language=EN):
 
         if isinstance(data, list):
             if all(isinstance(sublist, list) for sublist in data):
-                converted_data = [
-                    [convert_values(value) for value in sublist] for sublist in data
-                ]
+                converted_data = [[convert_values(value) for value in sublist] for sublist in data]
             else:
                 converted_data = [convert_values(value) for value in data]
         else:
@@ -36,7 +31,7 @@ def convert_bool_value(data, language=EN):
 
         return converted_data
     except Exception as e:
-        current_app.logger.error(f"Could not convert boolean values, {e}")
+        current_app.logger.error("Could not convert boolean values, %s", str(e))
 
 
 def format_answer(answer, language):
@@ -52,7 +47,7 @@ def format_answer(answer, language):
 
         return answer
     except Exception:
-        current_app.logger.info(f"No formatting required for an answer: {answer}")
+        current_app.logger.info("No formatting required for an answer: %s", answer)
 
 
 def simplify_title(section_name: str, remove_text: list) -> list:
@@ -86,7 +81,7 @@ def simplify_title(section_name: str, remove_text: list) -> list:
 
         return simplified_title
     except Exception as e:
-        current_app.logger.warning(f"Could not simplify the section title, {e}")
+        current_app.logger.warning("Could not simplify the section title, %s", e)
 
 
 def format_checkbox(answer: list) -> str:
@@ -149,9 +144,7 @@ def format_radio_field(answer: str) -> str:
             return answer.capitalize()
 
     except Exception:  # noqa
-        current_app.logger.info(
-            "continue: the answer doesn't seem to be a radio field."
-        )
+        current_app.logger.info("continue: the answer doesn't seem to be a radio field.")
         return answer
 
 
@@ -182,9 +175,7 @@ def generate_text_of_application(q_and_a: dict, fund_name: str, language=EN) -> 
     output.write(f"********* {fund_name} **********\n")
 
     for section_name, values in q_and_a.items():
-        title = simplify_title(
-            section_name, remove_text=["cof", "ns", "cyp", "dpi", "hsra"]
-        )
+        title = simplify_title(section_name, remove_text=["cof", "ns", "cyp", "dpi", "hsra"])
         output.write(f"\n* {' '.join(title).capitalize()}\n\n")
         for questions, answers in values.items():
             output.write(f"  Q) {questions}\n")
@@ -214,9 +205,7 @@ def format_month_year(answer):
             year = answer_text[1] if len(answer_text[1]) == 4 else answer_text[0]
             return f"{month_name} {year}"
     except Exception as e:
-        current_app.logger.warning(
-            f"Invalid month-year formatting for answer: {answer}. Error: {str(e)}"
-        )
+        current_app.logger.warning("Invalid month-year formatting for answer: %s. Error: %s", answer, str(e))
 
     return answer
 
@@ -232,7 +221,5 @@ def format_date_month_year(answer):
             year = answer_text[0] if len(answer_text[0]) == 4 else answer_text[2]
             return f"{date} {month_name} {year}"
     except Exception as e:
-        current_app.logger.warning(
-            f"Invalid date-month-year formatting for answer: {answer}. Error: {str(e)}"
-        )
+        current_app.logger.warning("Invalid date-month-year formatting for answer: %s. Error: %s", answer, str(e))
     return answer

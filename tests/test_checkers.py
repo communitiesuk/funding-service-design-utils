@@ -1,10 +1,9 @@
 from unittest.mock import Mock
 
-from fsd_utils.healthchecks.checkers import DbChecker
-from fsd_utils.healthchecks.checkers import FlaskRunningChecker
-from fsd_utils.healthchecks.checkers import RedisChecker
 from redis.exceptions import ConnectionError
 from sqlalchemy.exc import ArgumentError
+
+from fsd_utils.healthchecks.checkers import DbChecker, FlaskRunningChecker, RedisChecker
 
 
 class TestCheckers:

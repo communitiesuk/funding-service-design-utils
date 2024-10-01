@@ -2,23 +2,20 @@ from functools import wraps
 from typing import List
 from urllib.parse import urlencode
 
-from flask import abort
-from flask import current_app
-from flask import g
-from flask import redirect
-from flask import Request
-from flask import request
-from fsd_utils.authentication.utils import validate_token_rs256
-from jwt import ExpiredSignatureError
-from jwt import PyJWTError
+from flask import Request, abort, current_app, g, redirect, request
+from jwt import ExpiredSignatureError, PyJWTError
 from werkzeug.exceptions import HTTPException
 
-from .config import config_var_auth_host
-from .config import config_var_logout_url_override
-from .config import config_var_user_token_cookie_name
-from .config import signout_route
-from .config import SupportedApp
-from .config import user_route
+from fsd_utils.authentication.utils import validate_token_rs256
+
+from .config import (
+    SupportedApp,
+    config_var_auth_host,
+    config_var_logout_url_override,
+    config_var_user_token_cookie_name,
+    signout_route,
+    user_route,
+)
 from .models import User
 
 
@@ -82,9 +79,7 @@ def _build_logout_url(return_app: SupportedApp | None):
         return authenticator_host + signout_route
 
 
-def login_required(
-    f=None, roles_required: List[str] = None, return_app: SupportedApp | None = None
-):
+def login_required(f=None, roles_required: List[str] = None, return_app: SupportedApp | None = None):
     """
      Execute function if request contains valid JWT
      and pass account auth params to route as attributes
@@ -102,9 +97,7 @@ def login_required(
     :return:
     """
     if f is None:
-        return lambda f: login_required(
-            f=f, roles_required=roles_required, return_app=return_app
-        )
+        return lambda f: login_required(f=f, roles_required=roles_required, return_app=return_app)
 
     @wraps(f)
     def _wrapper(*args, **kwargs):
@@ -113,9 +106,7 @@ def login_required(
             g.account_id = token_payload.get("accountId")
             g.user = User.set_with_token(token_payload)
         except HTTPException as e:
-            if current_app.config.get(
-                "FLASK_ENV"
-            ) == "development" and current_app.config.get("DEBUG_USER_ON"):
+            if current_app.config.get("FLASK_ENV") == "development" and current_app.config.get("DEBUG_USER_ON"):
                 g.account_id = current_app.config.get("DEBUG_USER_ACCOUNT_ID")
                 g.user = User(**current_app.config.get("DEBUG_USER"))
             else:
@@ -124,9 +115,7 @@ def login_required(
         g.logout_url = _build_logout_url(return_app)
         g.is_authenticated = True
         if roles_required:
-            if not any(
-                role_required in g.user.roles for role_required in roles_required
-            ):
+            if not any(role_required in g.user.roles for role_required in roles_required):
                 _failed_roles_redirect(roles_required)
         return f(*args, **kwargs)
 
