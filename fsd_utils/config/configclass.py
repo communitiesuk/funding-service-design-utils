@@ -1,3 +1,6 @@
+import os
+
+
 def configclass(cls):
 
     # Checks base classes for _config_info_, a dict containing
@@ -27,6 +30,8 @@ def configclass(cls):
 
     @classmethod
     def pretty_print(self):
+        if os.environ.get("ENABLE_CONFIG_TABLE") == "false":
+            return
 
         from rich.table import Table
         from rich.console import Console

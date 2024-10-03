@@ -1,3 +1,7 @@
+### 5.0.9
+
+- Make Table config print optional
+
 ### 5.0.6
 
 - Un-pinned various dependencies
