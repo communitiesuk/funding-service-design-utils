@@ -30,7 +30,7 @@ def configclass(cls):
 
     @classmethod
     def pretty_print(self):
-        if os.environ.get("ENABLE_CONFIG_TABLE") == "false":
+        if os.environ.get("FSD_UTILS_ENABLE_CONFIG_TABLE") == "false":
             return
 
         from rich.table import Table

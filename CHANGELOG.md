@@ -1,6 +1,7 @@
-### 5.0.9
+### 5.1.0
 
-- Make Table config print optional
+- Make Table config print optional; set FSD_UTILS_ENABLE_CONFIG_TABLE in the
+env to decide
 
 ### 5.0.6
 
