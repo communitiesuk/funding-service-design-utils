@@ -1,3 +1,8 @@
+### 5.1.0
+
+- Make Table config print optional; set FSD_UTILS_ENABLE_CONFIG_TABLE in the
+env to decide
+
 ### 5.0.6
 
 - Un-pinned various dependencies
