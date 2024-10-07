@@ -33,10 +33,8 @@ class LanguageSelector:
 
     @staticmethod
     def select_language(locale):
-
-        response = make_response(
-            redirect(request.referrer or request.args.get("return_url") or "/", 302)
-        )
+        # TODO: Perform additional validation on referrer
+        response = make_response(redirect(request.referrer or "/", 302))
         LanguageSelector.set_language_cookie(locale, response)
 
         return response
