@@ -36,9 +36,9 @@ def extract_questions_and_answers(forms, language=EN) -> dict:
                             # then we remove the aws
                             # key attached to the answer
                             if isinstance(answer, str):
-                                questions_answers[form_name][
-                                    field["title"]
-                                ] = answer.split("/")[-1]
+                                questions_answers[form_name][field["title"]] = (
+                                    answer.split("/")[-1]
+                                )
                             else:
                                 questions_answers[form_name][field["title"]] = answer
 
@@ -48,9 +48,9 @@ def extract_questions_and_answers(forms, language=EN) -> dict:
                             )
 
                         elif isinstance(answer, list) and field["type"] == "multiInput":
-                            questions_answers[form_name][
-                                field["title"]
-                            ] = MultiInput.map_multi_input_data(answer, language)
+                            questions_answers[form_name][field["title"]] = (
+                                MultiInput.map_multi_input_data(answer, language)
+                            )
 
                         elif field["type"] == "freeText":
                             clean_html_answer = FreeText.remove_html_tags(answer)
@@ -60,24 +60,24 @@ def extract_questions_and_answers(forms, language=EN) -> dict:
                             ] = clean_html_answer
 
                         elif isinstance(answer, list) and field["type"] == "list":
-                            questions_answers[form_name][
-                                field["title"]
-                            ] = format_checkbox(answer)
+                            questions_answers[form_name][field["title"]] = (
+                                format_checkbox(answer)
+                            )
 
                         elif isinstance(answer, str) and field["type"] == "list":
-                            questions_answers[form_name][
-                                field["title"]
-                            ] = format_radio_field(answer)
+                            questions_answers[form_name][field["title"]] = (
+                                format_radio_field(answer)
+                            )
 
                         elif field["type"] == "monthYear":
-                            questions_answers[form_name][
-                                field["title"]
-                            ] = format_month_year(answer)
+                            questions_answers[form_name][field["title"]] = (
+                                format_month_year(answer)
+                            )
 
                         elif field["type"] == "date":
-                            questions_answers[form_name][
-                                field["title"]
-                            ] = format_date_month_year(answer)
+                            questions_answers[form_name][field["title"]] = (
+                                format_date_month_year(answer)
+                            )
 
                         else:
                             # we dont want to display boolean question
