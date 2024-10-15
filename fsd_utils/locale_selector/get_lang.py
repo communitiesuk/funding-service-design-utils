@@ -20,6 +20,11 @@ def get_lang():
     # get locale from cookie if set
     locale_from_cookie = request.cookies.get(CommonConfig.FSD_LANG_COOKIE_NAME)
     if locale_from_cookie:
+        if locale_from_cookie not in ["cy", "en"]:
+            current_app.logger.warning(
+                f"Invalid language code {locale_from_cookie}. Supported codes are 'cy' and 'en'."
+            )
+            return "en"
         return locale_from_cookie
 
     # otherwise guess preference based on user accept header
