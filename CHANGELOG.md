@@ -1,3 +1,8 @@
+### 5.1.2
+- Return default language as "en" if language from cookies is not supported by FSD
+
+### 5.1.1
+
 ### 5.1.0
 
 - Make Table config print optional; set FSD_UTILS_ENABLE_CONFIG_TABLE in the
