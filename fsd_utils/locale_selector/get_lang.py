@@ -10,20 +10,13 @@ def get_lang():
     language_from_query_args = request.args.get("lang")
     if language_from_query_args:
         if language_from_query_args not in ["cy", "en"]:
-            current_app.logger.warning(
-                f"Invalid language code {language_from_query_args}. Supported codes are 'cy' and 'en'."
-            )
             return "en"
-        else:
-            return language_from_query_args
+        return language_from_query_args
 
     # get locale from cookie if set
     locale_from_cookie = request.cookies.get(CommonConfig.FSD_LANG_COOKIE_NAME)
     if locale_from_cookie:
         if locale_from_cookie not in ["cy", "en"]:
-            current_app.logger.warning(
-                f"Invalid language code {locale_from_cookie}. Supported codes are 'cy' and 'en'."
-            )
             return "en"
         return locale_from_cookie
 
