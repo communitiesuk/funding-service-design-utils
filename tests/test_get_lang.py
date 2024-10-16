@@ -22,7 +22,6 @@ class TestGetLang:
         ):
             assert get_lang() == "en"
 
-
     def test_get_lang_accept_language_preference_en(self, flask_test_client):
         with flask_test_client.application.test_request_context(
             "/",

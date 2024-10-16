@@ -1,5 +1,4 @@
 from babel import negotiate_locale
-from flask import current_app
 from flask import request
 from fsd_utils import CommonConfig
 
