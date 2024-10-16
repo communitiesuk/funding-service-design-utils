@@ -3,6 +3,8 @@
 
 ### 5.1.1
 
+- BAU: Update redirect
+
 ### 5.1.0
 
 - Make Table config print optional; set FSD_UTILS_ENABLE_CONFIG_TABLE in the
