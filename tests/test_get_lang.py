@@ -16,6 +16,12 @@ class TestGetLang:
         ):
             assert get_lang() == "cy"
 
+    def test_get_lang_cookie_preference_for_non_en_cy_language(self, flask_test_client):
+        with flask_test_client.application.test_request_context(
+            "/", headers={"Cookie": "language=de"}
+        ):
+            assert get_lang() == "en"
+
     def test_get_lang_accept_language_preference_en(self, flask_test_client):
         with flask_test_client.application.test_request_context(
             "/",
