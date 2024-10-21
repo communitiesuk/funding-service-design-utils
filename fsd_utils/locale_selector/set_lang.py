@@ -23,6 +23,9 @@ class LanguageSelector:
                 current_app.config["COOKIE_DOMAIN"]
             ),
             max_age=86400 * 30,  # 30 days
+            secure=True,
+            samesite="Lax",
+            httponly=True,
         )
 
     def __init__(self, app):
