@@ -1,3 +1,10 @@
+### 5.1.4
+* Revert 5.3.1, as forcing secure=true is broken for local development in some cases (where HTTPS is not used). To be fixed properly by another future patch.
+
+### 5.1.3
+
+* Make the `lang` cookie secure/httponly/samesite=lax.
+
 ### 5.1.2
 
 - Return default language as "en" if "language" cookie is not " en/cy "
