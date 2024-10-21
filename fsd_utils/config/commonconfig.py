@@ -30,6 +30,9 @@ class CommonConfig:
     SECRET_KEY = _resolve_secret_key(FLASK_ENV)
 
     SESSION_COOKIE_NAME = os.getenv("SESSION_COOKIE_NAME", "session_cookie")
+    SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = "Lax"
     try:
         FSD_LOG_LEVEL = FSD_LOG_LEVELS["FLASK_ENV"]
     except KeyError:

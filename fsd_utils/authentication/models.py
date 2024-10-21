@@ -38,3 +38,10 @@ class User:
             roles=roles,
             highest_role_map=get_highest_role_map(roles),
         )
+        response.set_cookie(
+            "user_token",
+            token_payload,
+            secure=True,
+            httponly=True,
+            samesite="Lax",
+        )
