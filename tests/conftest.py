@@ -1,16 +1,16 @@
 """
 Contains test configuration.
 """
+
 import unittest.mock as mock
 import uuid
 from pathlib import Path
 
 import pytest
-from flask import Flask
-from flask import g
+from flask import Flask, g
+
 from fsd_utils.authentication.config import SupportedApp
-from fsd_utils.authentication.decorators import login_requested
-from fsd_utils.authentication.decorators import login_required
+from fsd_utils.authentication.decorators import login_requested, login_required
 
 
 def create_app():
@@ -255,7 +255,5 @@ def mock_login_requested_return_app_route():
 
 @pytest.fixture(scope="function")
 def mock_uuid4():
-    with mock.patch(
-        "uuid.uuid4", return_value=uuid.UUID("6ba7b810-9dad-11d1-80b4-00c04fd430c8")
-    ):
+    with mock.patch("uuid.uuid4", return_value=uuid.UUID("6ba7b810-9dad-11d1-80b4-00c04fd430c8")):
         yield

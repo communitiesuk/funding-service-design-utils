@@ -1,7 +1,7 @@
 from uuid import uuid4
 
-from fsd_utils.services.aws_sqs_extended_client_exception import ExceptionMessages
 from fsd_utils.services.aws_sqs_extended_client_exception import (
+    ExceptionMessages,
     SQSExtendedClientException,
 )
 
@@ -85,9 +85,7 @@ def check_message_attributes(message_attributes: dict) -> None:
     reserved_attribute_name = get_reserved_attribute_name_if_present(message_attributes)
     if reserved_attribute_name:
         raise SQSExtendedClientException(
-            ExceptionMessages.INVALID_ATTRIBUTE_NAME_PRESENT.format(
-                reserved_attribute_name
-            )
+            ExceptionMessages.INVALID_ATTRIBUTE_NAME_PRESENT.format(reserved_attribute_name)
         )
 
     return
@@ -107,15 +105,11 @@ def get_s3_key(message_attributes: dict, extra_attributes: dict) -> str:
     if S3_KEY_ATTRIBUTE_NAME in message_attributes:
         return message_attributes[S3_KEY_ATTRIBUTE_NAME]["StringValue"]
     elif extra_attributes and S3_KEY_ATTRIBUTE_NAME in extra_attributes:
-        return (
-            extra_attributes[S3_KEY_ATTRIBUTE_NAME]["StringValue"] + "/" + str(uuid4())
-        )
+        return extra_attributes[S3_KEY_ATTRIBUTE_NAME]["StringValue"] + "/" + str(uuid4())
     return str(uuid4())
 
 
 def validate_messages(messages):
     for msg in messages:
         if not msg["MessageId"] and not msg["ReceiptHandle"] and not msg["Body"]:
-            raise SQSExtendedClientException(
-                ExceptionMessages.INVALID_ARGUMENTS_FOR_DELETE_MESSAGE
-            )
+            raise SQSExtendedClientException(ExceptionMessages.INVALID_ARGUMENTS_FOR_DELETE_MESSAGE)

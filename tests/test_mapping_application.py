@@ -1,20 +1,24 @@
 import pytest
-from fsd_utils.mapping.application.application_utils import convert_bool_value
-from fsd_utils.mapping.application.application_utils import format_answer
-from fsd_utils.mapping.application.application_utils import format_checkbox
-from fsd_utils.mapping.application.application_utils import format_date_month_year
-from fsd_utils.mapping.application.application_utils import format_month_year
-from fsd_utils.mapping.application.application_utils import format_radio_field
-from fsd_utils.mapping.application.application_utils import simplify_title
+
+from fsd_utils.mapping.application.application_utils import (
+    convert_bool_value,
+    format_answer,
+    format_checkbox,
+    format_date_month_year,
+    format_month_year,
+    format_radio_field,
+    simplify_title,
+)
 from fsd_utils.mapping.application.free_text import FreeText
-from fsd_utils.mapping.application.languages import CY
-from fsd_utils.mapping.application.languages import EN
+from fsd_utils.mapping.application.languages import CY, EN
 from fsd_utils.mapping.application.multi_input import MultiInput
 from fsd_utils.mapping.application.multi_input_utils import ProcessTypes
 from fsd_utils.mapping.application.qa_mapping import extract_questions_and_answers
-from tests.test_data_utils import multi_input_test_data
-from tests.test_data_utils import test_data_sort_questions_answers
-from tests.test_data_utils import test_data_sort_questions_answers_welsh
+from tests.test_data_utils import (
+    multi_input_test_data,
+    test_data_sort_questions_answers,
+    test_data_sort_questions_answers_welsh,
+)
 
 
 @pytest.mark.parametrize(
@@ -128,7 +132,6 @@ def test_simplify_title(section_name, remove_text, expected_response):
     ],
 )
 def test_remove_html_tags(input_value, expected_response):
-
     response = FreeText.remove_html_tags(input_value)
     assert response == expected_response
 
@@ -177,7 +180,6 @@ def test_extract_questions_and_answers_fail(app_context):
     ],
 )
 def test_format_checkbox(input_value, expected_response):
-
     response = format_checkbox(input_value)
     assert response == expected_response
 
@@ -198,7 +200,6 @@ def test_format_checkbox(input_value, expected_response):
     ],
 )
 def test_format_radio_field(input_value, expected_response):
-
     response = format_radio_field(input_value)
     assert response == expected_response
 
@@ -211,7 +212,6 @@ def test_format_radio_field(input_value, expected_response):
     ],
 )
 def test_format_month_year(input_value, expected_response):
-
     response = format_month_year(input_value)
     assert response == expected_response
 
@@ -228,7 +228,6 @@ def test_format_month_year(input_value, expected_response):
     ],
 )
 def test_format_date_month_year(input_value, expected_response):
-
     response = format_date_month_year(input_value)
     assert response == expected_response
 
@@ -239,15 +238,11 @@ class TestMultiInput:
         [
             (
                 multi_input_test_data["format_data"]["multiple_values"]["input_data"],
-                multi_input_test_data["format_data"]["multiple_values"][
-                    "expected_response"
-                ],
+                multi_input_test_data["format_data"]["multiple_values"]["expected_response"],
             ),
             (
                 multi_input_test_data["format_data"]["single_value"]["input_data"],
-                multi_input_test_data["format_data"]["single_value"][
-                    "expected_response"
-                ],
+                multi_input_test_data["format_data"]["single_value"]["expected_response"],
             ),
         ],
     )
@@ -260,21 +255,15 @@ class TestMultiInput:
         [
             (
                 multi_input_test_data["map_data"]["dict_two_str_values"]["input_data"],
-                multi_input_test_data["map_data"]["dict_two_str_values"][
-                    "expected_response"
-                ],
+                multi_input_test_data["map_data"]["dict_two_str_values"]["expected_response"],
             ),
             (
                 multi_input_test_data["map_data"]["dict_int_value"]["input_data"],
-                multi_input_test_data["map_data"]["dict_int_value"][
-                    "expected_response"
-                ],
+                multi_input_test_data["map_data"]["dict_int_value"]["expected_response"],
             ),
             (
                 multi_input_test_data["map_data"]["dict_none_values"]["input_data"],
-                multi_input_test_data["map_data"]["dict_none_values"][
-                    "expected_response"
-                ],
+                multi_input_test_data["map_data"]["dict_none_values"]["expected_response"],
             ),
         ],
     )
@@ -291,9 +280,7 @@ class TestMultiInput:
             )
         ],
     )
-    def test_str_single_item(
-        self, app_context, input_data, expected_response, mock_uuid4
-    ):
+    def test_str_single_item(self, app_context, input_data, expected_response, mock_uuid4):
         response = ProcessTypes._str_single_item(input_data, sorted_data={})
         assert response == expected_response
 
@@ -308,9 +295,7 @@ class TestMultiInput:
             )
         ],
     )
-    def test_dict_single_item(
-        self, app_context, input_data, expected_response, mock_uuid4
-    ):
+    def test_dict_single_item(self, app_context, input_data, expected_response, mock_uuid4):
         response = ProcessTypes._dict_single_item(input_data, sorted_data={})
         assert response == expected_response
 
@@ -330,9 +315,7 @@ class TestMultiInput:
             )
         ],
     )
-    def test_validate_address(
-        self, app_context, input_data, expected_response, mock_uuid4
-    ):
+    def test_validate_address(self, app_context, input_data, expected_response, mock_uuid4):
         response = ProcessTypes.validate_address(input_data)
         assert response == expected_response
 

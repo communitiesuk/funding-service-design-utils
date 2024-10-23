@@ -18,15 +18,13 @@ class Healthcheck(object):
         for checker in self.checkers:
             try:
                 result = checker.check()
-                current_app.logger.debug(f"Check {checker.name} returned {result}")
+                current_app.logger.debug("Check %s returned %s", checker.name, result)
                 response["checks"].append({checker.name: result[1]})
                 if result[0] is False:
                     responseCode = 500
             except Exception:
                 response["checks"].append({checker.name: "Failed - check logs"})
-                current_app.logger.exception(
-                    f"Check {checker.name} failed with an exception"
-                )
+                current_app.logger.exception("Check %s failed with an exception", checker.name)
                 responseCode = 500
         return response, responseCode
 

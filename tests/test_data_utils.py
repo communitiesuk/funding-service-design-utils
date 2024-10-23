@@ -1,7 +1,8 @@
 # flake8: noqa: E501
 import pytest
-from fsd_utils.simple_utils.data_utils import get_remote_data_as_json
 from requests.exceptions import HTTPError
+
+from fsd_utils.simple_utils.data_utils import get_remote_data_as_json
 
 
 class TestDataUtils:
@@ -34,8 +35,7 @@ multi_input_test_data = {
             },
             "expected_response": [
                 "trusts one \n      . 125\n      . 1 April 2023 to 31 March 2024\n      . Capital\n      . Yes",
-                "\n     trust two \n      . 456\n      . 1 April 2024 to 31 March 2025\n      . Revenue\n"
-                "      . No",
+                "\n     trust two \n      . 456\n      . 1 April 2024 to 31 March 2025\n      . Revenue\n" "      . No",
             ],
         },
         "single_value": {

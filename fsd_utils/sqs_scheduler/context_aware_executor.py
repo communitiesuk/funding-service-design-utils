@@ -11,9 +11,7 @@ class ContextAwareExecutor:
         """Initialize Threadpool executor and ContextAwareExecutor :max_workers
         number of workers for the thread pool :thread_name_prefix prefix of the
         thread pool name :flask_app original flask application context."""
-        self.executor = ThreadPoolExecutor(
-            max_workers=max_workers, thread_name_prefix=thread_name_prefix
-        )
+        self.executor = ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix=thread_name_prefix)
         self.flask_app = flask_app
 
     def queue_size(self):

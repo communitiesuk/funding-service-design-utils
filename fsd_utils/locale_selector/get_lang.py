@@ -1,10 +1,10 @@
 from babel import negotiate_locale
 from flask import request
+
 from fsd_utils import CommonConfig
 
 
 def get_lang():
-
     # get lang if lang query arg is set
     language_from_query_args = request.args.get("lang")
     if language_from_query_args:
@@ -20,10 +20,7 @@ def get_lang():
         return locale_from_cookie
 
     # otherwise guess preference based on user accept header
-    preferred = [
-        accept_language.replace("-", "_")
-        for accept_language in request.accept_languages.values()
-    ]
+    preferred = [accept_language.replace("-", "_") for accept_language in request.accept_languages.values()]
     negotiated_locale = negotiate_locale(preferred, ["en", "cy"])
     if negotiated_locale:
         return negotiated_locale

@@ -1,12 +1,11 @@
 from copy import deepcopy
 
 import pytest
-from fsd_utils import Decision
-from fsd_utils import evaluate_response
+
+from fsd_utils import Decision, evaluate_response
 from fsd_utils.decision.evaluate_response_against_schema import (
     _evaluate_with_supplied_operators,
 )
-
 
 TEST_SCHEMA_1 = {
     "aaa111": [
@@ -238,9 +237,7 @@ def test_schema_parsing(answers: dict, schema, exp_result, exp_caveats):
     for answer in answers.items():
         for form in input_forms:
             for question in form["questions"]:
-                for x in [
-                    field for field in question["fields"] if field["key"] == answer[0]
-                ]:
+                for x in [field for field in question["fields"] if field["key"] == answer[0]]:
                     x["answer"] = answer[1]
 
     # get a result

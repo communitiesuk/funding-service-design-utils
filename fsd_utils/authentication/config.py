@@ -6,6 +6,7 @@ To use this utility please ensure that all the
 in the environment of the application that is using
 this utility.
 """
+
 import enum
 
 config_var_auth_host = "AUTHENTICATOR_HOST"

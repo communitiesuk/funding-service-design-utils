@@ -10,9 +10,7 @@ class Decision(IntEnum):
 VALID_OPERATORS = ["<", "<=", "==", ">=", ">"]
 
 
-def _evaluate_with_supplied_operators(
-    conditions_to_evaluate: list, supplied_answer: any
-) -> tuple[Decision, list]:
+def _evaluate_with_supplied_operators(conditions_to_evaluate: list, supplied_answer: any) -> tuple[Decision, list]:
     """Evaluates an expression built from the operator in the schmea, the value to compare, and the supplied answer.
     Uses the result of the evaluation to return a decision and applicable caveats
     Casts the value to an integer for comparison
@@ -38,11 +36,11 @@ def _evaluate_with_supplied_operators(
         # validate that answer is numeric
         try:
             answer_as_number = float(supplied_answer)
-        except ValueError:
+        except ValueError as e:
             raise ValueError(
                 f"Answer {supplied_answer} is not numeric so cannot be used with this condition: "
                 f"[{ec['operator']} {ec['compareValue']}]"
-            )
+            ) from e
 
         # construct evaluation expression
         expression = f"answer {ec['operator']} value"
@@ -83,29 +81,19 @@ def evaluate_response(schema: dict, forms: dict) -> dict:
 
                 # Find out if there are any conditions that apply to this question
                 if conditions := schema.get(questionId, None):
-
                     # Find out if there are any value-based conditions that match the response given for this question
                     if applicable_condition := next(
-                        (
-                            c
-                            for c in conditions
-                            if c.get("answerValue", None) == response["answer"]
-                        ),
+                        (c for c in conditions if c.get("answerValue", None) == response["answer"]),
                         None,
                     ):
-                        result["decision"] = max(
-                            result["decision"], applicable_condition["result"]
-                        )
+                        result["decision"] = max(result["decision"], applicable_condition["result"])
                         if applicable_condition["caveat"]:
                             result["caveats"].append(applicable_condition["caveat"])
 
                     # Gather any operator-based conditions that apply to this question
                     if eval_conditions := [c for c in conditions if "operator" in c]:
-
                         # Got and get a decision based on this operator condition
-                        decision, caveats = _evaluate_with_supplied_operators(
-                            eval_conditions, response["answer"]
-                        )
+                        decision, caveats = _evaluate_with_supplied_operators(eval_conditions, response["answer"])
 
                         # Update result object with result of evaluating the operator-condition
                         result["decision"] = max(result["decision"], decision)

@@ -1,5 +1,4 @@
-from unittest.mock import ANY
-from unittest.mock import Mock
+from unittest.mock import ANY, Mock
 
 from fsd_utils.locale_selector.set_lang import LanguageSelector
 

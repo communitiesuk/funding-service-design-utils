@@ -1,4 +1,5 @@
 from flask import current_app
+
 from fsd_utils.mapping.application.application_utils import convert_bool_value
 from fsd_utils.mapping.application.multi_input_utils import ProcessTypes
 
@@ -14,9 +15,7 @@ class MultiInput(ProcessTypes):
 
     @classmethod
     def format_value_pair(cls, key, value, index):
-        return (
-            f"\n{cls.indent(5)}. {key}: {value}" if index != 1 else f". {key}: {value}"
-        )
+        return f"\n{cls.indent(5)}. {key}: {value}" if index != 1 else f". {key}: {value}"
 
     @classmethod
     def format_keys_and_values(cls, key: str, value: list, index: int, language):
@@ -49,7 +48,6 @@ class MultiInput(ProcessTypes):
 
         output = []
         for index, (key, value) in enumerate(sorted_data.items(), start=1):
-
             if isinstance(key, int):
                 key = str(key)
             try:
@@ -58,17 +56,13 @@ class MultiInput(ProcessTypes):
                     output.append(cls.format_values(value, index))
 
                 if isinstance(value, list):
-                    output.append(
-                        cls.format_keys_and_values(key, value, index, language)
-                    )
+                    output.append(cls.format_keys_and_values(key, value, index, language))
                 if not uuid and not isinstance(value, list):
                     output.append(cls.format_value_pair(key, value, index))
 
             except Exception as e:
-                current_app.logger.error(f"Error occurred while processing data: {e}")
-                current_app.logger.error(
-                    f"Couldn't format the muti input data for: {sorted_data}"
-                )
+                current_app.logger.error("Error occurred while processing data: %s", str(e))
+                current_app.logger.error("Couldn't format the muti input data for: %s", sorted_data)
         return output
 
     @classmethod
@@ -104,9 +98,5 @@ class MultiInput(ProcessTypes):
             return output
 
         except Exception as e:
-            current_app.logger.error(
-                f"Error occurred while processing the multi input data: {e}"
-            )
-            current_app.logger.error(
-                f"Couldn't map the multi input data for: {multi_input_data}"
-            )
+            current_app.logger.error("Error occurred while processing the multi input data: %s", str(e))
+            current_app.logger.error("Couldn't map the multi input data for: %s", multi_input_data)
