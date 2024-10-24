@@ -1,3 +1,7 @@
+### 5.1.5
+
+* No functional changes (bumping local pre-commit).
+
 ### 5.1.4
 * Revert 5.3.1, as forcing secure=true is broken for local development in some cases (where HTTPS is not used). To be fixed properly by another future patch.
 
