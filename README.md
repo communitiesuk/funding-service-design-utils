@@ -20,7 +20,14 @@ Tests in this repository run using `pytest`, as per our standardise [Testing in 
 
 However, because this is a shared utils library that can be installed under different conditions (mainly Python or Flask versions), we matrix test the combinations using [tox](https://tox.wiki/en/4.15.1/).
 
-To run tests via tox, `pip install -r requirements-test.txt` and then simply run `tox`. To run suites in parallel, run eg `tox -p 8`.
+To setup tox for use with `uv`:
+
+```bash
+uv tool install tox~=4.0 --with tox-uv
+tox --version  # check that you are using a tox with the tox-uv plugin installed
+```
+
+To run tests via tox, `tox`. To run suites in parallel, run eg `tox -p 8`.
 
 # Releasing
 To create a new release of funding-service-design-utils (note no longer need to manually update the version):
@@ -44,45 +51,30 @@ To create a new release of funding-service-design-utils (note no longer need to 
 
 # Usage
 Either of the following options will install the funding-service-design-utils into your python project. The package `fsd_utils` can then be imported.
-## Released version
-To reference a particular tag from pip, add the following to your `requirements.txt` file or use `pip install` (update version as appropriate):
 
-    funding-service-design-utils==0.0.1
+## Released version
+To install a particular version, use `uv add funding-service-design-utils==0.0.1` (update the version number as appropriate).
 
 ## Latest / in-dev version
-To reference the latest commit from a particular branch from pip, add the following to your `requirements.txt` file or use `pip install`:
+To reference the latest commit from a particular branch:
 
-pip install
-
-    pip install git+https://github.com/communitiesuk/funding-service-design-utils.git@<branchName>
-
-**or**
-
-To navigate requirements.txt to your branch:
-
-Replace `funding-service-design-utils` in `requirements.in` with
-
-    git+https://github.com/communitiesuk/funding-service-design-utils.git@<branchName>
-
-Build requirements with following commands
-
-    pip-compile requirements.in
-    pip-compile requirements-dev.in
-    python3 -m pip install --upgrade pip && pip install -r requirements-dev.txt
+    uv add git+https://github.com/communitiesuk/funding-service-design-utils --branch <branch_name>
 
 Build docker with following commands
 
     docker compose build <service_name> --no-cache
-    or
+
+or
+
     docker compose build --no-cache
 
 ## Local changes
 When working and testing locally, you can also install the `fsd_utils` package from your local filesystem:
 
-    pip uninstall -y funding-service-design-utils
-    pip install /path/to/your/working/directory/funding-service-design/utils
+    uv remove funding-service-design-utils
+    uv add /path/to/your/working/directory/funding-service-design/utils
 
-Note: When testing locally using the docker runner, docker might use the cached version of fsd_utils. to avoid this and pick up your intended changes, run `docker compose build <service_name> --no-cache` first before running `docker compose up`.
+Note: When testing locally using the docker runner, docker might use the cached version of fsd_utils. To avoid this and pick up your intended changes, run `docker compose build <service_name> --no-cache` first before running `docker compose up`. Docker will not be able to use your local checkout of utils.
 
 # Utilities
 

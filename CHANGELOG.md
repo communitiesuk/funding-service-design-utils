@@ -1,3 +1,7 @@
+### 5.1.6
+
+* No functional changes (switch over to using uv).
+
 ### 5.1.5
 
 * No functional changes (bumping local pre-commit).
