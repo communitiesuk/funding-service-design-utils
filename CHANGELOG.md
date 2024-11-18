@@ -1,3 +1,7 @@
+### 5.1.7
+
+* No functional changes (fix packaging with uv).
+
 ### 5.1.6
 
 * No functional changes (switch over to using uv).

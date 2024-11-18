@@ -90,8 +90,8 @@ jobs:
     - name: Build for publish
       id: build_dist
       run: |
-        uv sync --python 3.10
-        uv run python -m build
+        uv sync --python 3.10 --frozen
+        uv tool run --from build python -m build
         echo workspace dir $GITHUB_WORKSPACE
 
     - name: Publish to PyPI
