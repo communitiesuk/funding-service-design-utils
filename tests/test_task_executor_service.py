@@ -48,6 +48,7 @@ class TestTaskExecutorService(unittest.TestCase):
         )
         self.task_executor = AnyTaskExecutorService(
             flask_app=MagicMock(),
+            fund_round_data_key_mapping={},
             executor=self.executor,
             s3_bucket=bucket_name,
             sqs_primary_url=self.queue_response["QueueUrl"],

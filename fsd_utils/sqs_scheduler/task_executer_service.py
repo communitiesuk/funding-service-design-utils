@@ -9,6 +9,7 @@ class TaskExecutorService:
     def __init__(
         self,
         flask_app,
+        fund_round_data_key_mapping,
         executor,
         s3_bucket,
         sqs_primary_url,
@@ -22,6 +23,7 @@ class TaskExecutorService:
         region_name=None,
     ):
         self.executor = executor
+        self.fund_round_data_key_mapping = fund_round_data_key_mapping
         self.sqs_primary_url = sqs_primary_url
         self.task_executor_max_thread = task_executor_max_thread
         self.sqs_batch_size = sqs_batch_size
