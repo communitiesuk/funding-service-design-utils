@@ -1,8 +1,0 @@
--e .
-
-pre-commit~=4.0.0
-pytest-env>=0.6.2
-pytest
-pytest-mock
-moto[s3,sqs]==5.0.7
-ruff==0.6.7  # If bumping this, please also bump .pre-commit-config.yml

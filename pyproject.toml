@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "funding-service-design-utils"
 
-version = "5.1.5"
+version = "5.1.6"
 
 authors = [
   { name="MHCLG", email="FundingService@communities.gov.uk" },
@@ -13,6 +13,8 @@ authors = [
 description = "Utilities used by the MHCLG Funding Service Team"
 readme = "README.md"
 license = { file="LICENSE" }
+
+# If adding support for a new major/minor Flask version below, remember to add a tox env to matrix test it.
 requires-python = ">=3.10,<4.0"
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -22,10 +24,9 @@ classifiers = [
 
 dependencies = [
     "Flask-Babel>=2.0.0",
-    "PyYAML>=6.0",
+    "PyYAML>=6.0.1",
     "python-dotenv>=1.0.1",
     "rich>=12.4.4",
-    # If adding support for a new major/minor Flask version below, remember to add a tox env to matrix test it.
     "Flask>=2.1.1,!=2.3.0",
     "python-json-logger>=2.0.2",
     "gunicorn>=20.1.0",
@@ -38,7 +39,7 @@ dependencies = [
     "Flask-SQLAlchemy>=3.0.3",
     "sqlalchemy-utils>=0.38.3",
     "beautifulsoup4>=4.12.3",
-    "boto3>=1.9.253"
+    "boto3>=1.9.253",
 ]
 
 [project.optional-dependencies]
@@ -76,32 +77,41 @@ mccabe.max-complexity = 12
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py3{10,11,12}-flask{2.2,2.3,3}-sqlalchemy{1,2}
+requires =
+    tox~=4.0
+    tox-uv~=1.0
+envlist =
+    py3.{10,11,12}-flask{2.2,2.3,3}-sqlalchemy{1,2}
+skip_missing_interpreters = true
 constrain_package_deps = true
 use_frozen_constraints = true
 
-[gh-actions]
+[gh]
 python =
-    3.10: py310
-    3.11: py311
-    3.12: py312
+    3.10 = py3.10-flask{2.2,2.3,3}-sqlalchemy{1,2}
+    3.11 = py3.11-flask{2.2,2.3,3}-sqlalchemy{1,2}
+    3.12 = py3.12-flask{2.2,2.3,3}-sqlalchemy{1,2}
 
 [testenv]
-commands = py.test
+pass_env = ["PYTEST_*", "TOX_GH_MAJOR_MINOR"]
+commands = pytest
+uv_resolution = highest
+dependency_groups = dev
 deps =
     flask2.2: -c constraints/flask2.2.txt
     flask2.3: -c constraints/flask2.3.txt
     flask3: -c constraints/flask3.txt
     sqlalchemy1: -c constraints/sqlalchemy1.txt
     sqlalchemy2: -c constraints/sqlalchemy2.txt
-    -r requirements-dev.txt
-
-[testenv:py310-flask{2.2,2.3,3}-sqlalchemy{1,2}]
-basepython = python3.10
-
-[testenv:py311-flask{2.2,2.3,3}-sqlalchemy{1,2}]
-basepython = python3.11
-
-[testenv:py312-flask{2.2,2.3,3}-sqlalchemy{1,2}]
-basepython = python3.12
+    .
 """
+
+[dependency-groups]
+dev = [
+    "moto[s3,sqs]==5.0.7",
+    "pre-commit~=4.0.0",
+    "pytest>=8.3.3",
+    "pytest-env>=0.6.2",
+    "pytest-mock>=3.14.0",
+    "ruff==0.6.7",
+]
