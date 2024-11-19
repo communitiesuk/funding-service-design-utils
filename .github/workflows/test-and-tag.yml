@@ -26,9 +26,9 @@ jobs:
           - "3.11"
           - "3.12"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@e779db74266a80753577425b0f4ee823649f251d # v3
       - name: Install tox
         run: uv tool install --python-preference only-managed --python 3.12 tox --with tox-uv --with tox-gh
       - name: Install Python
@@ -50,10 +50,10 @@ jobs:
     permissions:
         contents: write
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
     - name: Setup python
       id: setup_python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
       with:
         python-version: '3.10'
     - name: Get package version
@@ -61,14 +61,14 @@ jobs:
       run: echo "app_version="$(python setup.py --version) >> $GITHUB_OUTPUT
 
     - name: Check if tag exists
-      uses: mukunku/tag-exists-action@v1.6.0
+      uses: mukunku/tag-exists-action@bdad1eaa119ce71b150b952c97351c75025c06a9 # v1.6.0
       id: check_tag
       with:
         tag: ${{ steps.package_version.outputs.app_version }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - uses: ncipollo/release-action@v1.14.0
+    - uses: ncipollo/release-action@2c591bcc8ecdcd2db72b97d6147f871fcd833ba5 # v1.14.0
       name: Create Release
       id: create_release
       if: ${{ steps.check_tag.outputs.exists == 'false' }}
@@ -82,10 +82,10 @@ jobs:
     needs: create-release
     if: github.ref == 'refs/heads/main'
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
     - name: Install uv
-      uses: astral-sh/setup-uv@v3
+      uses: astral-sh/setup-uv@e779db74266a80753577425b0f4ee823649f251d # v3
 
     - name: Build for publish
       id: build_dist
@@ -96,7 +96,7 @@ jobs:
 
     - name: Publish to PyPI
       id: publish-to-pypi
-      uses: pypa/gh-action-pypi-publish@v1.8.11
+      uses: pypa/gh-action-pypi-publish@2f6f737ca5f74c637829c0f5c3acd0e29ea5e8bf # v1.8.11
 
       with:
         password: ${{ secrets.PYPI_API_TOKEN }}
