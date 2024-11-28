@@ -9,6 +9,7 @@ class NotifyConstants:
     FIELD_CONTENT = "content"  # for contents to be shared.
     FIELD_TO = "to"  # for contact_info (do not set in common config)
     FIELD_FULL_NAME = "full_name"  # for contact_name (do not set in common config)
+    FIELD_REFERENCE = "govuk_notify_reference"  # A useful-to-us reference that can be associated with a Notification
 
     # ---- Template types constants (DO NOT CHANGE) ---#
 
