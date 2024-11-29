@@ -20,3 +20,4 @@ user_route = "/service/user"
 class SupportedApp(enum.Enum):
     POST_AWARD_FRONTEND = "post-award-frontend"
     POST_AWARD_SUBMIT = "post-award-submit"
+    FUND_APPLICATION_BUILDER = "fund-application-builder"

@@ -1,3 +1,11 @@
+### 5.1.9
+
+* Adding FAB to the list of supported apps
+
+### 5.1.8
+
+* No functional changes (overriding the central rangeStrategy=pin)
+
 ### 5.1.7
 
 * No functional changes (fix packaging with uv).
