@@ -1,3 +1,11 @@
+### 5.1.9
+
+* Add a `reference` to Notify constants.
+
+### 5.1.8
+
+* Small dependency updates.
+
 ### 5.1.7
 
 * No functional changes (fix packaging with uv).
