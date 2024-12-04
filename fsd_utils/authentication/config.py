@@ -20,3 +20,10 @@ user_route = "/service/user"
 class SupportedApp(enum.Enum):
     POST_AWARD_FRONTEND = "post-award-frontend"
     POST_AWARD_SUBMIT = "post-award-submit"
+    FORM_DESIGNER = "form-designer"
+    FUND_APPLICATION_BUILDER = "fund-application-builder"
+
+
+class InternalDomain(str, enum.Enum):
+    COMMUNITIES = "@communities.gov.uk"
+    TEST_COMMUNITIES = "@test.communities.gov.uk"

@@ -1,3 +1,19 @@
+### 5.2.0
+
+* Adding check internal user functionality and adding FAB and Form Designer to list of supported apps
+
+### 5.1.10
+
+* Running `uv lock` when version incremented
+
+### 5.1.9
+
+* Changing to a negative check for the environment list
+
+### 5.1.8
+
+* Overriding the central rangeStrategy=pin
+
 ### 5.1.7
 
 * No functional changes (fix packaging with uv).

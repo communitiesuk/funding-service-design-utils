@@ -4,19 +4,27 @@ import jwt as jwt
 
 
 class TestAuthentication:
-    test_payload = {
-        "accountId": "test-user",
-        "email": "test@example.com",
-        "fullName": "Test User",
+    test_internal_payload = {
+        "accountId": "internal-user",
+        "email": "user@communities.gov.uk",
+        "fullName": "Internal User",
         "roles": ["COF_LEAD_ASSESSOR", "COF_ASSESSOR", "COF_COMMENTER"],
     }
+
+    test_external_payload = {
+        "accountId": "external-user",
+        "email": "user@example.com",
+        "fullName": "External User",
+        "roles": ["COF_LEAD_ASSESSOR", "COF_ASSESSOR", "COF_COMMENTER"],
+    }
+
     expected_valid_g_attributes = {
         "is_authenticated": True,
         "logout_url": "https://authenticator/sessions/sign-out",
-        "account_id": "test-user",
+        "account_id": "internal-user",
         "user": {
-            "email": "test@example.com",
-            "full_name": "Test User",
+            "email": "user@communities.gov.uk",
+            "full_name": "Internal User",
             "highest_role_map": {"COF": "LEAD_ASSESSOR"},
             "roles": ["COF_LEAD_ASSESSOR", "COF_ASSESSOR", "COF_COMMENTER"],
         },
@@ -28,19 +36,19 @@ class TestAuthentication:
         "account_id": None,
     }
 
-    def _create_valid_token(self):
+    def _create_valid_token(self, external=False):
         _test_private_key_path = str(Path(__file__).parent) + "/keys/rsa256/private.pem"
         with open(_test_private_key_path, mode="rb") as private_key_file:
             rsa256_private_key = private_key_file.read()
+        payload = self.test_external_payload if external else self.test_internal_payload
+        return jwt.encode(payload, rsa256_private_key, algorithm="RS256")
 
-            return jwt.encode(self.test_payload, rsa256_private_key, algorithm="RS256")
-
-    def _create_invalid_token(self):
+    def _create_invalid_token(self, external=False):
         _test_private_key_path = str(Path(__file__).parent) + "/keys/rsa256/private_invalid.pem"
         with open(_test_private_key_path, mode="rb") as private_key_file:
             rsa256_private_key = private_key_file.read()
-
-            return jwt.encode(self.test_payload, rsa256_private_key, algorithm="RS256")
+        payload = self.test_external_payload if external else self.test_internal_payload
+        return jwt.encode(payload, rsa256_private_key, algorithm="RS256")
 
     def test_login_required_redirects_to_signed_out_without_token(self, flask_test_client):
         """
@@ -236,3 +244,38 @@ class TestAuthentication:
             mock_request.json["logout_url"]
             == "https://authenticator/sessions/sign-out?return_app=post-award-frontend&return_path=%2Fmock_login_requested_return_app_route"  # noqa: E501
         )
+
+    def test_check_internal_user_allows_unauthenticated(self, flask_test_check_internal_user_client):
+        """
+        GIVEN no authentication token is provided
+        WHEN requesting the route decorated with @check_internal_user
+        THEN it should return 200 since unauthenticated users are allowed.
+        """
+        response = flask_test_check_internal_user_client.get("/mock_check_internal_user_route")
+        assert response.status_code == 200
+        assert response.json == {"status": "ok"}
+
+    def test_check_internal_user_allows_internal_domain(self, flask_test_check_internal_user_client):
+        """
+        GIVEN a valid JWT with an internal domain email (e.g. '@communities.gov.uk')
+        WHEN requesting the route
+        THEN it should return 200 since internal domain users are allowed.
+        """
+        token = self._create_valid_token(external=False)
+        flask_test_check_internal_user_client.set_cookie("fsd-user-token", token)
+
+        response = flask_test_check_internal_user_client.get("/mock_check_internal_user_route")
+        assert response.status_code == 200
+        assert response.json == {"status": "ok"}
+
+    def test_check_internal_user_denies_external_domain(self, flask_test_check_internal_user_client):
+        """
+        GIVEN a valid JWT with a non-internal domain email
+        WHEN requesting the route
+        THEN it should return 403 since external domain users are not allowed.
+        """
+        token = self._create_valid_token(external=True)
+        flask_test_check_internal_user_client.set_cookie("fsd-user-token", token)
+
+        response = flask_test_check_internal_user_client.get("/mock_check_internal_user_route")
+        assert response.status_code == 403
