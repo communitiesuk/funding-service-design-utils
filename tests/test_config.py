@@ -13,7 +13,8 @@ from fsd_utils.config.commonconfig import CommonConfig
         ("development", "dev_key", "dev_key"),
         ("uat", "abc123", "abc123"),
         ("development", "", "dev-secret"),
-        ("db_migrations", "", "dev-secret"),
+        ("unit_test", "", "dev-secret"),
+        ("prod", "prod_secret", "prod_secret"),
     ],
 )
 def test_config(flask_env, env_secret_key, exp_secret_key):
@@ -41,6 +42,8 @@ def test_config(flask_env, env_secret_key, exp_secret_key):
             "production",
             "",
         ),
+        ("db_migrations", ""),
+        ("prod", ""),
     ],
 )
 def test_config_error(flask_env, env_secret_key):
