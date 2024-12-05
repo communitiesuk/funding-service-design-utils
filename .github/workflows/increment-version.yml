@@ -35,6 +35,9 @@ jobs:
         current-version: ${{ steps.latest_tag.outputs.tag}}
         version-fragment: 'bug'
 
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@e779db74266a80753577425b0f4ee823649f251d # v3
+
     - name: Update version in pyproject.toml
       id: update_version
       run: |
