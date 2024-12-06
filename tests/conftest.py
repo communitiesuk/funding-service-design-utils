@@ -146,7 +146,7 @@ def flask_test_check_internal_user_client():
             "/mock_check_internal_user_route",
             "mock_check_internal_user_route",
             mock_check_internal_user_route,
-            methods=["GET"]
+            methods=["GET"],
         )
 
         with app_context.app.test_client() as test_client:
