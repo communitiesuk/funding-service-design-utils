@@ -9,6 +9,7 @@ from werkzeug.exceptions import HTTPException
 from fsd_utils.authentication.utils import validate_token_rs256
 
 from .config import (
+    InternalDomain,
     SupportedApp,
     config_var_auth_host,
     config_var_logout_url_override,
@@ -148,5 +149,19 @@ def login_requested(f):
             g.account_id = None
             g.is_authenticated = False
         return f(*args, **kwargs)
+
+    return decorated
+
+
+def check_internal_user(func):
+    @wraps(func)
+    def decorated(*args, **kwargs):
+        internal_domains = tuple(k.value for k in InternalDomain)
+        authenticated = g.is_authenticated
+        is_communities = g.is_authenticated and g.user.email.endswith(internal_domains)
+        if not authenticated or is_communities:
+            return func(*args, **kwargs)
+        else:
+            abort(403)
 
     return decorated
