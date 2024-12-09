@@ -1,3 +1,7 @@
+### 5.3.0
+
+* Update the Healthcheck to support apps running in `host_matching` mode.
+
 ### 5.2.0
 
 * Adding check internal user functionality and adding FAB and Form Designer to list of supported apps

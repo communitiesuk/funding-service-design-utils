@@ -10,14 +10,14 @@ class TestHealthcheck:
     def testHealthChecksSetup(self):
         test_app = Mock()
         health = Healthcheck(test_app)
-        test_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY)
+        test_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY, host="<host>")
         assert health.checkers == [], "Checks not initialised"
 
     @mock.patch.dict(os.environ, clear=True)
     def testWithNoChecks(self):
         mock_app = Mock()
         health = Healthcheck(mock_app)
-        mock_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY)
+        mock_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY, host="<host>")
 
         expected_dict = {"checks": []}
 
@@ -29,7 +29,7 @@ class TestHealthcheck:
     def testWithChecksPassing_mocks(self, flask_test_client):
         test_app = Mock()
         health = Healthcheck(test_app)
-        test_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY)
+        test_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY, host="<host>")
 
         expected_dict = {"checks": [{"check_a": "ok"}, {"check_b": "ok"}]}
 
@@ -50,7 +50,7 @@ class TestHealthcheck:
     def testWithChecksFailing_mocks(self, flask_test_client):
         test_app = Mock()
         health = Healthcheck(test_app)
-        test_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY)
+        test_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY, host="<host>")
 
         expected_dict = {"checks": [{"check_a": "fail"}, {"check_b": "ok"}]}
 
@@ -71,7 +71,7 @@ class TestHealthcheck:
     def testWithChecksException_mocks(self, flask_test_client):
         test_app = Mock()
         health = Healthcheck(test_app)
-        test_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY)
+        test_app.add_url_rule.assert_called_with("/healthcheck", view_func=ANY, host="<host>")
 
         expected_dict = {"checks": [{"check_a": "fail"}, {"check_b": "Failed - check logs"}]}
 
