@@ -6,10 +6,10 @@ from flask import current_app
 class Healthcheck(object):
     def __init__(self, app):
         self.flask_app = app
-        self.flask_app.add_url_rule("/healthcheck", view_func=self.healthcheck_view)
+        self.flask_app.add_url_rule("/healthcheck", view_func=self.healthcheck_view, host="<host>")
         self.checkers = []
 
-    def healthcheck_view(self):
+    def healthcheck_view(self, host=None):
         responseCode = 200
         response = {"checks": []}
         version = os.getenv("GITHUB_SHA")
