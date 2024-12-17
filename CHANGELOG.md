@@ -1,3 +1,7 @@
+### 6.0.0
+
+* Removes `locale_selector` module, which has now been lifted directly into `pre-award-frontend` (and modified to support `host_matching` mode).
+
 ### 5.3.1
 
 * Fix a DeprecationWarning from pythonjsonlogger
