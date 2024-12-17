@@ -1,3 +1,7 @@
+### 5.3.1
+
+* Fix a DeprecationWarning from pythonjsonlogger
+
 ### 5.3.0
 
 * Update the Healthcheck to support apps running in `host_matching` mode.
