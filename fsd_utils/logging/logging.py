@@ -10,7 +10,11 @@ from threading import get_ident as get_thread_ident
 
 from flask import Flask, current_app, request
 from flask.ctx import has_request_context
-from pythonjsonlogger.json import JsonFormatter as BaseJSONFormatter
+
+try:
+    from pythonjsonlogger.json import JsonFormatter as BaseJSONFormatter
+except ImportError:
+    from pythonjsonlogger.jsonlogger import JsonFormatter as BaseJSONFormatter
 
 # Log formats can use any attributes available in
 # https://docs.python.org/3/library/logging.html#logrecord-attributes

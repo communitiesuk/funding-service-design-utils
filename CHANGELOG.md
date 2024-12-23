@@ -1,3 +1,8 @@
+### 6.0.1
+
+* Revert: "Fix a DeprecationWarning from pythonjsonlogger" which actually broke things
+* Revert: "Removes `locale_selector` module, which has now been lifted directly into `pre-award-frontend` (and modified to support `host_matching` mode)." because this is still used by pre-award-stores
+
 ### 6.0.0
 
 * Removes `locale_selector` module, which has now been lifted directly into `pre-award-frontend` (and modified to support `host_matching` mode).

@@ -208,6 +208,57 @@ Where
 - `bool` is a True or False whether the check was successful
 - `str` is a message to display in the result JSON, typically `OK` or `Fail`
 
+## Translations
+Multiple language support is provided by `flask-babel`. Docs here: https://python-babel.github.io/flask-babel/#
+
+### Python Setup
+The python setup relies on 2 methods and an initialisation. In `create_app` we initialise `babel` on our app:
+
+    from fsd_utils.locale_selector.get_lang import get_lang
+
+    babel = Babel(flask_app)
+    babel.locale_selector_func = get_lang
+    LanguageSelector(flask_app)
+
+The `get_lang()` function reads the user-selected language from a cookie (if set by `LanguageSelector` - see below), or if that is not present uses a built-in function of babel to negotiate the language based on the request headers and the supported languages.
+
+`LanguageSelector` creates an additional route `/language/<language>` that sets the user's selected language in a cookie. Used the cookie rather than the session so it can be shared across the microservices.
+
+Set `COOKIE_DOMAIN` on the app to the domain you want to set the cookie on.
+
+### Creating Translations
+1. Add `trans` tags around items in your jinja html file that you want to translate. What's contained in the `trans` tag should be the english version of this text. eg:
+
+        A greeting is: {% trans %}Good Morning{% endtrans %}
+
+1. Generate a new translations template file (`messages.pot`)
+
+        pybabel extract -F babel.cfg -o messages.pot .
+
+1. If initialising a new set of translations for a new repo or adding a new language, use `init`. *This will override any changes already made in the `translations` directory!*
+
+        # Initialise a welsh translations file in app/translations
+        pybabel init -i messages.pot -d app/translations -l cy
+    The directory supplied to `-d` (eg. `app/translations`) must sit at the same level as the `templates` folder, in our case within the `app` directory. This command generates a new `messages.po` file in `translations/cy/LC_MESSAGES/` Where `cy` is the language code. (cy = Welsh/Cymraeg)
+
+1. If you've added new strings to an existing template, or added new templates after running `init`, use `update`:
+
+        pybabel update -i messages.pot -d app/translations
+
+    This will append new strings to the existing `messages.po` file, preserving any translations you already have in there.
+
+1. To add translations for strings, edit the `messages.po` file.
+
+        #: app/templates/index.html:10
+        msgid "Good Morning"
+        msgstr "Bore da"
+
+    where `msgid` is the english version of the string from the original template file, and `msgstr` is the translation of the string.
+
+1. Once the translations are ready, use `compile` to generate the binary for use at runtime:
+
+        pybabel compile -d app/translations
+
 ## Sentry
 Enables Sentry integration.
 
