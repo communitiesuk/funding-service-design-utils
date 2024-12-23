@@ -9,4 +9,5 @@ class UsefulConfig:
     NSTF_ROUND_2_ID = "fc7aa604-989e-4364-98a7-d1234271435a"
 
     HSRA_FUND_ID = "1e4bd8b0-b399-466d-bbd1-572171bbc7bd"
-    HSRA_ROUND_1_ID = "50062ff6-e696-474d-a560-4d9af784e6e5"
+    HSRA_ROUND_VR_ID = "ae223686-cbcc-4548-8b52-05898c315a59"
+    HSRA_ROUND_RP_ID = "bae275aa-86a5-4d3e-bcc7-0a25d040910d"
