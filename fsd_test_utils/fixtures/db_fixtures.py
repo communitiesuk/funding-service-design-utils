@@ -12,7 +12,7 @@ def prep_db(reuse_db=False):
     upgrade() is always run to make sure the schema is up to date.
     """
 
-    from config import Config
+    from pre_award.config import Config
 
     no_db = not database_exists(Config.SQLALCHEMY_DATABASE_URI)
     refresh_db = not reuse_db
