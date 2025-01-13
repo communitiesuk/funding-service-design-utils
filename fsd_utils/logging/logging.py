@@ -18,11 +18,11 @@ except ImportError:
 
 # Log formats can use any attributes available in
 # https://docs.python.org/3/library/logging.html#logrecord-attributes
-LOG_FORMAT = "%(name)s %(levelname)s " "- %(message)s - from %(funcName)s in %(pathname)s:%(lineno)d"
+LOG_FORMAT = "%(name)s %(levelname)s - %(message)s - from %(funcName)s in %(pathname)s:%(lineno)d"
 
 _DEFAULT_FSD_LOG_LEVEL = "INFO"
 
-DEV_DEBUG_LOG_FORMAT = "%(asctime)s %(levelname)s - %(message)s - from %(funcName)s() in" " %(filename)s:%(lineno)d"
+DEV_DEBUG_LOG_FORMAT = "%(asctime)s %(levelname)s - %(message)s - from %(funcName)s() in %(filename)s:%(lineno)d"
 
 
 # fields named in LOG_FORMAT and LOG_FORMAT_EXTRA_JSON_KEYS
@@ -351,6 +351,6 @@ class JSONFormatter(BaseJSONFormatter):
                 break
 
         else:
-            logger.exception("Too many missing keys when attempting to format log message:" " gave up")
+            logger.exception("Too many missing keys when attempting to format log message: gave up")
 
         return log_record
