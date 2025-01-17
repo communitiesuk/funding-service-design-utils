@@ -20,7 +20,7 @@ class ExceptionMessages:
         "instead of the message attributes."
     )
     INVALID_NUMBER_OF_MESSAGE_ATTRIBUTES = (
-        "Number of message attributes {0} exceeds the maximum allowed for " "large-payload messages {1}"
+        "Number of message attributes {0} exceeds the maximum allowed for large-payload messages {1}"
     )
     INVALID_ATTRIBUTE_NAME_PRESENT = "Message attribute name {0} is reserved for use by the SQS extended client. "
     INVALID_MESSAGE_BODY = "messageBody cannot be null or empty."
