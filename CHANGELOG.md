@@ -1,3 +1,9 @@
+### 6.0.2
+
+* Allowing for the `Config` module to live in either `config` or `pre_award.config`. 
+
+[This RFC](https://github.com/communitiesuk/funding-service-requests-for-comments/discussions/22) outlines the move of all the existing code into a top level `pre_award` folder while we consolidate an simplify the code. We need to continue to support both paths though as FAB also uses this fixture, but does not have a `pre_award` folder.
+
 ### 6.0.1
 
 * Revert: "Fix a DeprecationWarning from pythonjsonlogger" which actually broke things
