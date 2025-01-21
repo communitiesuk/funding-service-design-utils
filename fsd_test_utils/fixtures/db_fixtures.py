@@ -12,7 +12,15 @@ def prep_db(reuse_db=False):
     upgrade() is always run to make sure the schema is up to date.
     """
 
-    from config import Config
+    # TODO sort this out once we have refactored db seeding for tests
+    # FAB uses the config location, pre-award uses the pre_award.config location
+    try:
+        from config import Config
+    except ImportError:
+        try:
+            from pre_award.config import Config
+        except ImportError as e:
+            raise ImportError from e
 
     no_db = not database_exists(Config.SQLALCHEMY_DATABASE_URI)
     refresh_db = not reuse_db
