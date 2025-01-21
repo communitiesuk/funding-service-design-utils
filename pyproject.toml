@@ -108,7 +108,7 @@ deps =
 
 [dependency-groups]
 dev = [
-    "moto[s3,sqs]==5.0.7",
+    "moto[s3,sqs]==5.0.27",
     "pre-commit~=4.0.0",
     "pytest>=8.3.3",
     "pytest-env>=0.6.2",
