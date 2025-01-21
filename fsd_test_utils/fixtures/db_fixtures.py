@@ -12,7 +12,6 @@ def prep_db(reuse_db=False):
     upgrade() is always run to make sure the schema is up to date.
     """
 
-
     # TODO sort this out once we have refactored db seeding for tests
     # FAB uses the config location, pre-award uses the pre_award.config location
     try:
