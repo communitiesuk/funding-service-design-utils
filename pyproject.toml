@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "funding-service-design-utils"
 
-version = "6.0.2"
+version = "6.0.3"
 
 authors = [
   { name="MHCLG", email="FundingService@communities.gov.uk" },
@@ -113,5 +113,5 @@ dev = [
     "pytest>=8.3.3",
     "pytest-env>=0.6.2",
     "pytest-mock>=3.14.0",
-    "ruff==0.9.4",
+    "ruff==0.9.5",
 ]
