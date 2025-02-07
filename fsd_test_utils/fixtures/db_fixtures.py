@@ -1,3 +1,5 @@
+from multiprocessing import Process
+
 import pytest
 from flask_migrate import upgrade
 from sqlalchemy import text
@@ -32,7 +34,9 @@ def prep_db(reuse_db=False):
         drop_database(Config.SQLALCHEMY_DATABASE_URI)
         create_database(Config.SQLALCHEMY_DATABASE_URI)
 
-    upgrade()
+    proc = Process(target=upgrade)
+    proc.start()
+    proc.join()
 
 
 @pytest.fixture(scope="session")
