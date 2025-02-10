@@ -20,16 +20,16 @@ class FlaskRunningChecker(CheckerInterface):
 
 
 class DbChecker(CheckerInterface):
-    def __init__(self, db):
-        self.db = db
+    def __init__(self):
         self.name = "check_db"
 
     def check(self):
+        from flask import current_app
         from sqlalchemy import text
         from sqlalchemy.exc import SQLAlchemyError
 
         try:
-            self.db.session.execute(text("SELECT 1"))
+            current_app.extensions["sqlalchemy"].session.execute(text("SELECT 1"))
             return True, "OK"
         except SQLAlchemyError:
             current_app.logger.exception("DB Check failed")
