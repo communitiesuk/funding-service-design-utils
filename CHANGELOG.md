@@ -1,3 +1,7 @@
+### 6.1.0
+
+* Add `source_app` parameter to `_failed_roles_redirect`
+
 ### 6.0.2
 
 * Allowing for the `Config` module to live in either `config` or `pre_award.config`.
