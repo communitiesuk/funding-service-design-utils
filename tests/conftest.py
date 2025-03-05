@@ -66,6 +66,11 @@ def flask_test_client():
             "mock_login_required_admin_roles_route",
             mock_login_required_admin_roles_route,
         )
+        app_context.app.add_url_rule(
+            "/mock_login_required_admin_roles_with_return_app_route",
+            "mock_login_required_admin_roles_with_return_app_route",
+            mock_login_required_admin_roles_with_return_app_route,
+        )
 
         app_context.app.add_url_rule(
             "/mock_login_requested_return_app_route",
@@ -117,6 +122,11 @@ def flask_test_development_client():
             "/mock_login_required_admin_roles_route",
             "mock_login_required_admin_roles_route",
             mock_login_required_admin_roles_route,
+        )
+        app_context.app.add_url_rule(
+            "/mock_login_required_admin_roles_with_return_app_route",
+            "mock_login_required_admin_roles_with_return_app_route",
+            mock_login_required_admin_roles_with_return_app_route,
         )
         with app_context.app.test_client() as test_client:
             yield test_client
@@ -250,6 +260,21 @@ def mock_login_required_admin_roles_route():
             highest_role_map={"COF": "LEAD_ASSESSOR"},
             roles=["COF_LEAD_ASSESSOR", "COF_ASSESSOR", "COF_COMMENTER"]
         )
+    :return: the Flask g variable serialised as a dict/json
+    """
+    return vars(g)
+
+
+@login_required(roles_required=["FSD_ADMIN"], return_app=SupportedApp.FUND_APPLICATION_BUILDER)
+def mock_login_required_admin_roles_with_return_app_route():
+    """
+    A mock route function decorated with
+    @login_required(roles_required=["FSD_ADMIN"], return_app=SupportedApp.FUND_APPLICATION_BUILDER)
+    Here we expect a logged in user without the "FSD_ADMIN"
+    role to be redirected to a missing roles required
+    error page on authenticator with source_app parameter,
+    and a logged in user WITH the "FSD_ADMIN" role to have the
+    required Flask request g variables set.
     :return: the Flask g variable serialised as a dict/json
     """
     return vars(g)

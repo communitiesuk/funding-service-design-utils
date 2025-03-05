@@ -25,10 +25,13 @@ def _failed_redirect(return_app: SupportedApp | None):
     return abort(redirect(logout_url))
 
 
-def _failed_roles_redirect(roles_required: List[str]):
+def _failed_roles_redirect(roles_required: List[str], source_app: SupportedApp | None = None):
     authenticator_host = current_app.config[config_var_auth_host]
 
     params = {"roles_required": "|".join(roles_required)}
+
+    if source_app:
+        params["source_app"] = source_app.value
 
     return abort(redirect(authenticator_host + user_route + f"?{urlencode(params)}"))
 
@@ -117,7 +120,7 @@ def login_required(f=None, roles_required: List[str] = None, return_app: Support
         g.is_authenticated = True
         if roles_required:
             if not any(role_required in g.user.roles for role_required in roles_required):
-                _failed_roles_redirect(roles_required)
+                _failed_roles_redirect(roles_required, source_app=return_app)
         return f(*args, **kwargs)
 
     return _wrapper
