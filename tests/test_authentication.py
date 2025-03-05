@@ -110,6 +110,26 @@ class TestAuthentication:
         assert mock_request.status_code == 302
         assert mock_request.location == "https://authenticator/service/user?roles_required=COF_ADMIN%7CCOF_TEST"
 
+    def test_login_required_roles_redirects_to_error_with_source_app_if_missing_roles(self, flask_test_client):
+        """
+        GIVEN a flask_test_client and route decorated with
+            @login_required(roles_required=["FSD_ADMIN"], return_app=SupportedApp.FUND_APPLICATION_BUILDER) decorator
+        WHEN a request is made with a correctly formatted
+            and signed "fsd-user-token" cookie
+            but without "FSD_ADMIN" in the roles param
+        THEN the route redirects to the authenticator /service/user url with both roles_required and source_app
+            parameters
+        :param flask_test_client:
+        """
+        valid_token = self._create_valid_token()
+        flask_test_client.set_cookie("fsd-user-token", valid_token)
+        mock_request = flask_test_client.get("/mock_login_required_admin_roles_with_return_app_route")
+        assert mock_request.status_code == 302
+        assert (
+            mock_request.location
+            == "https://authenticator/service/user?roles_required=FSD_ADMIN&source_app=fund-application-builder"
+        )
+
     def test_login_required_roles_sets_user_attributes_if_user_has_roles(self, flask_test_client):
         """
         GIVEN a flask_test_client and route decorated with
