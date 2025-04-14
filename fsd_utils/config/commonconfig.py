@@ -175,6 +175,6 @@ class CommonConfig:
     #  Feature Toggles
     # ---------------
 
-    dev_feature_configuration = {"MULTIFUND_DASHBOARD": True}
+    dev_feature_configuration = {}
 
-    prod_feature_configuration = {"MULTIFUND_DASHBOARD": True}
+    prod_feature_configuration = {}
