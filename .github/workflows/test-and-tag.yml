@@ -55,7 +55,7 @@ jobs:
       id: setup_python
       uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5
       with:
-        python-version: '3.10'
+        python-version: '3.13'
     - name: Get package version
       id: package_version
       run: echo "app_version="$(python setup.py --version) >> $GITHUB_OUTPUT
