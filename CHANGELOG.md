@@ -1,3 +1,7 @@
+### 6.1.3
+
+* Revert 6.1.2; we have our domains now and no longer need to use authenticator.
+
 ### 6.1.2
 
 * Add funding-service as a supported return app for authenticator.
