@@ -22,6 +22,7 @@ class SupportedApp(enum.Enum):
     POST_AWARD_SUBMIT = "post-award-submit"
     FORM_DESIGNER = "form-designer"
     FUND_APPLICATION_BUILDER = "fund-application-builder"
+    FUNDING_SERVICE = "funding-service"
 
 
 class InternalDomain(str, enum.Enum):

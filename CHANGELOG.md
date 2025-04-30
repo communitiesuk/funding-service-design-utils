@@ -1,3 +1,7 @@
+### 6.1.2
+
+* Add funding-service as a supported return app for authenticator.
+
 ### 6.1.0
 
 * Add `source_app` parameter to `_failed_roles_redirect`
