@@ -1,3 +1,7 @@
+### 6.1.4
+
+* Fix MultiInput field error by preserving repeated values during Q&A generation by removing only the first occurrence of the key.
+
 ### 6.1.3
 
 * Revert 6.1.2; we have our domains now and no longer need to use authenticator.
