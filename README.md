@@ -30,11 +30,12 @@ tox --version  # check that you are using a tox with the tox-uv plugin installed
 To run tests via tox, `tox`. To run suites in parallel, run eg `tox -p 8`.
 
 # Releasing
-To create a new release of funding-service-design-utils (note no longer need to manually update the version):
-1. Make and test your changes as normal in this repo
-1. Push your changes to `main`.
-1. The Action at `.github/workflows/test-and-tag.yml` will create a new tag and release, named for the version in `pyproject.toml`. This is triggered automatically on a push to main.
-1. That action will also push this tag up to PyPI at: https://pypi.org/project/funding-service-design-utils/
+
+To create a new release of funding-service-design-utils:
+
+1. Make and test your changes as normal in this repo.
+1. Update the version of the utils library using `uv version --bump [major|minor|patch]`. Read about [semantic versioning](https://semver.org/) if you need help deciding the version bump level. Add an entry to the CHANGELOG for this version number, describing the changes you're adding.
+1. Once the PR has been merged, the new version will be released automatically by the [test and tag](https://github.com/communitiesuk/funding-service-design-utils/actions/workflows/test-and-tag.yml) workflow.
 
 ## Updating the release workflow
 - If making changes to the release flow etc, you can publish to test.pypi.org when testing. To do this, update the `Publish to PyPI` step with the following:
@@ -53,7 +54,7 @@ To create a new release of funding-service-design-utils (note no longer need to 
 Either of the following options will install the funding-service-design-utils into your python project. The package `fsd_utils` can then be imported.
 
 ## Released version
-To install a particular version, use `uv add funding-service-design-utils==0.0.1` (update the version number as appropriate).
+To install a particular version, use `uv add funding-service-design-utils==x.y.z` (update the version number as appropriate).
 
 ## Latest / in-dev version
 To reference the latest commit from a particular branch:
