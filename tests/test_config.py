@@ -11,7 +11,6 @@ from fsd_utils.config.commonconfig import CommonConfig
     [
         ("dev", "dev_key", "dev_key"),
         ("development", "dev_key", "dev_key"),
-        ("uat", "abc123", "abc123"),
         ("development", "", "dev-secret"),
         ("unit_test", "", "dev-secret"),
         ("prod", "prod_secret", "prod_secret"),
@@ -32,10 +31,6 @@ def test_config(flask_env, env_secret_key, exp_secret_key):
         ),
         (
             "test",
-            "",
-        ),
-        (
-            "uat",
             "",
         ),
         (
