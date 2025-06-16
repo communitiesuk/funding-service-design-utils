@@ -155,7 +155,11 @@ class ProcessTypes:
                             _str_key[0],
                         )
 
-        _values = [val for val in item.values() if val != key if not isinstance(val, dict)]
+        # make a mutable list of values, remove only one occurrence of key, then filter out dicts
+        vals = list(item.values())
+        if key in vals:
+            vals.remove(key)
+        _values = [v for v in vals if not isinstance(v, dict)]
         combined_values.extend(_values)
 
         if combined_values and key:
