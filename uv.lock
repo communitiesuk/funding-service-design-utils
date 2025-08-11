@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.10, <4.0"
 
 [[package]]
@@ -469,8 +469,8 @@ provides-extras = ["toggles"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "moto", extras = ["s3", "sqs"], specifier = "==5.1.4" },
-    { name = "pre-commit", specifier = "~=4.2.0" },
+    { name = "moto", extras = ["s3", "sqs"], specifier = "==5.1.10" },
+    { name = "pre-commit", specifier = "~=4.3.0" },
     { name = "pytest", specifier = ">=8.3.3" },
     { name = "pytest-env", specifier = ">=0.6.2" },
     { name = "pytest-mock", specifier = ">=3.14.0" },
@@ -690,7 +690,7 @@ wheels = [
 
 [[package]]
 name = "moto"
-version = "5.1.4"
+version = "5.1.10"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "boto3" },
@@ -703,9 +703,9 @@ dependencies = [
     { name = "werkzeug" },
     { name = "xmltodict" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4e/17/059cd6fa5962fa75575f74bb8d31d0e9cb3e656414cb79b4b3736b2b40eb/moto-5.1.4.tar.gz", hash = "sha256:b339c3514f2986ebefa465671b688bdbf51796705702214b1bad46490b68507a", size = 6796440, upload-time = "2025-04-20T20:16:19.165Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c4/72/9bc9b4917b816f5a82fc8f0fbd477c2a669d35a7d7941ae15a5411e266d6/moto-5.1.10.tar.gz", hash = "sha256:d6bdc8f82a1e503502927cc0a3da22014f836094d0bf399bb0f695754ae6c7a6", size = 7087004, upload-time = "2025-08-11T20:59:45.542Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/44/98/346e3252767e1fe78a0842804cfffbbbef103b960149d4bb217b4cc31a19/moto-5.1.4-py3-none-any.whl", hash = "sha256:9a19d7a64c3f03824389cfbd478b64c82bd4d8da21b242a34259360d66cd108b", size = 4898363, upload-time = "2025-04-20T20:16:16.849Z" },
+    { url = "https://files.pythonhosted.org/packages/c4/37/9b9cb5597eecc2ebfde2f65a8265f3669f6724ebe82bf9b155a3421039f8/moto-5.1.10-py3-none-any.whl", hash = "sha256:9ec1a21a924f97470af225b2bfa854fe46c1ad30fb44655eba458206dedf28b5", size = 5246859, upload-time = "2025-08-11T20:59:43.22Z" },
 ]
 
 [package.optional-dependencies]
@@ -752,7 +752,7 @@ wheels = [
 
 [[package]]
 name = "pre-commit"
-version = "4.2.0"
+version = "4.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cfgv" },
@@ -761,9 +761,9 @@ dependencies = [
     { name = "pyyaml" },
     { name = "virtualenv" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/08/39/679ca9b26c7bb2999ff122d50faa301e49af82ca9c066ec061cfbc0c6784/pre_commit-4.2.0.tar.gz", hash = "sha256:601283b9757afd87d40c4c4a9b2b5de9637a8ea02eaff7adc2d0fb4e04841146", size = 193424, upload-time = "2025-03-18T21:35:20.987Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ff/29/7cf5bbc236333876e4b41f56e06857a87937ce4bf91e117a6991a2dbb02a/pre_commit-4.3.0.tar.gz", hash = "sha256:499fe450cc9d42e9d58e606262795ecb64dd05438943c62b66f6a8673da30b16", size = 193792, upload-time = "2025-08-09T18:56:14.651Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/88/74/a88bf1b1efeae488a0c0b7bdf71429c313722d1fc0f377537fbe554e6180/pre_commit-4.2.0-py2.py3-none-any.whl", hash = "sha256:a009ca7205f1eb497d10b845e52c838a98b6cdd2102a6c8e4540e94ee75c58bd", size = 220707, upload-time = "2025-03-18T21:35:19.343Z" },
+    { url = "https://files.pythonhosted.org/packages/5b/a5/987a405322d78a73b66e39e4a90e4ef156fd7141bf71df987e50717c321b/pre_commit-4.3.0-py2.py3-none-any.whl", hash = "sha256:2b0747ad7e6e967169136edffee14c16e148a778a54e4f967921aa1ebf2308d8", size = 220965, upload-time = "2025-08-09T18:56:13.192Z" },
 ]
 
 [[package]]
