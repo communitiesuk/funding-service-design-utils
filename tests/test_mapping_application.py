@@ -353,14 +353,14 @@ class TestMultiInput:
                 ((["March 2023", 200, "Capital"], "Capital title")),
             ),
             (
-                    # All-integer dict where first value is 0 - previously returned None
-                    {"FfSahl": 0, "FwurgE": 30000, "ZsNcbA": 1425000, "iuTXHe": 582000},
-                    ([30000, 1425000, 582000], 0),
+                # All-integer dict where first value is 0 - previously returned None
+                {"FfSahl": 0, "FwurgE": 30000, "ZsNcbA": 1425000, "iuTXHe": 582000},
+                ([30000, 1425000, 582000], 0),
             ),
             (
-                    # All-zero dict
-                    {"FfSahl": 0, "FwurgE": 0, "ZsNcbA": 0, "iuTXHe": 0},
-                    ([0, 0, 0], 0),
+                # All-zero dict
+                {"FfSahl": 0, "FwurgE": 0, "ZsNcbA": 0, "iuTXHe": 0},
+                ([0, 0, 0], 0),
             ),
         ],
     )
