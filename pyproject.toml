@@ -97,13 +97,12 @@ pass_env = ["PYTEST_*", "TOX_GH_MAJOR_MINOR"]
 commands = pytest
 uv_resolution = highest
 dependency_groups = dev
-deps =
-    flask2.2: -c constraints/flask2.2.txt
-    flask2.3: -c constraints/flask2.3.txt
-    flask3: -c constraints/flask3.txt
-    sqlalchemy1: -c constraints/sqlalchemy1.txt
-    sqlalchemy2: -c constraints/sqlalchemy2.txt
-    .
+constraints =
+    flask2.2: constraints/flask2.2.txt
+    flask2.3: constraints/flask2.3.txt
+    flask3: constraints/flask3.txt
+    sqlalchemy1: constraints/sqlalchemy1.txt
+    sqlalchemy2: constraints/sqlalchemy2.txt
 """
 
 [dependency-groups]
