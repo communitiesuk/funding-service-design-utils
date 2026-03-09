@@ -162,7 +162,8 @@ class ProcessTypes:
         _values = [v for v in vals if not isinstance(v, dict)]
         combined_values.extend(_values)
 
-        if combined_values and key:
+
+        if combined_values and key is not None:
             return combined_values, key
 
     @classmethod
