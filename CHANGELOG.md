@@ -1,3 +1,7 @@
+### 6.1.5
+* Fix MultiInput mapping error for all-integer fields where the first value is zero, which was causing Q&A document generation to fail silently on PFN/RP application submission.
+* Fix deprecated `-c` constraint syntax in tox config and regenerate RSA test keys with 2048-bit length.
+
 ### 6.1.4
 
 * Fix MultiInput field error by preserving repeated values during Q&A generation by removing only the first occurrence of the key.
