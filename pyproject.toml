@@ -107,8 +107,8 @@ constraints =
 
 [dependency-groups]
 dev = [
-    "moto[s3,sqs]==5.1.4",
-    "pre-commit~=4.2.0",
+    "moto[s3,sqs]==5.1.22",
+    "pre-commit~=4.5.1",
     "pytest>=8.3.3",
     "pytest-env>=0.6.2",
     "pytest-mock>=3.14.0",
