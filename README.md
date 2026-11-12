@@ -1,3 +1,6 @@
+> [!WARNING]
+> This repository is no longer in use
+
 # funding-service-design-utils
 Utils serves as a shared library for funding service design applications. These utilities are meant to be reused across the project, streamlining our coding process and ensuring the reliability of our funding service design applications.
 
